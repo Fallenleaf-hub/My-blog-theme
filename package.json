@@ -1,0 +1,8 @@
+{
+  "name": "leafblog",
+  "version": "2026042901",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
