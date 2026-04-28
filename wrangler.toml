@@ -3,6 +3,6 @@ main = "worker.js"
 compatibility_date = "2026-04-28"
 
 # 绑定你的 KV 数据库
-[BlogKV]
+[[BlogKV]]
 binding = "CFBLOG"
 id = "1f2e8663209542d2b3e4bf888f510dfe"
