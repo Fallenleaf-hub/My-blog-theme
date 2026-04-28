@@ -1,0 +1,8 @@
+name = "leafblog" # 你的 Worker 项目名称
+main = "worker.js"
+compatibility_date = "2026-04-28"
+
+# 绑定你的 KV 数据库
+[BlogKV]
+binding = "CFBLOG"
+id = "1f2e8663209542d2b3e4bf888f510dfe"
