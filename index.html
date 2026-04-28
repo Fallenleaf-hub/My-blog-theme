@@ -346,49 +346,34 @@
             </div>
             
             <div class="grid" id="topics-grid">
-                <!-- 卡片 1 -->
-                <div class="card" style="animation-delay: 0.1s;">
+                {{#articleList}}
+                <!-- 动态文章卡片 -->
+                <a class="card" href="{{url}}" style="text-decoration: none; display: flex;">
                     <div class="card-icon" style="color: var(--accent-1);">✦</div>
-                    <h3>Advanced Agentic Coding</h3>
-                    <p>研究如何通过大规模语言模型与智能体架构，实现自主化的代码编写与复杂系统工程建设，提升开发效率。</p>
+                    <h3>{{title}}</h3>
+                    <p>{{contentText}}</p>
                     <div class="card-footer">
-                        <span>阅读系列</span>
+                        <span>{{createDate10}}</span>
                         <span class="arrow">→</span>
                     </div>
+                </a>
+                {{/articleList}}
+                {{^articleList}}
+                <div style="color: var(--text-secondary); padding: 2rem;">
+                    还没有发布任何文章哦...
                 </div>
-
-                <!-- 卡片 2 -->
-                <div class="card" style="animation-delay: 0.2s;">
-                    <div class="card-icon" style="color: var(--accent-4);">⟡</div>
-                    <h3>Edge AI & MCU</h3>
-                    <p>将强大的机器学习模型部署于资源受限的微控制器。探索 STM32 上的 TinyML 解决方案与边缘推理算法优化。</p>
-                    <div class="card-footer">
-                        <span>阅读系列</span>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
-
-                <!-- 卡片 3 -->
-                <div class="card" style="animation-delay: 0.3s;">
-                    <div class="card-icon" style="color: var(--accent-3);">⚡</div>
-                    <h3>Serverless 架构探索</h3>
-                    <p>基于 Cloudflare Workers 的下一代边缘计算应用开发。构建高可用、低延迟的全球分布式基础设施平台。</p>
-                    <div class="card-footer">
-                        <span>阅读系列</span>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
-
-                <!-- 卡片 4 -->
-                <div class="card" style="animation-delay: 0.4s;">
-                    <div class="card-icon" style="color: var(--accent-2);">⎛</div>
-                    <h3>硬件系统设计</h3>
-                    <p>从零开始的 PCB 绘制日记，涵盖核心板原理图设计、信号完整性分析，以及高速数字电路开发中的实践经验。</p>
-                    <div class="card-footer">
-                        <span>阅读系列</span>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
+                {{/articleList}}
+            </div>
+            
+            <!-- 分页导航 -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding: 0 1rem;">
+                {{#pageNewer}}
+                <a href="{{url}}" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">← 上一页</a>
+                {{/pageNewer}}
+                
+                {{#pageOlder}}
+                <a href="{{url}}" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; margin-left: auto; transition: color 0.3s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">下一页 →</a>
+                {{/pageOlder}}
             </div>
         </section>
     </div>
