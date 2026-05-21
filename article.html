@@ -1,235 +1,780 @@
 <!DOCTYPE html>
-<!--[if IE 7]>
-	<html class="ie ie7" lang="zh-CN">
-	<![endif]-->
-	<!--[if IE 8]>
-		<html class="ie ie8" lang="zh-CN">
-		<![endif]-->
-		<!--[if !(IE 7) | !(IE 8) ]>
-			<!-->
-			<html lang="zh-CN">
-			<!--<![endif]-->
-			<head>
-				<meta charset="UTF-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<link rel="profile" href="http://gmpg.org/xfn/11" />
-				<link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico" />
-				<link rel="Shortcut Icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico">
-				<title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
-				<meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}" />
-				<meta name="description" content="{{ &OPT.siteDescription }}" />
-				<link rel="dns-prefetch" href="//fonts.googleapis.com" />
-				<link rel="dns-prefetch" href="//s.w.org" />
-				<script type="text/javascript">window._wpemojiSettings = {
-						"baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/72x72\/",
-						"ext": ".png",
-						"svgUrl": "https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/svg\/",
-						"svgExt": ".svg",
-						"source": {
-							"concatemoji": "https:\/\/cdn.jsdelivr.net\/gh\/gdtool\/zhaopp\/cfblog\/wp-emoji-release.min.js?ver=5.6"
-						}
-					}; !
-					function(e, a, t) {
-						var r, n, o, i, p = a.createElement("canvas"),
-						s = p.getContext && p.getContext("2d");
-						function c(e, t) {
-							var a = String.fromCharCode;
-							s.clearRect(0, 0, p.width, p.height),
-							s.fillText(a.apply(this, e), 0, 0);
-							var r = p.toDataURL();
-							return s.clearRect(0, 0, p.width, p.height),
-							s.fillText(a.apply(this, t), 0, 0),
-							r === p.toDataURL()
-						}
-						function l(e) {
-							if (!s || !s.fillText) return ! 1;
-							switch (s.textBaseline = "top", s.font = "600 32px Arial", e) {
-							case "flag":
-								return ! c([127987, 65039, 8205, 9895, 65039], [127987, 65039, 8203, 9895, 65039]) && (!c([55356, 56826, 55356, 56819], [55356, 56826, 8203, 55356, 56819]) && !c([55356, 57332, 56128, 56423, 56128, 56418, 56128, 56421, 56128, 56430, 56128, 56423, 56128, 56447], [55356, 57332, 8203, 56128, 56423, 8203, 56128, 56418, 8203, 56128, 56421, 8203, 56128, 56430, 8203, 56128, 56423, 8203, 56128, 56447]));
-							case "emoji":
-								return ! c([55357, 56424, 8205, 55356, 57212], [55357, 56424, 8203, 55356, 57212])
-							}
-							return ! 1
-						}
-						function d(e) {
-							var t = a.createElement("script");
-							t.src = e,
-							t.defer = t.type = "text/javascript",
-							a.getElementsByTagName("head")[0].appendChild(t)
-						}
-						for (i = Array("flag", "emoji"), t.supports = {
-							everything: !0,
-							everythingExceptFlag: !0
-						},
-						o = 0; o < i.length; o++) t.supports[i[o]] = l(i[o]),
-						t.supports.everything = t.supports.everything && t.supports[i[o]],
-						"flag" !== i[o] && (t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && t.supports[i[o]]);
-						t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && !t.supports.flag,
-						t.DOMReady = !1,
-						t.readyCallback = function() {
-							t.DOMReady = !0
-						},
-						t.supports.everything || (n = function() {
-							t.readyCallback()
-						},
-						a.addEventListener ? (a.addEventListener("DOMContentLoaded", n, !1), e.addEventListener("load", n, !1)) : (e.attachEvent("onload", n), a.attachEvent("onreadystatechange",
-						function() {
-							"complete" === a.readyState && t.readyCallback()
-						})), (r = t.source || {}).concatemoji ? d(r.concatemoji) : r.wpemoji && r.twemoji && (d(r.twemoji), d(r.wpemoji)))
-					} (window, document, window._wpemojiSettings);</script>
-				<style type="text/css">img.wp-smiley, img.emoji { display: inline !important; border: none !important; box-shadow: none !important; height: 1em !important; width: 1em !important; margin: 0 .07em !important; vertical-align: -0.1em !important; background: none !important; padding: 0 !important; }</style>
-				<link rel="stylesheet" id="wp-block-library-css" href="https://cdn.jsdelivr.net/gh/WordPress/WordPress@5.5.3/wp-includes/css/dist/block-library/style.min.css?ver=5.6" type="text/css" media="all" />
-				<style id="md-style-inline-css" type="text/css">.gfm-task-list { border: 1px solid transparent; list-style-type: none; } .gfm-task-list input { margin-right: 10px !important; } .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); }</style>
-				<link rel="stylesheet" id="themonic-fonts-css" href="https://fonts.googleapis.com/css?family=Ubuntu%3A400%2C700&amp;subset=latin%2Clatin-ext" type="text/css" media="all" />
-				<link rel="stylesheet" id="themonic-style-css" href="https://cdn.jsdelivr.net/gh/gdtool/cloudflare-workers-blog@master/themes/default/style.css" type="text/css" media="all" />
-				<link rel="stylesheet" id="custom-style-css" href="https://cdn.jsdelivr.net/wp/themes/iconic-one/2.1.8/custom.min.css?ver=5.6" type="text/css" media="all" />
-				<meta name="generator" content="WordPress 5.6" />
-				<style type="text/css" id="wp-custom-css">@media (max-width: 768px) { #secondary { display:none !important; } #menu-top{ display:none !important; } .site-content { float: left; width: 92%; padding: 30px 2% 0 1%; } .site-description{ display:none !important; } .io-title-description { display: inline-block; margin: 17px 0; padding: 0px 0; float: none; } .wrapper { border: 1px solid #16a1e7 !important; } }</style>
-				<link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.3.2/styles/tomorrow-night-bright.min.css">
-				<script src='https://cdn.staticfile.org/highlight.js/10.3.2/highlight.min.js'></script>
-				{{ &OPT.codeBeforHead }}
-			</head>
-			<body class="home blog logged-in custom-font-enabled single-author hfeed">
-				<div id="page" class="site">
-					<header id="masthead" class="site-header" role="banner">
-						<div class="io-title-description">
-							<a href="/" title="{{ &OPT.siteName }}" rel="home">{{ &OPT.siteName }}</a>
-							<br ...="" />
-							<a class="site-description">{{ &OPT.siteDescription }}</a></div>
-						<nav id="site-navigation" class="themonic-nav" role="navigation">
-							<a class="assistive-text" href="#main" title="Skip to content">Skip to content</a>
-							<ul id="menu-top" class="nav-menu">
-								{{ #widgetMenuList }}
-									<li id="menu-item-211" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-211">
-										<a href="{{ &url }}">{{ &title }}</a>
-									</li>
-								{{ /widgetMenuList }}
-							</ul>
-						</nav>
-						<!-- #site-navigation -->
-						<div class="clear"></div>
-					</header>
-					<!-- #masthead -->
-					<div id="main" class="wrapper">
-						<div id="primary" class="site-content">
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico" />
+    <link rel="Shortcut Icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico">
+    <title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
+    <meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}" />
+    <meta name="description" content="{{ &OPT.siteDescription }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS 变量与主题定义 */
+        :root {
+            --bg-color: #f5f7fa;
+            --surface-color: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --accent-1: #1a73e8; /* Google Blue (light mode optimized) */
+            --accent-2: #d93025; /* Google Red (light mode optimized) */
+            --accent-3: #f9ab00; /* Google Yellow */
+            --accent-4: #188038; /* Google Green */
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --card-hover-bg: rgba(255, 255, 255, 0.75);
+        }
 
-							<div id="content" role="main">
-								<article id="post-{{ &articleSingle.id }}" class="post-{{ &articleSingle.id }} post type-post status-publish format-standard hentry category-4">
-									<header class="entry-header">
-										<h1 class="entry-title">{{ &articleSingle.title }}</h1>
-										<div class="below-title-meta">
-											<div class="adt">By
-												<span class="vcard author">
-													<span class="fn">
-														<a href="#" title="由admin发布" rel="author">admin</a></span>
-												</span>
-												<span class="meta-sep">|</span>
-												<span class="date updated">{{ &articleSingle.createDate10 }}</span></div>
-											<div class="adt-comment">
-												<span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-													<em class="post-meta-item-text">{{ &OPT.otherCodeA }}</em>
-													<i class="leancloud-visitors-count"></i>
-												</span>
-											</div>
-										</div>
-										<!-- below title meta end -->
-									</header>
-									<!-- .entry-header -->
-									<div class="entry-content">
-										{{ &articleSingle.contentHtml }}
-									</div>
-									<!-- .entry-content -->
-									<footer class="entry-meta">
-										<span>分类:
-											{{ #articleSingle.category }}
-												<a href="/category/{{&.}}" rel="category tag">{{&.}}</a>
-											{{ /articleSingle.category }}
-										</span>	
-										<span>标签：
-											{{ #articleSingle.tags }}
-												<a href="/tags/{{&.}}" rel="tag">{{&.}} </a> 
-											{{ /articleSingle.tags }}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-										</span>
-									</footer>
-									<!-- .entry-meta -->
-								</article>
-								<!-- #post -->
-								<nav class="nav-single">
-									<div class="assistive-text">Post navigation</div>
-									<span class="nav-previous">
-										{{ #articleNewer }}
-										<a href="{{ &url }}" rel="prev">
-											<span class="meta-nav">←</span>{{ &title }}</a>
-										{{ /articleNewer }}
-									</span>
-									<span class="nav-next">
-										{{ #articleOlder }}
-										<a href="{{ &url }}" rel="next">{{ &title }}
-											<span class="meta-nav">→</span></a>
-										{{ /articleOlder }}
-									</span>
-								</nav>
-								<!-- .nav-single -->
-								{{ &OPT.commentCode }}
-								<!-- #comments .comments-area -->
-							</div>
-							<!-- #上面俩,二选一 -->
-						</div>
-						<!-- #primary -->
-						<div id="secondary" class="widget-area" role="complementary">
-							<aside id="recent-posts-2" class="widget widget_recent_entries">
-								<p class="widget-title">近期文章</p>
-								<ul>
-									{{ #widgetRecentlyList }}
-									<li><a href="{{ &url }}">{{ &title }}</a></li>
-									{{ /widgetRecentlyList }}
-								</ul>
-							</aside>
-							<aside id="categories-4" class="widget widget_categories">
-								<p class="widget-title">分类目录</p>
-								<ul>
-									{{ #widgetCategoryList }}
-									<li class="cat-item cat-item-5"><a href="/category/{{&.}}">{{&.}}</a></li>
-									{{ /widgetCategoryList }}
-								</ul>
-							</aside>
-							<aside id="tag_cloud-2" class="widget widget_tag_cloud">
-								<p class="widget-title">标签云</p>
-								<div class="tagcloud">
-								
-									{{ #widgetTagsList }}
-									<a href="/tags/{{&.}}" class="tag-cloud-link tag-link-18 tag-link-position-3" style="font-size: 8pt;">{{&.}}</a>
-									{{ /widgetTagsList }}
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-								</div>
-							</aside>
-							<aside id="meta-2" class="widget widget_meta">
-								<p class="widget-title">链接</p>
-								<ul>
-									<li><a href="/admin/">管理站点</a></li>
-									{{ #widgetLinkList }}
-									<li><a href="{{ &url }}">{{ &title }}</a></li>
-									{{ /widgetLinkList }}
-								</ul>
-							</aside>
-							{{ &OPT.widgetOther }}
-						</div>
-						<!-- #secondary -->
-					</div>
-					<!-- #main .wrapper -->
-					<!-- #colophon -->
-					<div class="site-wordpress">{{ &OPT.copyRight }}</div>
-					<!-- .site-info -->
-					<div class="clear"></div>
-				</div>
-				<!-- #page -->
-				<script type="text/javascript" src="https://cdn.jsdelivr.net/wp/themes/iconic-one/2.1.8/js/selectnav.min.js?ver=1.0" id="themonic-mobile-navigation-js"></script>
-				<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/WordPress/WordPress@5.6/wp-includes/js/clipboard.min.js?ver=5.6" id="clipboard-js"></script>
-				<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/wp-embed.min.js?ver=5.6" id="wp-embed-js"></script>
-				<script>hljs.initHighlightingOnLoad(); //代码高亮
-					</script>
-				{{ &OPT.codeBeforBody }}
-			</body>
-			
-			</html>
+        /* 环境光晕背景 (Ambient Glowing Background) */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-color);
+        }
+
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .glow-1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(66, 133, 244, 0.15); /* 蓝色光晕 */
+            top: -200px;
+            left: -100px;
+        }
+
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(15, 157, 88, 0.12); /* 绿色光晕 */
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .glow-3 {
+            width: 450px;
+            height: 450px;
+            background: rgba(219, 68, 55, 0.08); /* 红色光晕 */
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 60px) scale(1.1); }
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 顶部导航 */
+        header {
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeDown 0.8s ease forwards;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+            border-radius: 6px;
+            transition: transform 0.1s ease;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 2.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-primary);
+        }
+
+        /* 文章主体毛玻璃卡片 */
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 2rem;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-separator {
+            opacity: 0.5;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        .article-categories {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(26, 115, 232, 0.08);
+            color: var(--accent-1);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .category-tag:hover {
+            background: var(--accent-1);
+            color: #ffffff;
+        }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.6rem;
+        }
+
+        .article-content h2, .article-content h3, .article-content h4 {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 2.5rem 0 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .article-content h2 {
+            font-size: 1.6rem;
+            border-left: 4px solid var(--accent-1);
+            padding-left: 0.75rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.35rem;
+        }
+
+        .article-content blockquote {
+            background: rgba(0, 0, 0, 0.02);
+            border-left: 4px solid var(--accent-1);
+            padding: 1.2rem 1.8rem;
+            margin: 2rem 0;
+            border-radius: 0 16px 16px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .article-content blockquote p {
+            margin-bottom: 0;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 1.5rem 0 1.5rem 1.8rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin: 2rem auto;
+            display: block;
+        }
+
+        .article-content pre {
+            background: #1d1d1f !important;
+            color: #f5f7fa;
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .article-content code {
+            font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+
+        /* 行内代码 */
+        .article-content :not(pre) > code {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--accent-2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .article-content th, .article-content td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .article-content th {
+            background: rgba(0, 0, 0, 0.02);
+            font-weight: 600;
+        }
+
+        /* 代码块复制按钮 */
+        .gfm-task-list {
+            list-style-type: none;
+            padding-left: 0 !important;
+        }
+        
+        .gfm-task-list input {
+            margin-right: 10px !important;
+        }
+
+        .copy-button {
+            cursor: pointer;
+            border: 0;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 4px 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        pre {
+            position: relative;
+        }
+
+        /* 文章尾部标签 */
+        .article-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .tag-pill:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* 上一篇下一篇导航 */
+        .article-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .nav-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+        }
+
+        .nav-card:hover {
+            background: var(--card-hover-bg);
+            transform: translateY(-4px);
+            border-color: rgba(0, 0, 0, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-next {
+            text-align: right;
+        }
+
+        .nav-next .nav-card {
+            align-items: flex-end;
+        }
+
+        @media (max-width: 600px) {
+            .article-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 评论区美化 */
+        .comments-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin-bottom: 5rem;
+            animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Jelly 果冻跳动动画 */
+        @keyframes jelly {
+            0% { transform: scale(1, 1); }
+            30% { transform: scale(1.25, 0.75); }
+            40% { transform: scale(0.75, 1.25); }
+            50% { transform: scale(1.15, 0.85); }
+            65% { transform: scale(0.95, 1.05); }
+            75% { transform: scale(1.05, 0.95); }
+            100% { transform: scale(1, 1); }
+        }
+
+        .jelly-active {
+            animation: jelly 0.6s ease-in-out !important;
+        }
+
+        /* 个人简介弹窗假面 (About Modal Overlay) */
+        .about-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .about-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 3.5rem 2.5rem;
+            width: 90%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .about-modal.active .about-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .about-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 20px rgba(26, 115, 232, 0.15);
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+
+        .about-card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .about-card .title {
+            color: var(--accent-1);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .about-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .about-close-btn:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* 动画定义 */
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 底部版权 */
+        .site-footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .site-footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            color: var(--text-primary);
+        }
+
+        .adt-comment {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+    </style>
+    {{ &OPT.codeBeforHead }}
+</head>
+<body>
+    
+    <!-- 动态发光背景 -->
+    <div class="ambient-bg">
+        <div class="glow-sphere glow-1"></div>
+        <div class="glow-sphere glow-2"></div>
+        <div class="glow-sphere glow-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- 头部导航 -->
+        <header>
+            <a class="logo" id="logoBtn" href="/#home">
+                <div class="logo-icon"></div>
+                Fallenleaf
+            </a>
+            <nav id="topNav">
+                <a href="/#home" id="homeNavLink">Home</a>
+                <a href="/#topics" id="topicsNavLink">Topics</a>
+                <a href="/#archive" id="archiveNavLink">Archive</a>
+                <a href="#" id="aboutNavLink">About</a>
+            </nav>
+        </header>
+
+        <!-- 文章详情内容 -->
+        <main>
+            <article class="article-card">
+                <header class="article-header">
+                    <div class="article-meta">
+                        <span class="vcard author"><span class="fn">admin</span></span>
+                        <span class="meta-separator">|</span>
+                        <span>{{ &articleSingle.createDate10 }}</span>
+                        
+                        <!-- 访问量统计插槽 -->
+                        <span class="meta-separator">|</span>
+                        <div class="adt-comment">
+                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
+                                <em class="post-meta-item-text">{{ &OPT.otherCodeA }}</em>
+                                <i class="leancloud-visitors-count"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h1 class="article-title">{{ &articleSingle.title }}</h1>
+                    <div class="article-categories">
+                        {{ #articleSingle.category }}
+                            <a href="/category/{{&.}}" class="category-tag">{{&.}}</a>
+                        {{ /articleSingle.category }}
+                    </div>
+                </header>
+
+                <div class="article-content">
+                    {{ &articleSingle.contentHtml }}
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-tags">
+                        {{ #articleSingle.tags }}
+                            <a href="/tags/{{&.}}" class="tag-pill"># {{&.}}</a>
+                        {{ /articleSingle.tags }}
+                    </div>
+                </footer>
+            </article>
+
+            <!-- 上下一篇文章导航 -->
+            <nav class="article-nav">
+                <div class="nav-prev">
+                    {{ #articleNewer }}
+                    <a href="{{ &url }}" class="nav-card">
+                        <span class="nav-label">← 上一篇</span>
+                        <span class="nav-title">{{ &title }}</span>
+                    </a>
+                    {{ /articleNewer }}
+                </div>
+                <div class="nav-next">
+                    {{ #articleOlder }}
+                    <a href="{{ &url }}" class="nav-card">
+                        <span class="nav-label">下一篇 →</span>
+                        <span class="nav-title">{{ &title }}</span>
+                    </a>
+                    {{ /articleOlder }}
+                </div>
+            </nav>
+
+            <!-- 评论区 -->
+            <div class="comments-section">
+                {{ &OPT.commentCode }}
+            </div>
+        </main>
+
+        <!-- 底部版权 -->
+        <footer class="site-footer">
+            {{ &OPT.copyRight }}
+        </footer>
+    </div>
+
+    <!-- 关于弹窗 -->
+    <div id="aboutModal" class="about-modal">
+        <div class="about-card">
+            <div class="about-close-btn" id="aboutCloseBtn">&times;</div>
+            <div class="about-avatar" id="aboutAvatar">F</div>
+            <h2>Fallenleaf</h2>
+            <div class="title">Web Developer & Architect</div>
+            <p>你好，我是 Fallenleaf！一名热爱技术、追求极致体验的开发者。专注于构建高性能、高颜值的前端应用与现代化的系统架构。在这里，我会分享关于人工智能、边缘计算以及下一代硬件架构的研究与思考。感谢你的光临！</p>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.3.2/styles/tomorrow-night-bright.min.css">
+    <script src='https://cdn.staticfile.org/highlight.js/10.3.2/highlight.min.js'></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 代码高亮
+            try {
+                hljs.initHighlightingOnLoad();
+            } catch(e) {
+                console.error("Highlight.js 初始化失败:", e);
+            }
+
+            // 果冻跳动动画
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('.logo-icon, .about-avatar, .category-tag, .tag-pill, .nav-card');
+                if (target) {
+                    target.classList.remove('jelly-active');
+                    void target.offsetWidth; // 触发重绘
+                    target.classList.add('jelly-active');
+                    
+                    setTimeout(() => {
+                        target.classList.remove('jelly-active');
+                    }, 600);
+                }
+            });
+
+            // 个人简介弹窗
+            const aboutNavLink = document.getElementById('aboutNavLink');
+            const aboutModal = document.getElementById('aboutModal');
+            const aboutCloseBtn = document.getElementById('aboutCloseBtn');
+
+            if (aboutNavLink && aboutModal) {
+                aboutNavLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    aboutModal.classList.add('active');
+                });
+            }
+
+            if (aboutCloseBtn && aboutModal) {
+                aboutCloseBtn.addEventListener('click', () => {
+                    aboutModal.classList.remove('active');
+                });
+            }
+
+            if (aboutModal) {
+                aboutModal.addEventListener('click', (e) => {
+                    if (e.target === aboutModal) {
+                        aboutModal.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+    {{ &OPT.codeBeforBody }}
+</body>
+</html>
