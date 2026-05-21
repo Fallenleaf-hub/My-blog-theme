@@ -633,8 +633,9 @@
 		var category = $('#category');
 		category.empty();
 		for (var i = 0; i < categoryJson.length; i++) {
-			category.append('<option id=' + categoryJson[i] + ' value=' + categoryJson[i] + '>' + categoryJson[i] + '</option>');
+			category.append('<option id="' + categoryJson[i] + '" value="' + categoryJson[i] + '">' + categoryJson[i] + '</option>');
 		}
+		category.selectpicker('refresh');
 		category.selectpicker('val',articleJson.category);
 	});
     //保存按钮(编辑)

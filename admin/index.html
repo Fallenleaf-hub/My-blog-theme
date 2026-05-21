@@ -774,8 +774,9 @@
 		var category = $('#category');
 		category.empty();
 		for (var i = 0; i < categoryJson.length; i++) {
-			category.append('<option id=' + categoryJson[i] + ' value=' + categoryJson[i] + '>' + categoryJson[i] + '</option>');
+			category.append('<option id="' + categoryJson[i] + '" value="' + categoryJson[i] + '">' + categoryJson[i] + '</option>');
 		}
+		category.selectpicker('refresh');
 		$("#loadmore").click();//初始加载一页
 	});
     //加载文章列表	
@@ -855,12 +856,27 @@
 			data: JSON.stringify($("#configForm").serializeArray()), 
             success: function (result) {
                 alert(result.msg);
+                // 动态更新新建界面中的分类下拉菜单，使用户无需手动刷新页面即可使用新分类
+                try {
+                    var newCategoryJson = JSON.parse($('#WidgetCategory').val());
+                    if (Array.isArray(newCategoryJson)) {
+                        var category = $('#category');
+                        category.empty();
+                        for (var i = 0; i < newCategoryJson.length; i++) {
+                            category.append('<option id="' + newCategoryJson[i] + '" value="' + newCategoryJson[i] + '">' + newCategoryJson[i] + '</option>');
+                        }
+                        category.selectpicker('refresh');
+                    }
+                } catch (e) {
+                    console.error("动态刷新新建界面分类下拉框失败:", e);
+                }
             }
         });
     }
     //导入json
     function importBlog(){
-        if(!isJSON($('#importJson').val()))
+        var importVal = $('#importJson').val();
+        if(!isJSON(importVal))
         {
             alert("导入格式错误"); 
             return false;
@@ -873,6 +889,43 @@
 			data: JSON.stringify($("#importForm").serializeArray()), 
             success: function (result) {
                 alert(result.msg);
+                if (result.rst) {
+                    // 导入成功，动态更新设置界面的输入框和新建界面的分类下拉菜单
+                    try {
+                        var importedData = JSON.parse(importVal);
+                        
+                        // 1. 更新 WidgetCategory 输入框并同步刷新新建界面的分类下拉菜单
+                        var categoryVal = importedData["SYSTEM_VALUE_WidgetCategory"];
+                        if (categoryVal) {
+                            var categoryJson = typeof categoryVal === 'string' ? JSON.parse(categoryVal) : categoryVal;
+                            if (Array.isArray(categoryJson)) {
+                                $('#WidgetCategory').val(JSON.stringify(categoryJson));
+                                var category = $('#category');
+                                category.empty();
+                                for (var i = 0; i < categoryJson.length; i++) {
+                                    category.append('<option id="' + categoryJson[i] + '" value="' + categoryJson[i] + '">' + categoryJson[i] + '</option>');
+                                }
+                                category.selectpicker('refresh');
+                            }
+                        }
+                        
+                        // 2. 更新 WidgetMenu 输入框
+                        var menuVal = importedData["SYSTEM_VALUE_WidgetMenu"];
+                        if (menuVal) {
+                            var menuJson = typeof menuVal === 'string' ? JSON.parse(menuVal) : menuVal;
+                            $('#WidgetMenu').val(JSON.stringify(menuJson));
+                        }
+                        
+                        // 3. 更新 WidgetLink 输入框
+                        var linkVal = importedData["SYSTEM_VALUE_WidgetLink"];
+                        if (linkVal) {
+                            var linkJson = typeof linkVal === 'string' ? JSON.parse(linkVal) : linkVal;
+                            $('#WidgetLink').val(JSON.stringify(linkJson));
+                        }
+                    } catch (e) {
+                        console.error("导入成功后动态刷新页面内容失败:", e);
+                    }
+                }
             }
         });
     }
