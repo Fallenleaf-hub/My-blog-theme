@@ -136,7 +136,7 @@
 			border: none !important;
 			background: transparent !important;
 			font-weight: 500;
-			font-size: 0.95rem;
+			font-size: 1.15rem;
 			padding: 10px 15px !important;
 			border-radius: 8px !important;
 			transition: all 0.3s ease !important;
@@ -216,7 +216,7 @@
 			font-weight: 500;
 			margin-bottom: 0.5rem;
 			display: block;
-			font-size: 0.9rem;
+			font-size: 1.1rem;
 		}
 
 		.form-control,
@@ -228,7 +228,7 @@
 			border-radius: 8px !important;
 			padding: 8px 12px !important;
 			height: auto !important;
-			font-size: 0.95rem !important;
+			font-size: 1.05rem !important;
 			transition: all 0.3s ease !important;
 			box-shadow: none !important;
 		}
@@ -253,7 +253,8 @@
 			color: var(--text-primary) !important;
 			border-radius: 8px !important;
 			padding: 8px 12px !important;
-			height: 38px !important;
+			height: 42px !important;
+			font-size: 1.05rem !important;
 			font-weight: normal !important;
 			box-shadow: none !important;
 		}
@@ -469,6 +470,42 @@
 			background: rgba(0, 0, 0, 0.08);
 			color: var(--text-primary);
 		}
+
+		/* 新增：表单网格排版与对齐优化 */
+		.form-grid-layout {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 1.5rem 2rem;
+			margin-bottom: 2rem;
+			width: 100%;
+		}
+
+		@media (max-width: 768px) {
+			.form-grid-layout {
+				grid-template-columns: 1fr;
+				gap: 1.25rem;
+			}
+		}
+
+		.form-grid-layout .form-group {
+			margin-bottom: 0 !important;
+			margin-right: 0 !important;
+			display: flex;
+			flex-direction: column;
+			width: 100% !important;
+		}
+
+		.form-grid-layout .form-group .form-control,
+		.form-grid-layout .form-group .bootstrap-select {
+			width: 100% !important;
+		}
+
+		.form-actions-row {
+			display: flex;
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+			align-items: center;
+		}
 	</style>
 </head>
 <body>
@@ -502,49 +539,56 @@
 
 			<form id="editForm" class="form-inline"  action="/" >
 
-				<div class="form-group" style="width: 98%">
+				<div class="form-group" style="width: 100%; margin-right: 0 !important;">
 					<input type="hidden" class="form-control" name="id" id="id" readonly required="true">
-					<input type="text" class="form-control" name="title" id="title" placeholder="标题" style="width: 800px;" required="true">
+					<input type="text" class="form-control" name="title" id="title" placeholder="标题" style="width: 100%;" required="true">
 				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">特色图片</label>
-					<input type="url" class="form-control" style="width: 400px;"  name="img" id="img" placeholder="" >
+				
+				<div class="form-grid-layout">
+					<div class="form-group">
+						<label for="img">特色图片</label>
+						<input type="url" class="form-control" name="img" id="img" placeholder="" >
+					</div>
+					<div class="form-group">
+						<label for="link">永久链接</label>
+						<input type="text" class="form-control" name="link" id="link" placeholder="" required="true">
+					</div>
+					<div class="form-group">
+						<label for="createDate">创建日期</label>
+						<input type="datetime-local" class="form-control" id="createDate" name="createDate" placeholder="" required="true">
+					</div>
+					<div class="form-group">
+						<label for="category">分类</label>
+						<select class="selectpicker" multiple name="category[]" id="category">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="tags">标签</label>
+						<input type="text" class="form-control" name="tags" id="tags" placeholder="标签1,标签2">
+					</div>
+					<div class="form-group">
+						<label for="priority">权重</label>
+						<input type="text" class="form-control" name="priority" id="priority" value='0.5' placeholder="权重">
+					</div>
+					<div class="form-group">
+						<label for="changefreq">更新频率</label>
+						<select class="form-control" id="changefreq" name="changefreq">
+							<option value="daily" >daily</option>
+							<option value="hourly" >hourly</option>
+							<option value="weekly" >weekly</option>
+							<option value="monthly" >monthly</option>
+							<option value="yearly" >yearly</option>
+							<option value="never" >never</option>
+							<option value="always" >always</option>
+						</select>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">永久链接</label>
-					<input type="text" class="form-control" name="link" id="link" placeholder="" style="vertical-align:left !important;" required="true">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">创建日期</label>
-					<input type="datetime-local" class="form-control" id="createDate" name="createDate" placeholder="" style="vertical-align:left !important;" required="true">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">分类</label>
-					<select class="selectpicker" multiple name="category[]" id="category">
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">标签</label>
-					<input type="text" class="form-control" name="tags" id="tags" placeholder="标签1,标签2">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">权重</label>
-					<input type="text" class="form-control" name="priority" id="priority" value='0.5' placeholder="权重">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail2">更新频率</label>
-					    <select class="form-control" id="changefreq" name="changefreq">
-						<option value="daily" >daily</option>
-						<option value="hourly" >hourly</option>
-						<option value="weekly" >weekly</option>
-						<option value="monthly" >monthly</option>
-						<option value="yearly" >yearly</option>
-						<option value="never" >never</option>
-						<option value="always" >always</option>
-					    </select>
-				</div>
+				
+				<div class="form-actions-row">
 					<a tabindex="0"  role="button"  type="submit" id="btn_saveEdit" class="btn btn-default" onclick="saveEdit()">保存</a>
 					<a  type="submit" role="button" id="btn_delete" class="btn btn-warning" onclick="deleteArticle()">删除</a>
+				</div>
+				
 				<div id="content"><textarea style="display:none;"></textarea></div>
 			</form>
 		</div>
