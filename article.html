@@ -116,6 +116,10 @@
             }
         }
 
+        .layout-wrapper > main {
+            min-width: 0;
+        }
+
         /* 侧边栏目录 (TOC) */
         .toc-sidebar {
             position: sticky;
@@ -318,6 +322,9 @@
         .article-content {
             font-size: 1.05rem;
             color: var(--text-primary);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .article-content p {
