@@ -474,10 +474,16 @@
 		/* 新增：表单网格排版与对齐优化 */
 		.form-grid-layout {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			grid-template-columns: 1fr 1fr;
 			gap: 1.5rem 2rem;
 			margin-bottom: 2rem;
 			width: 100%;
+		}
+
+		@media (min-width: 1200px) {
+			.form-grid-layout {
+				grid-template-columns: 1fr 1fr 1fr;
+			}
 		}
 
 		@media (max-width: 768px) {
@@ -485,6 +491,10 @@
 				grid-template-columns: 1fr;
 				gap: 1.25rem;
 			}
+		}
+
+		.form-grid-layout > .form-group:nth-child(1) {
+			grid-column: 1 / -1;
 		}
 
 		.form-grid-layout .form-group {
@@ -496,8 +506,11 @@
 		}
 
 		.form-grid-layout .form-group .form-control,
-		.form-grid-layout .form-group .bootstrap-select {
+		.form-grid-layout .form-group .bootstrap-select,
+		.form-grid-layout .form-group .bootstrap-select .dropdown-toggle,
+		.form-grid-layout .input-group-btn > .btn {
 			width: 100% !important;
+			height: 42px !important;
 		}
 
 		.form-actions-row {
@@ -525,9 +538,6 @@
 			<li class="active">
 				<a href="/admin/" >返回文章</a>
 			</li>
-			<li>
-				<a href="#" id="aboutNavLink">About</a>
-			</li>
 		</ul>
 	</div>
 	</div>
@@ -551,7 +561,17 @@
 					</div>
 					<div class="form-group">
 						<label for="link">永久链接</label>
-						<input type="text" class="form-control" name="link" id="link" placeholder="" required="true">
+						<div class="input-group">
+							<input type="text" class="form-control" name="link" id="link" placeholder="" required="true">
+							<div class="input-group-btn">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 42px;">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="javascript:void(0);" onclick="var d=new Date(),y=d.getFullYear(),m=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2);document.getElementById('link').value=y+m+dd;">当前日期</a></li>
+								</ul>
+							</div>
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="createDate">创建日期</label>
@@ -688,34 +708,9 @@
             }, 600);
         });
 
-        // 个人简介弹窗事件
-        $('#aboutNavLink').on('click', function(e) {
-            e.preventDefault();
-            $('#aboutModal').addClass('active');
-        });
-
-        $('#aboutCloseBtn').on('click', function() {
-            $('#aboutModal').removeClass('active');
-        });
-
-        $('#aboutModal').on('click', function(e) {
-            if (e.target === this) {
-                $(this).removeClass('active');
-            }
-        });
     });
 </script>
   
-    <!-- 个人简介弹窗 -->
-    <div id="aboutModal" class="about-modal">
-        <div class="about-card">
-            <div class="about-close-btn" id="aboutCloseBtn">&times;</div>
-            <div class="about-avatar" id="aboutAvatar">F</div>
-            <h2>Fallenleaf</h2>
-            <div class="title">Web Developer & Architect</div>
-            <p>你好，我是 Fallenleaf！一名热爱技术、追求极致体验的开发者。专注于构建高性能、高颜值的前端应用与现代化的系统架构。在这里，我会分享关于人工智能、边缘计算以及下一代硬件架构的研究与思考。感谢你的光临！</p>
-        </div>
-    </div>
 
 </body>
 
