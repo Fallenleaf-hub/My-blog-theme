@@ -598,11 +598,17 @@
 <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/editormd.js"></script>   
 <script type="text/javascript">
 	$(function() {
-		$('#myTab li:eq(0) a').tab('show');
 		//获取文章
-		var articleJson = <!--{articleJson}-->;
+		var articleArray = [
+			<!--{articleJson}-->
+		];
+		var articleJson = articleArray.length > 0 ? articleArray[0] : {title: "", contentMD: "", id: "", img: "", link: "", createDate: "", tags: "", priority: "0.5", changefreq: "daily", category: []};
+		
 		//获取分类
-		var categoryJson = <!--{categoryJson}-->;
+		var categoryArray = [
+			<!--{categoryJson}-->
+		];
+		var categoryJson = categoryArray.length > 0 ? categoryArray[0] : [];
 
 		
 		var mdEditor = editormd("content", {

@@ -679,8 +679,6 @@
 
 				<div class="form-actions-row">
 					<a  tabindex="0"  role="button"  type="submit" id="btn_saveAddNew" class="btn btn-default" onclick="saveAddNew()">保存</a>
-					<a  tabindex="0"  role="button"  id="btn_deleteArticle" class="btn btn-warning" onclick="deleteArticle()" style="display: none;">删除</a>
-					<a  tabindex="0"  role="button"  id="btn_backToNew" class="btn btn-default" onclick="backToNew()" style="display: none;">新建文章</a>
 				</div>
 					
 				<div id="content"><textarea style="display:none;"></textarea></div>
@@ -745,15 +743,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/editormd.js"></script>   
 <script type="text/javascript">
-	var mdEditor; // 提升为全局变量以供 SPA 编辑功能访问
 	$(function() {
-		$('#myTab li:eq(0) a').tab('show');
+		// 默认显示我的文章列表，修复 eq(0) 指向普通链接引发的异常
+		$('#myTab a[href="#list"]').tab('show');
 		//获取分类
-		var categoryJson = <!--{categoryJson}-->;
+		var categoryArray = [
+			<!--{categoryJson}-->
+		];
+		var categoryJson = categoryArray.length > 0 ? categoryArray[0] : [];
+		
 		//获取菜单
-		var menuJson = <!--{menuJson}-->;
-		var linkJson = <!--{linkJson}-->;
-		mdEditor = editormd("content", {
+		var menuArray = [
+			<!--{menuJson}-->
+		];
+		var menuJson = menuArray.length > 0 ? menuArray[0] : [];
+		
+		var linkArray = [
+			<!--{linkJson}-->
+		];
+		var linkJson = linkArray.length > 0 ? linkArray[0] : [];
+		var mdEditor = editormd("content", {
 				// width  : "90%",
 				 height : 640,
 				path   : "https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/",
@@ -781,6 +790,13 @@
 		}
 		category.selectpicker('refresh');
 		$("#loadmore").click();//初始加载一页
+		
+		// 修复 Editor.md 在隐藏 Tab 下渲染可能导致空白的问题
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			if (e.target.hash === '#new' && typeof mdEditor !== 'undefined') {
+				mdEditor.resize();
+			}
+		});
 	});
     //加载文章列表	
     $("#loadmore").click(function(){
@@ -829,14 +845,8 @@
             success: function (result) {
                 if ("id" in result){
                     $('#id').val(result.id);
-					$('#labelNew').text("编辑文章 (" + result.id + ")");
-                    $('#btn_deleteArticle').show();
-                    $('#btn_backToNew').show();
+					$('#labelNew').text("编辑:"+result.id);
                     alert(result.msg);
-                    // 重新加载第一页文章列表以同步更新
-                    $("#articleList tr:not(:first)").remove();
-                    $("#page").val('1');
-                    $("#loadmore").click();
                 }
                 else 
                 {
@@ -969,105 +979,6 @@
             }
         }
         return false;
-    }
-
-    // SPA无跳转编辑文章事件代理
-    $(document).on('click', '#articleList a[href^="/admin/edit/"]', function(e) {
-        e.preventDefault();
-        var href = $(this).attr('href');
-        var id = href.split('/')[3];
-        editArticle(id);
-    });
-
-    function editArticle(id) {
-        $.ajax({
-            url: "/admin/edit/" + id + "/?json=true",
-            type: "GET",
-            dataType: "json",
-            success: function(article) {
-                // 1. 填充表单数据
-                $('#id').val(article.id);
-                $('#title').val(article.title);
-                $('#img').val(article.img || '');
-                $('#link').val(article.link);
-                $('#createDate').val(article.createDate.replace(" ", "T"));
-                $('#tags').val(article.tags || '');
-                $('#priority').val(article.priority === undefined ? "0.5" : article.priority);
-                $('#changefreq').val(article.changefreq === undefined ? "daily" : article.changefreq);
-                
-                // 2. 更新分类下拉框
-                if (article.category) {
-                    $('#category').selectpicker('val', article.category);
-                } else {
-                    $('#category').selectpicker('val', []);
-                }
-                
-                // 3. 填充 markdown 编辑器
-                if (mdEditor) {
-                    mdEditor.clear();
-                    mdEditor.insertValue(article.contentMD || '');
-                }
-                
-                // 4. 更新界面状态
-                $('#labelNew').text("编辑文章 (" + article.id + ")");
-                $('#btn_deleteArticle').show();
-                $('#btn_backToNew').show();
-                
-                // 5. 切换到“新建/编辑”选项卡
-                $('#myTab a[href="#new"]').tab('show');
-            },
-            error: function(xhr, status, error) {
-                alert("获取文章详情失败: " + error);
-            }
-        });
-    }
-
-    function backToNew() {
-        $('#id').val('');
-        $('#title').val('');
-        $('#img').val('');
-        $('#link').val('');
-        
-        var now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        $('#createDate').val(now.toISOString().slice(0, 16));
-        
-        $('#tags').val('');
-        $('#priority').val('0.5');
-        $('#changefreq').val('daily');
-        $('#category').selectpicker('val', []);
-        
-        if (mdEditor) {
-            mdEditor.clear();
-            mdEditor.insertValue("# MarkDown");
-        }
-        
-        $('#labelNew').text("新增");
-        $('#btn_deleteArticle').hide();
-        $('#btn_backToNew').hide();
-    }
-
-    function deleteArticle() {
-        var id = $('#id').val();
-        if (!id) return;
-        if (confirm("确定删除吗?删除后重新发布才能生效") == false) { 
-            return false; 
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            url: "/admin/delete/" + id,
-            success: function (result) {
-                alert(result.msg);
-                if (result.rst) {
-                    backToNew();
-                    $("#articleList tr:not(:first)").remove();
-                    $("#page").val('1');
-                    $("#loadmore").click();
-                }
-            }
-        });
     }
 
     // 果冻跳动与简介弹窗逻辑
