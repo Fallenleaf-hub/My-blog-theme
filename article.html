@@ -98,9 +98,112 @@
 
         /* 布局容器 */
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+        }
+
+        .layout-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .layout-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 侧边栏目录 (TOC) */
+        .toc-sidebar {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .toc-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .toc-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .toc-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toc-title::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 16px;
+            background: var(--accent-1);
+            border-radius: 2px;
+        }
+
+        .toc-content {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .toc-content li {
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .toc-content a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: block;
+            padding: 0.25rem 0;
+            border-left: 2px solid transparent;
+            padding-left: 1rem;
+            margin-left: -1rem;
+        }
+
+        .toc-content a:hover {
+            color: var(--accent-1);
+        }
+
+        .toc-content a.active {
+            color: var(--accent-1);
+            font-weight: 600;
+            border-left-color: var(--accent-1);
+            background: rgba(26, 115, 232, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* 根据不同的 heading 级别增加缩进 */
+        .toc-content .toc-H2 { padding-left: 1rem; margin-left: -1rem; }
+        .toc-content .toc-H3 { padding-left: 2rem; margin-left: -2rem; font-size: 0.9rem; }
+        .toc-content .toc-H4 { padding-left: 3rem; margin-left: -3rem; font-size: 0.85rem; }
+
+        @media (max-width: 1024px) {
+            .toc-sidebar {
+                display: none;
+            }
         }
 
         /* 顶部导航 */
@@ -677,8 +780,19 @@
             </nav>
         </header>
 
-        <!-- 文章详情内容 -->
-        <main>
+        <div class="layout-wrapper">
+            <!-- 左侧边栏目录 -->
+            <aside class="toc-sidebar">
+                <div class="toc-container" id="tocContainer">
+                    <div class="toc-title">目录</div>
+                    <ul class="toc-content" id="tocContent">
+                        <!-- JS 动态生成目录项 -->
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- 文章详情内容 -->
+            <main>
             <article class="article-card">
                 <header class="article-header">
                     <div class="article-meta">
@@ -740,7 +854,8 @@
             <div class="comments-section">
                 {{ &OPT.commentCode }}
             </div>
-        </main>
+            </main>
+        </div>
 
         <!-- 底部版权 -->
         <footer class="site-footer">
@@ -988,6 +1103,74 @@
 
             animate();
         })();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const articleContent = document.querySelector('.article-content');
+            const tocContent = document.getElementById('tocContent');
+            if (!articleContent || !tocContent) return;
+
+            const headings = articleContent.querySelectorAll('h2, h3, h4');
+            if (headings.length === 0) {
+                document.querySelector('.toc-sidebar').style.display = 'none';
+                document.querySelector('.layout-wrapper').style.gridTemplateColumns = '1fr';
+                document.querySelector('.container').style.maxWidth = '900px';
+                return;
+            }
+
+            const tocLinks = [];
+            headings.forEach((heading, index) => {
+                // Ensure heading has an ID
+                if (!heading.id) {
+                    heading.id = 'heading-' + index;
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#' + heading.id;
+                a.textContent = heading.textContent;
+                a.className = 'toc-' + heading.tagName;
+                li.appendChild(a);
+                tocContent.appendChild(li);
+                tocLinks.push(a);
+
+                // Smooth scroll click handler
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: heading.offsetTop - 40,
+                        behavior: 'smooth'
+                    });
+                    // Update URL hash without jumping
+                    history.pushState(null, null, '#' + heading.id);
+                });
+            });
+
+            // ScrollSpy functionality
+            function onScroll() {
+                let current = '';
+                const scrollPos = window.scrollY || document.documentElement.scrollTop;
+
+                // Find the current heading
+                headings.forEach(heading => {
+                    // 60px is a rough offset for the sticky header / visual buffer
+                    if (heading.offsetTop - 60 <= scrollPos) {
+                        current = heading.id;
+                    }
+                });
+
+                // Update active class
+                tocLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll(); // Trigger once on load
+        });
     </script>
     {{ &OPT.codeBeforBody }}
 </body>
