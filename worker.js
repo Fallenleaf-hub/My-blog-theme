@@ -1,13 +1,13 @@
 'use strict';
 const OPT = {
-    "user": "admin", //后台密码请修改
-    "password": "2696732488", //后台密码
-    "siteDomain": "leafblog.ccwu.cc",// 域名(不带https 也不带/)
-    "siteName": "FallenLeaf Blog",//博客名称
-    "siteDescription": "A Blog Powered By FallenLeaf",//博客描述
-    "keyWords": "cloudflare,KV,workers,blog",//关键字
-    "cacheZoneId": "cc868e1f1b0fbf44282670c7b1a690135e89dd",//清理缓存用 cf区域 ID
-    "cacheToken": "cfut_GMp2NHePjFTWmRN2Cp9bZsiWb1AdzRcNDmcXxOiu4c3fd442",//清理缓存用 cf API token
+    "user": typeof BLOG_USER !== 'undefined' ? BLOG_USER : "admin", // 后台登录账号 (可由 CF 环境变量/Secret 覆盖)
+    "password": typeof BLOG_PASSWORD !== 'undefined' ? BLOG_PASSWORD : "your_password", // 后台登录密码 (可由 CF 环境变量/Secret 覆盖)
+    "siteDomain": typeof BLOG_SITE_DOMAIN !== 'undefined' ? BLOG_SITE_DOMAIN : "leafblog.ccwu.cc",// 域名 (可由 CF 环境变量/Secret 覆盖)
+    "siteName": typeof BLOG_SITE_NAME !== 'undefined' ? BLOG_SITE_NAME : "FallenLeaf Blog",// 博客名称
+    "siteDescription": typeof BLOG_SITE_DESCRIPTION !== 'undefined' ? BLOG_SITE_DESCRIPTION : "A Blog Powered By FallenLeaf",// 博客描述
+    "keyWords": typeof BLOG_KEYWORDS !== 'undefined' ? BLOG_KEYWORDS : "cloudflare,KV,workers,blog",// 关键字
+    "cacheZoneId": typeof BLOG_CACHE_ZONE_ID !== 'undefined' ? BLOG_CACHE_ZONE_ID : "cc868e1f1b0fbf44282670c7b1a690135e89dd",// 清理缓存用 cf区域 ID
+    "cacheToken": typeof BLOG_CACHE_TOKEN !== 'undefined' ? BLOG_CACHE_TOKEN : "",// 清理缓存用 cf API token (可由 CF 环境变量/Secret 覆盖)
 
     "pageSize": 5,//每页文章数
     "recentlySize": 6,//最近文章数
