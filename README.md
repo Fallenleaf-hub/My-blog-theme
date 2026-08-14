@@ -50,6 +50,10 @@
 │   ├── common.css              # 全站公共样式 (主题变量、光晕背景、About 弹窗等)
 │   ├── common.js               # 全站公共脚本 (粒子背景、Jelly 动效、弹窗逻辑)
 │   └── Logo.png                # 博客 Logo (favicon)
+├── blog-content/               # 博客内容管理目录 (每篇文章一个子文件夹, 不参与部署)
+│   └── <文章永久链接>/
+│       ├── article.md          # 文章 Markdown 正文 (顶部注释含发布信息)
+│       └── cover.png           # 文章特色封面图
 ├── worker.js                   # Cloudflare Workers 核心逻辑代码 (已打包)
 ├── wrangler.toml               # Cloudflare Wrangler 部署配置文件 (含 Assets 绑定)
 ├── Logo.png                    # 博客 Logo
