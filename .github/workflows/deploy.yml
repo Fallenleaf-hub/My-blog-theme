@@ -19,3 +19,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # wrangler-action 默认捆绑旧版 wrangler(3.13.x), 不支持 assets 的 run_worker_first 配置,
+          # 会导致首页/admin 等匹配静态文件的请求被直接返回模板原文而不经过 Worker 渲染, 必须显式指定新版
+          wranglerVersion: "4.123.0"
