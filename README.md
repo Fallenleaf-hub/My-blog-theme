@@ -10,6 +10,8 @@
 
 本项目在前代基础上进行了全面视觉重构，融入了现代化的 **Advanced Agentic Style** 设计美学（包含毛玻璃磨砂效果、柔和的环境光晕渐变背景、以及生动的交互动效），提供开箱即用的完整后台管理、SEO 自动优化、全站备份还原以及边缘端缓存清理能力。
 
+主题模板已迁移至 `theme/` 目录并通过 **Cloudflare Workers Assets 自托管**（`run_worker_first` 模式），模板随 Worker 一同部署分发，无需依赖外部 CDN，加载更快、更稳定。
+
 ---
 
 ## ✨ 核心特性
@@ -38,18 +40,22 @@
 ```text
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml      # GitHub Actions 自动化部署工作流
-├── admin/
-│   ├── index.html          # 后台管理主页面 (列表、新建、设置、发布)
-│   └── edit.html           # 后台文章编辑页面 (支持 Markdown 与丰富元数据)
-├── article.html            # 文章详情页模板 (Advanced Agentic Style)
-├── index.html              # 博客首页模板 (带 Home/Topics/Archive/About 及弹窗)
-├── worker.js               # Cloudflare Workers 核心逻辑代码 (已打包)
-├── wrangler.toml           # Cloudflare Wrangler 部署配置文件
-├── Logo.png                # 博客 Logo
-├── cover.png               # 封面图片
-├── blog_feature_cover.png  # 特色封面图片
-└── README.md               # 项目说明文档 (本项目)
+│       └── deploy.yml          # GitHub Actions 自动化部署工作流
+├── theme/                      # 主题模板目录 (通过 Workers Assets 自托管)
+│   ├── admin/
+│   │   ├── index.html          # 后台管理主页面 (列表、新建、设置、发布)
+│   │   └── edit.html           # 后台文章编辑页面 (支持 Markdown 与丰富元数据)
+│   ├── article.html            # 文章详情页模板 (Advanced Agentic Style)
+│   ├── index.html              # 博客首页模板 (带 Home/Topics/Archive/About 及弹窗)
+│   ├── common.css              # 全站公共样式 (主题变量、光晕背景、About 弹窗等)
+│   ├── common.js               # 全站公共脚本 (粒子背景、Jelly 动效、弹窗逻辑)
+│   └── Logo.png                # 博客 Logo (favicon)
+├── worker.js                   # Cloudflare Workers 核心逻辑代码 (已打包)
+├── wrangler.toml               # Cloudflare Wrangler 部署配置文件 (含 Assets 绑定)
+├── Logo.png                    # 博客 Logo
+├── cover.png                   # 封面图片
+├── blog_feature_cover.png      # 特色封面图片
+└── README.md                   # 项目说明文档 (本项目)
 ```
 
 ---
@@ -67,17 +73,23 @@
 ### 2. 修改项目本地配置
 
 #### ① 修改 `wrangler.toml`
-打开项目根目录下的 [wrangler.toml](file:///c:/Users/Fallenleaf/Desktop/Blog-theme/My-blog-theme/wrangler.toml)，使用 **Wrangler v3** 规范绑定你的 KV 命名空间：
+打开项目根目录下的 [wrangler.toml](file:///c:/Users/Fallenleaf/Desktop/Blog-theme/My-blog-theme/wrangler.toml)，绑定你的 KV 命名空间：
 ```toml
 name = "leafblog" # 你的 Worker 部署名称，可自定义
 main = "worker.js"
 compatibility_date = "2026-04-28"
+
+# 主题文件自托管: Worker 优先处理所有请求, 通过 ASSETS 绑定读取 theme/ 目录
+# ⚠️ run_worker_first 必须为 true, 否则首页/admin 会被当作静态文件直接返回模板原文
+assets = { directory = "./theme", binding = "ASSETS", run_worker_first = true }
 
 # 绑定你的 KV 数据库 (注意是双括号的数组格式)
 [[kv_namespaces]]
 binding = "CFBLOG"
 id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 ```
+
+> ⚠️ **Wrangler 版本要求**：`run_worker_first` 需要较新版本的 Wrangler（v4.x）支持。`cloudflare/wrangler-action@v3` 默认捆绑的旧版 Wrangler 会忽略该配置，导致首页无法渲染，因此本项目在 [deploy.yml](file:///c:/Users/Fallenleaf/Desktop/Blog-theme/My-blog-theme/.github/workflows/deploy.yml) 中已通过 `wranglerVersion: "4.123.0"` 显式锁定版本，请勿删除。
 
 #### ② 配置 `worker.js` 中的核心配置
 打开 [worker.js](file:///c:/Users/Fallenleaf/Desktop/Blog-theme/My-blog-theme/worker.js)，在文件顶部找到全局常量对象 `OPT`。**为了避免在 GitHub 公共仓库中泄露你的密码、API Token等敏感隐私，本项目支持直接从 Cloudflare 环境变量/Secrets 中动态读取配置。** 
@@ -94,13 +106,13 @@ id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 | **`siteName`** | `"FallenLeaf Blog"`| `BLOG_SITE_NAME` | `环境变量` (明文) | 博客的全局标题名称。 |
 | **`siteDescription`**| `"A Blog..."` | `BLOG_SITE_DESCRIPTION`| `环境变量` (明文) | 博客全局描述，用于 SEO Meta Description。 |
 | **`keyWords`** | `"cloudflare..."`| `BLOG_KEYWORDS` | `环境变量` (明文) | SEO 关键字，用英文逗号分隔。 |
-| **`cacheZoneId`** | `"cc868e1f1..."` | `BLOG_CACHE_ZONE_ID` | `环境变量` (明文) | 域名对应的 Cloudflare 区域 ID。 |
+| **`cacheZoneId`** | `""` | `BLOG_CACHE_ZONE_ID` | `环境变量` (明文) | 域名对应的 Cloudflare 区域 ID（必须通过环境变量提供，勿硬编码到代码）。 |
 | **`cacheToken`** | `""` | `BLOG_CACHE_TOKEN` | **`Secret` (加密)** | Cloudflare API 令牌，用于在发布文章时自动清空缓存。 |
 | **`pageSize`** | `5` | - | - | 主页博文列表每页显示的数量。 |
 | **`recentlySize`** | `6` | - | - | 侧边栏/最近文章列表中展示的数量。 |
 | **`readMoreLength`**| `150` | - | - | 首页卡片摘要自动截取的字数长度。 |
 | **`cacheTime`** | `43200` | - | - | 边缘节点 HTML 的缓存寿命 (秒)。 |
-| **`themeURL`** | `"https://raw..."`| - | - | 主题静态模板加载前缀，需以 `/` 结尾。 |
+| **`themeURL`** | `"https://raw..."`| - | - | 主题模板的 GitHub raw 地址前缀，需以 `/` 结尾。**仅作为 Assets 不可用时的兜底**，正常情况下模板从 `theme/` 目录自托管加载。 |
 | **`copyRight`** | `"Powered by..."` | - | - | 自定义博客底部的版权与致谢信息。 |
 
 #### ③ (推荐) 在 Cloudflare 控制台绑定环境变量与 Secrets
@@ -122,7 +134,14 @@ id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 3. 点击 **New repository secret**，添加以下两个部署用密钥：
    - `CLOUDFLARE_ACCOUNT_ID`：你的 Cloudflare 账户 ID。
    - `CLOUDFLARE_API_TOKEN`：你的 Cloudflare 账户 API Token（必须具有操作 Workers 与 KV 的权限，**它仅用于 GitHub Actions 的 Wrangler 部署，与博客的 `cacheToken` 独立**）。
-4. 本地做出的任何修改提交 Push 到 `main` 分支后，GitHub Actions 工作流（`.github/workflows/deploy.yml`）将被自动触发。它会编译文件并自动将最新的 Worker 代码部署上线。
+4. 本地做出任何修改提交 Push 到 `main` 分支后，GitHub Actions 工作流（`.github/workflows/deploy.yml`）将被自动触发。它会编译文件并自动将最新的 Worker 代码与 `theme/` 静态资源部署上线。也可以在仓库的 **Actions** 页面通过 **workflow_dispatch** 手动触发部署。
+
+### 4. 部署后清理缓存（重要）
+
+由于全站启用了 Edge Cache（默认 12 小时），**每次重新部署后旧页面可能仍在缓存中**。部署完成后建议执行一次缓存清理：
+
+- **方式一（推荐）**：Cloudflare Dashboard → 选择域名 → **Caching（缓存）→ Configuration → Purge Everything**。
+- **方式二**：若已配置 `BLOG_CACHE_ZONE_ID` 与 `BLOG_CACHE_TOKEN`，登录后台后访问 `/admin/publish/` 触发 Purge API 清缓存。
 
 ---
 
@@ -140,6 +159,15 @@ id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 
 ### 全局配置
 在后台“设置”页中，您可以直接在线编辑 JSON 格式的分类、导航菜单以及友情链接。无需重新修改代码部署。
+
+### 🎨 主题定制
+所有前端模板均位于 `theme/` 目录，随部署自动上传，修改后 Push 即可生效：
+
+- **`theme/common.css`**：全站公共样式（主题配色变量、环境光晕背景、导航栏、About 弹窗、标签胶囊等），改配色改这里。
+- **`theme/common.js`**：全站公共脚本（粒子背景特效、Jelly 弹性动效、About 弹窗、邮箱复制）。粒子特效已内置节流：触屏设备与开启「减弱动态效果」的用户会自动跳过。
+- **`theme/index.html` / `theme/article.html`**：首页与文章页模板，其中 `{{ ... }}`、`{{{ ... }}}` 为 Mustache 占位符，由 Worker 在边缘端渲染注入数据，**请勿删除**。
+- **About 弹窗信息**：编辑两个模板中 `about-card` 区块的简介文案、邮箱与社交链接即可。
+- **favicon**：替换 `theme/Logo.png`（同时保留根目录的 `Logo.png` 作为仓库展示图）。
 
 ### 📥 导入/导出与灾备
 - 在“设置”选项卡底部，支持将全站的所有 KV 数据（包括所有文章、分类、导航菜单、友情链接等）一键导出下载为 `cfblog-YYYY-MM-DD.json`。
