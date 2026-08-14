@@ -2,6 +2,9 @@ name = "leafblog" # 你的 Worker 项目名称
 main = "worker.js"
 compatibility_date = "2026-04-28"
 
+# 主题文件自托管: Worker 优先处理所有请求, 通过 ASSETS 绑定读取 theme/ 目录
+assets = { directory = "./theme", binding = "ASSETS", run_worker_first = true }
+
 # 绑定你的 KV 数据库
 [[kv_namespaces]]
 binding = "CFBLOG"

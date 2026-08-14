@@ -3,104 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico" />
-    <link rel="Shortcut Icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico">
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
     <title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
     <meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 公共样式 (主题变量/背景/导航/About弹窗等), 页面字体使用系统字体栈兜底 -->
+    <link rel="stylesheet" href="/assets/common.css">
     
     <style>
-        /* CSS 变量与主题定义 */
-        :root {
-            --bg-color: #f5f7fa;
-            --surface-color: #ffffff;
-            --text-primary: #1d1d1f;
-            --text-secondary: #6e6e73;
-            --accent-1: #1a73e8; /* Google Blue (light mode optimized) */
-            --accent-2: #d93025; /* Google Red (light mode optimized) */
-            --accent-3: #f9ab00; /* Google Yellow */
-            --accent-4: #188038; /* Google Green */
-            --border-color: rgba(0, 0, 0, 0.08);
-            --card-bg: rgba(255, 255, 255, 0.45);
-            --card-hover-bg: rgba(255, 255, 255, 0.75);
-        }
+        /* 页面特有样式 (公共样式见 /assets/common.css) */
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        /* 文章页正文行高略大, 提升可读性 */
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
             line-height: 1.8;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* 环境光晕背景 (Ambient Glowing Background) */
-        .ambient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: var(--bg-color);
-        }
-
-        .glow-sphere {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.35;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-
-        .glow-1 {
-            width: 600px;
-            height: 600px;
-            background: rgba(66, 133, 244, 0.15); /* 蓝色光晕 */
-            top: -200px;
-            left: -100px;
-        }
-
-        .glow-2 {
-            width: 500px;
-            height: 500px;
-            background: rgba(15, 157, 88, 0.12); /* 绿色光晕 */
-            bottom: -150px;
-            right: -100px;
-            animation-delay: -5s;
-        }
-
-        .glow-3 {
-            width: 450px;
-            height: 450px;
-            background: rgba(219, 68, 55, 0.08); /* 红色光晕 */
-            top: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 60px) scale(1.1); }
-        }
-
-        /* 布局容器 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
         }
 
         .layout-wrapper {
@@ -208,49 +123,6 @@
             .toc-sidebar {
                 display: none;
             }
-        }
-
-        /* 顶部导航 */
-        header {
-            padding: 2.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeDown 0.8s ease forwards;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            user-select: none;
-            text-decoration: none;
-            color: var(--text-primary);
-        }
-
-        .logo-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
-            border-radius: 6px;
-            transition: transform 0.1s ease;
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-left: 2.5rem;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover, nav a.active {
-            color: var(--text-primary);
         }
 
         /* 文章主体毛玻璃卡片 */
@@ -468,25 +340,6 @@
             gap: 0.75rem;
         }
 
-        .tag-pill {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .tag-pill:hover {
-            background: rgba(0, 0, 0, 0.06);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
         /* 上一篇下一篇导航 */
         .article-nav {
             display: grid;
@@ -564,141 +417,6 @@
             animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Jelly 果冻跳动动画 */
-        @keyframes jelly {
-            0% { transform: scale(1, 1); }
-            30% { transform: scale(1.25, 0.75); }
-            40% { transform: scale(0.75, 1.25); }
-            50% { transform: scale(1.15, 0.85); }
-            65% { transform: scale(0.95, 1.05); }
-            75% { transform: scale(1.05, 0.95); }
-            100% { transform: scale(1, 1); }
-        }
-
-        .jelly-active {
-            animation: jelly 0.6s ease-in-out !important;
-        }
-
-        /* 个人简介弹窗假面 (About Modal Overlay) */
-        .about-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .about-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .about-card {
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-            padding: 3.5rem 2.5rem;
-            width: 90%;
-            max-width: 440px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-
-        .about-modal.active .about-card {
-            transform: scale(1) translateY(0);
-        }
-
-        .about-avatar {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: white;
-            box-shadow: 0 10px 20px rgba(26, 115, 232, 0.15);
-            user-select: none;
-            transition: transform 0.1s ease;
-        }
-
-        .about-card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-
-        .about-card .title {
-            color: var(--accent-1);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .about-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .about-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .about-close-btn:hover {
-            background: rgba(0, 0, 0, 0.08);
-            color: var(--text-primary);
-        }
-
-        /* 动画定义 */
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         /* 底部版权 */
         .site-footer {
             text-align: center;
@@ -723,42 +441,6 @@
             align-items: center;
             font-size: 0.9rem;
             color: var(--text-secondary);
-        }
-
-        /* 新增：About 弹窗联系方式样式 */
-        .about-contact {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 20px;
-            color: var(--text-secondary) !important;
-            text-decoration: none !important;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .contact-item:hover {
-            background: var(--accent-1);
-            color: white !important;
-            border-color: var(--accent-1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
-        }
-
-        .contact-icon {
-            width: 16px;
-            height: 16px;
         }
     </style>
     {{ &OPT.codeBeforHead }}
@@ -876,20 +558,20 @@
             <div class="about-close-btn" id="aboutCloseBtn">&times;</div>
             <div class="about-avatar" id="aboutAvatar">F</div>
             <h2>Fallenleaf</h2>
-            <div class="title">Web Developer & Architect</div>
-            <p>你好，我是 Fallenleaf！一名热爱技术、追求极致体验的开发者。专注于构建高性能、高颜值的前端应用与现代化的系统架构。在这里，我会分享关于人工智能、边缘计算以及下一代硬件架构的研究与思考。感谢你的光临！</p>
+            <div class="title">Tech Enthusiast</div>
+            <p>HELLO，我是 Fallenleaf！一名热爱技术、喜欢数码科技的大学生。专注于啥也不会，就爱瞎鼓捣。在这里，我可能会分享一些关于科技数码的有关知识。感谢你的光临！</p>
             
             <!-- 联系方式 -->
             <div class="about-contact">
-                <a href="mailto:fallenleaf@example.com" class="contact-item" title="Email">
+                <a href="javascript:void(0)" onclick="copyEmail(event, 'fallenleaf-23@qq.com')" class="contact-item" title="Email">
                     <svg class="contact-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     <span>Email</span>
                 </a>
-                <a href="https://github.com" target="_blank" class="contact-item" title="GitHub">
+                <a href="https://github.com/Fallenleaf-hub" target="_blank" class="contact-item" title="GitHub">
                     <svg class="contact-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
                     <span>GitHub</span>
                 </a>
-                <a href="https://twitter.com" target="_blank" class="contact-item" title="Twitter">
+                <a href="https://x.com/RhettTrevon" target="_blank" class="contact-item" title="Twitter">
                     <svg class="contact-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.31 9.12 5.17 7.43 3.08 4.87c-.37.63-.58 1.37-.58 2.15 0 1.48.75 2.78 1.9 3.55-.7 0-1.35-.2-1.94-.53v.05c0 2.05 1.46 3.75 3.39 4.14-.36.1-.73.15-1.12.15-.27 0-.54-.03-.8-.08.54 1.68 2.1 2.9 3.95 2.93-1.44 1.13-3.26 1.81-5.24 1.81-.34 0-.68-.02-1.02-.06C3.07 20 5.29 21 7.65 21 14.65 21 18.47 15.2 18.47 10.17v-.49c.75-.54 1.4-1.2 1.92-1.96z"/></svg>
                     <span>Twitter</span>
                 </a>
@@ -897,220 +579,59 @@
         </div>
     </div>
 
-    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.3.2/styles/tomorrow-night-bright.min.css">
-    <script src='https://cdn.staticfile.org/highlight.js/10.3.2/highlight.min.js'></script>
+    <!-- 代码高亮 highlight.js 11.x (defer 异步加载) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-bright.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- 公共脚本 (Toast/邮箱复制/Jelly动画/About弹窗/粒子特效) -->
+    <script src="/assets/common.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 代码高亮
+            // 代码高亮 (defer 脚本在 DOMContentLoaded 前执行完毕)
             try {
-                hljs.initHighlightingOnLoad();
+                if (window.hljs) hljs.highlightAll();
             } catch(e) {
                 console.error("Highlight.js 初始化失败:", e);
             }
 
-            // 果冻跳动动画
-            document.addEventListener('click', (e) => {
-                const target = e.target.closest('.logo-icon, .about-avatar, .category-tag, .tag-pill, .nav-card');
-                if (target) {
-                    target.classList.remove('jelly-active');
-                    void target.offsetWidth; // 触发重绘
-                    target.classList.add('jelly-active');
-                    
-                    setTimeout(() => {
-                        target.classList.remove('jelly-active');
-                    }, 600);
-                }
-            });
-
-            // 个人简介弹窗
-            const aboutNavLink = document.getElementById('aboutNavLink');
-            const aboutModal = document.getElementById('aboutModal');
-            const aboutCloseBtn = document.getElementById('aboutCloseBtn');
-
-            if (aboutNavLink && aboutModal) {
-                aboutNavLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    aboutModal.classList.add('active');
-                });
-            }
-
-            if (aboutCloseBtn && aboutModal) {
-                aboutCloseBtn.addEventListener('click', () => {
-                    aboutModal.classList.remove('active');
-                });
-            }
-
-            if (aboutModal) {
-                aboutModal.addEventListener('click', (e) => {
-                    if (e.target === aboutModal) {
-                        aboutModal.classList.remove('active');
+            // 代码块复制按钮 (CSS .copy-button 已定义)
+            document.querySelectorAll('.article-content pre').forEach(pre => {
+                const btn = document.createElement('button');
+                btn.className = 'copy-button';
+                btn.type = 'button';
+                btn.textContent = '复制';
+                btn.addEventListener('click', () => {
+                    const codeEl = pre.querySelector('code');
+                    const text = (codeEl || pre).innerText;
+                    const done = () => {
+                        btn.textContent = '已复制';
+                        setTimeout(() => { btn.textContent = '复制'; }, 2000);
+                    };
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+                    } else {
+                        fallbackCopy(text, done);
                     }
                 });
+                pre.appendChild(btn);
+            });
+
+            function fallbackCopy(text, done) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try { document.execCommand("copy"); done(); } catch (e) {}
+                textArea.remove();
             }
         });
     </script>
 
-    <!-- 粒子跟随鼠标特效 -->
-    <script>
-        (function() {
-            const canvas = document.createElement('canvas');
-            canvas.id = 'mouse-particle-canvas';
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.width = '100vw';
-            canvas.style.height = '100vh';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '9999';
-            document.body.appendChild(canvas);
+    <!-- 粒子跟随鼠标特效已提取至 /assets/common.js (页面隐藏时暂停, 触屏/减少动效时禁用) -->
 
-            const ctx = canvas.getContext('2d');
-            let width = canvas.width = window.innerWidth;
-            let height = canvas.height = window.innerHeight;
-
-            const particles = [];
-            const colors = [
-                'rgba(66, 133, 244, 0.45)',  // Google Blue (柔和半透)
-                'rgba(219, 68, 55, 0.45)',  // Google Red
-                'rgba(244, 180, 0, 0.45)',  // Google Yellow
-                'rgba(15, 157, 88, 0.45)'   // Google Green
-            ];
-
-            const mouse = { x: -1000, y: -1000, active: false };
-            const lastMouse = { x: null, y: null };
-
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
-
-            // 线性插值生成粒子，使快速移动时粒子流连贯无断裂
-            // 仅在移动时触发
-            function createInterpolatedParticles(x1, y1, x2, y2) {
-                const dx = x2 - x1;
-                const dy = y2 - y1;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // 仅当发生有效位移时生成，每7像素插值一个，上限15个，保证极简柔顺
-                const steps = Math.min(15, Math.floor(distance / 7)); 
-                
-                for (let i = 0; i <= steps; i++) {
-                    const t = steps === 0 ? 1 : i / steps;
-                    const px = x1 + dx * t;
-                    const py = y1 + dy * t;
-                    particles.push(new Particle(px, py));
-                }
-            }
-
-            window.addEventListener('mousemove', (e) => {
-                const currentX = e.clientX;
-                const currentY = e.clientY;
-                mouse.x = currentX;
-                mouse.y = currentY;
-                mouse.active = true;
-
-                if (lastMouse.x !== null && lastMouse.y !== null) {
-                    createInterpolatedParticles(lastMouse.x, lastMouse.y, currentX, currentY);
-                } else {
-                    particles.push(new Particle(currentX, currentY));
-                }
-
-                lastMouse.x = currentX;
-                lastMouse.y = currentY;
-            });
-
-            window.addEventListener('mouseleave', () => {
-                mouse.active = false;
-                lastMouse.x = null;
-                lastMouse.y = null;
-            });
-
-            class Particle {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                    const angle = Math.random() * Math.PI * 2;
-                    // 降低粒子喷射速度，使运动看起来更加平稳温柔（流沙质感）
-                    const speed = Math.random() * 0.7 + 0.15;
-                    this.vx = Math.cos(angle) * speed;
-                    this.vy = Math.sin(angle) * speed;
-                    
-                    // 空气阻力系数与微小重力（更徐缓的向上漂浮感）
-                    this.friction = 0.95 + Math.random() * 0.02;
-                    this.gravity = -0.005 - Math.random() * 0.005;
-                    
-                    // 粒子大小更加微细，增强精致感
-                    this.size = Math.random() * 2.5 + 1.2;
-                    this.color = colors[Math.floor(Math.random() * colors.length)];
-                    this.alpha = 0.5 + Math.random() * 0.3; // 降低初始透明度，视觉上更轻透
-                    
-                    // 降低消亡速率，使粒子消失的过程更加丝滑徐缓
-                    this.decay = Math.random() * 0.008 + 0.006;
-                }
-
-                update() {
-                    // 当鼠标在附近时，粒子会受到指向鼠标中心的超柔和引力
-                    if (mouse.active) {
-                        const dx = mouse.x - this.x;
-                        const dy = mouse.y - this.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < 160 && distance > 5) {
-                            // 极轻引力，使粒子以舒缓弧线绕着鼠标旋转包围，不再发生剧烈撞击
-                            const force = (160 - distance) / 160 * 0.04;
-                            this.vx += (dx / distance) * force;
-                            this.vy += (dy / distance) * force;
-                        }
-                    }
-
-                    // 物理状态更新
-                    this.vx *= this.friction;
-                    this.vy *= this.friction;
-                    this.x += this.vx;
-                    this.y += this.vy + this.gravity;
-                    this.alpha -= this.decay;
-                }
-
-                draw() {
-                    if (this.alpha <= 0) return;
-                    
-                    // 粒子面积随着生命周期同步收缩
-                    const currentSize = Math.max(0.1, this.size * this.alpha);
-                    
-                    ctx.save();
-                    ctx.globalAlpha = this.alpha;
-                    
-                    // 统一使用带有平滑羽化效果的径向渐变圆形，消除十字星的多余棱角，实现极度柔顺
-                    ctx.beginPath();
-                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize);
-                    gradient.addColorStop(0, this.color);
-                    gradient.addColorStop(1, 'transparent');
-                    ctx.fillStyle = gradient;
-                    ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    ctx.restore();
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const p = particles[i];
-                    p.update();
-                    if (p.alpha <= 0) {
-                        particles.splice(i, 1);
-                    } else {
-                        p.draw();
-                    }
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const articleContent = document.querySelector('.article-content');

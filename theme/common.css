@@ -1,0 +1,342 @@
+/* ============================================================
+ * LeafBlog 公共样式 (index.html 与 article.html 共享)
+ * 包含: 主题变量 / 基础样式 / 环境光晕背景 / 头部导航 /
+ *       Jelly 动画 / About 弹窗 / 联系方式 / 标签药丸
+ * ============================================================ */
+
+/* CSS 变量与主题定义 */
+:root {
+    --bg-color: #f5f7fa;
+    --surface-color: #ffffff;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --accent-1: #1a73e8; /* Google Blue (light mode optimized) */
+    --accent-2: #d93025; /* Google Red (light mode optimized) */
+    --accent-3: #f9ab00; /* Google Yellow */
+    --accent-4: #188038; /* Google Green */
+    --border-color: rgba(0, 0, 0, 0.08);
+    --card-bg: rgba(255, 255, 255, 0.45);
+    --card-hover-bg: rgba(255, 255, 255, 0.75);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 系统字体栈兜底, 不再阻塞加载 Google Fonts */
+body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 环境光晕背景 (Ambient Glowing Background) */
+.ambient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--bg-color);
+}
+
+.glow-sphere {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.glow-1 {
+    width: 600px;
+    height: 600px;
+    background: rgba(66, 133, 244, 0.15); /* 蓝色光晕 */
+    top: -200px;
+    left: -100px;
+}
+
+.glow-2 {
+    width: 500px;
+    height: 500px;
+    background: rgba(15, 157, 88, 0.12); /* 绿色光晕 */
+    bottom: -150px;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+.glow-3 {
+    width: 450px;
+    height: 450px;
+    background: rgba(219, 68, 55, 0.08); /* 红色光晕 */
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(60px, 60px) scale(1.1); }
+}
+
+/* 布局容器 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 顶部导航 */
+header {
+    padding: 2.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeDown 0.8s ease forwards;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.logo-icon {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+    border-radius: 6px;
+    transition: transform 0.1s ease;
+}
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-left: 2.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+    color: var(--text-primary);
+}
+
+/* Jelly 果冻跳动动画 */
+@keyframes jelly {
+    0% { transform: scale(1, 1); }
+    30% { transform: scale(1.25, 0.75); }
+    40% { transform: scale(0.75, 1.25); }
+    50% { transform: scale(1.15, 0.85); }
+    65% { transform: scale(0.95, 1.05); }
+    75% { transform: scale(1.05, 0.95); }
+    100% { transform: scale(1, 1); }
+}
+
+.jelly-active {
+    animation: jelly 0.6s ease-in-out !important;
+}
+
+/* 个人简介弹窗遮罩 (About Modal Overlay) */
+.about-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.about-card {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem;
+    width: 90%;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.about-modal.active .about-card {
+    transform: scale(1) translateY(0);
+}
+
+.about-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 10px 20px rgba(26, 115, 232, 0.15);
+    user-select: none;
+    transition: transform 0.1s ease;
+}
+
+.about-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.about-card .title {
+    color: var(--accent-1);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.about-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.about-close-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+}
+
+/* About 弹窗联系方式 */
+.about-contact {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-item:hover {
+    background: var(--accent-1);
+    color: white !important;
+    border-color: var(--accent-1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+}
+
+.contact-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* 标签药丸 (合并两页定义) */
+.tag-pill {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.tag-pill.active {
+    background: var(--accent-1);
+    border-color: var(--accent-1);
+    color: #ffffff;
+}
+
+/* 动画定义 */
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    nav { display: none; }
+}

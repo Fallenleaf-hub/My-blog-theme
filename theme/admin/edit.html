@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>CF-blog后台 | Advanced Agentic Style</title>
-    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico" />
-	<link rel="shortcut icon" type="image/x-icon"  href="https://cdn.jsdelivr.net/gh/gdtool/zhaopp/cfblog/favicon.ico"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>编辑文章 | Advanced Agentic Style</title>
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+	<link rel="shortcut icon" type="image/png" href="/assets/Logo.png"/>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.css" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-select/1.9.4/css/bootstrap-select.min.css">
@@ -156,30 +153,19 @@
 			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 		}
 
-		/* 品牌 Logo 样式 */
-		.nav-tabs > li:first-child > a {
+		/* 返回文章链接 Logo 视觉效果 */
+		.nav-tabs > li.active > a {
 			font-weight: 700;
-			font-size: 1.35rem;
-			color: var(--text-primary) !important;
-			letter-spacing: -0.5px;
 			display: flex;
 			align-items: center;
-			gap: 0.6rem;
-			padding-left: 0 !important;
+			gap: 0.5rem;
 			transition: transform 0.1s ease;
 		}
 
-		.nav-tabs > li:first-child > a::before {
-			content: '';
+		.nav-tabs > li.active > a::before {
+			content: '←';
 			display: inline-block;
-			width: 24px;
-			height: 24px;
-			background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
-			border-radius: 5px;
-		}
-
-		.nav-tabs > li:first-child > a:hover {
-			background: transparent !important;
+			font-weight: bold;
 		}
 
 		/* 容器与面板样式 */
@@ -190,7 +176,7 @@
 			padding-bottom: 50px;
 		}
 
-		.tab-pane .container {
+		.container {
 			background: var(--card-bg);
 			border: 1px solid var(--border-color);
 			border-radius: 20px;
@@ -346,69 +332,6 @@
 			color: white !important;
 			transform: translateY(-2px);
 			box-shadow: 0 5px 15px rgba(217, 48, 37, 0.25) !important;
-		}
-
-		/* 表格样式 */
-		.table {
-			background: transparent !important;
-			margin-bottom: 2rem !important;
-		}
-
-		.table > tbody > tr > th,
-		.table > tbody > tr > td {
-			border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-			padding: 15px !important;
-			color: var(--text-primary) !important;
-			vertical-align: middle !important;
-		}
-
-		.table > tbody > tr:first-child > td {
-			border-top: none !important;
-			font-weight: 600;
-			color: var(--text-secondary) !important;
-			border-bottom: 2px solid rgba(0, 0, 0, 0.08) !important;
-		}
-
-		.table-striped > tbody > tr:nth-of-type(odd) {
-			background-color: rgba(0, 0, 0, 0.01) !important;
-		}
-
-		.table-striped > tbody > tr:hover {
-			background-color: rgba(0, 0, 0, 0.03) !important;
-		}
-
-		.table a {
-			color: var(--accent-1) !important;
-			text-decoration: none !important;
-			font-weight: 500;
-			transition: color 0.2s ease;
-		}
-
-		.table a:hover {
-			color: var(--text-primary) !important;
-		}
-
-		/* 辅助样式 */
-		code {
-			background: rgba(0, 0, 0, 0.04) !important;
-			color: #b06000 !important;
-			border-radius: 4px;
-			padding: 2px 6px !important;
-			border: none !important;
-		}
-
-		.jumbotron {
-			background: rgba(0, 0, 0, 0.01) !important;
-			border: 1px solid var(--border-color) !important;
-			border-radius: 16px !important;
-			padding: 3rem 2rem !important;
-		}
-
-		.jumbotron p.lead {
-			color: var(--text-secondary) !important;
-			font-size: 1.1rem !important;
-			line-height: 1.8 !important;
-			margin-bottom: 2rem !important;
 		}
 
 		/* Editor.md 编辑器容器样式 */
@@ -604,46 +527,27 @@
 		<div class="glow-sphere glow-3"></div>
 	</div>
 
-<nav class="navbar navbar-default " role="navigation">
+<nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 
 	<div>
 		<ul id="myTab" class="nav nav-tabs">
-			<li>
-				<a href="/" >Fallenleaf-blog</a>
-			</li>
-			<li>
-				<a href="#list" data-toggle="tab">我的文章</a>
-			</li>
-			<li  class="active">
-				<a href="#new" data-toggle="tab">新建</a>
-			</li>
-			<li>
-				<a href="#config" data-toggle="tab">设置</a>
-			</li>
-			<li>
-				<a href="#pub" data-toggle="tab">发布</a>
+			<li class="active">
+				<a href="/admin/" >返回文章</a>
 			</li>
 		</ul>
 	</div>
 	</div>
 </nav>
 <div id="myTabContent" class="tab-content" style="padding-top: 60px;">
-	<div class="tab-pane fade" id="list">
-		<div class="container" >
-			<table class="table  table-striped" id="articleList">
-				  <tr><td>ID</td><td>标题</td><td>创建日期</td></tr>
-			</table>
-			<input type="hidden"  name="page" id="page" value='1'>
-			<a id="loadmore" class="btn btn-default">加载更多...</a>
-		</div> 
-	</div>
-	<div class="tab-pane fade in active" id="new">
+
 		<div class="container">
-			<h3 id="labelNew">新增</h3>   
-			<form id="addNewForm"  class="form-inline" >
+			<h3>编辑文章</h3>   
+
+			<form id="editForm" class="form-inline"  action="/" >
+
 				<div class="form-group" style="width: 100%; margin-right: 0 !important;">
-					<input type="hidden" class="form-control" name="id" id="id" >
+					<input type="hidden" class="form-control" name="id" id="id" readonly required="true">
 					<input type="text" class="form-control" name="title" id="title" placeholder="标题" style="width: 100%;" required="true">
 				</div>
 				
@@ -668,7 +572,7 @@
 					</div>
 					<div class="form-group">
 						<label for="createDate">创建日期</label>
-						<input type="datetime-local" class="form-control" id="createDate" name="createDate" placeholder=""  required="true">
+						<input type="datetime-local" class="form-control" id="createDate" name="createDate" placeholder="" required="true">
 					</div>
 					<div class="form-group">
 						<label for="category">分类</label>
@@ -686,7 +590,7 @@
 					<div class="form-group">
 						<label for="changefreq">更新频率</label>
 						<select class="selectpicker" id="changefreq" name="changefreq">
-							<option value="daily" selected  = "selected" >daily</option>
+							<option value="daily" >daily</option>
 							<option value="hourly" >hourly</option>
 							<option value="weekly" >weekly</option>
 							<option value="monthly" >monthly</option>
@@ -696,97 +600,39 @@
 						</select>
 					</div>
 				</div>
-
+				
 				<div class="form-actions-row">
-					<a  tabindex="0"  role="button"  type="submit" id="btn_saveAddNew" class="btn btn-default" onclick="saveAddNew()">保存</a>
+					<a tabindex="0"  role="button"  type="submit" id="btn_saveEdit" class="btn btn-default" onclick="saveEdit()">保存</a>
+					<a  type="submit" role="button" id="btn_delete" class="btn btn-warning" onclick="deleteArticle()">删除</a>
 				</div>
-					
+				
 				<div id="content"><textarea style="display:none;"></textarea></div>
 			</form>
 		</div>
-	</div>
-	
-	<div class="tab-pane fade" id="config">
-		
-		<div class="container" >
-			<form id="configForm" role="form" >
-				<div class="form-group">
-				    <label for="name">分类, 例:<code>["类别A","类别B","类别C","类别D"]</code></label>
-					<textarea class="form-control" id="WidgetCategory" name="WidgetCategory" rows="3" placeholder='["分类A","分类B"]'></textarea>
-				</div>
-	
-				<div class="form-group">
-				    <label for="name">菜单, 例:<code>[{"title":"技术文章","url":"/category/技术文章"},{"title":"管理","url":"/admin"}]</code></label>
-					<textarea class="form-control" id="WidgetMenu" name="WidgetMenu" rows="5"  placeholder='[
-	{"title":"菜单A"	,"url":"/category/菜单A"},
-	{"title":"菜单B"	,"url":"/category/菜单B"}
-]'></textarea>
-				</div>
-				<div class="form-group">
-				    <label for="name">其他链接, 例:<code>[{"title":"我的好友","url":"https://blog.gezhong.vip/"},{"title":"谷歌","url":"https://www.google.com/"}]</code></label>
-					<textarea class="form-control" id="WidgetLink" name="WidgetLink" rows="5"  placeholder='[
-	{"title":"好友"	,"url":"https://blog.gezhong.vip/"},
-	{"title":"谷歌"	,"url":"https://www.google.com/"}
-]'></textarea>
-				</div>
-				<a  tabindex="0"  role="button"  type="submit" id="btn_saveConfig" class="btn btn-default" onclick="saveConfig()">保存</a>
-			</form>
-			
 
-			<form id="importForm" role="form" >
-				<div class="form-group">
-				    <label for="name">导出/导入</label>
-					<textarea class="form-control" id="importJson" name="importJson" rows="3" placeholder='复制完整的导出json'></textarea>
-				</div>
-
-				<a  tabindex="0"  role="button"  type="submit" id="btn_import" class="btn btn-default" onclick="importBlog()">导入</a>
-				<a  tabindex="0"  role="button"  type="submit" id="btn_export" class="btn btn-default"  href="/admin/export/" >导出</a>
-			</form>
-
-			
-		</div>
-	</div>
-
-	<div class="tab-pane fade" id="pub">
-		<div class="container" >
-			<div class="jumbotron" >
-				<p class="lead">
-				由于前端使用缓存,以下操作需要发布:新建文章、发布文章、修改后台配置、修改workers配置</br>
-				前端生效需要ctrl+F5 强制刷新
-				</p>
-				
-				<a href="#" class="btn btn-default" onclick="publish()">发布</a>
-			</div>
-		</div>
-	</div>	
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/editormd.js"></script>   
 <script type="text/javascript">
 	$(function() {
-		// 默认显示我的文章列表，修复 eq(0) 指向普通链接引发的异常
-		$('#myTab a[href="#list"]').tab('show');
+		//获取文章
+		var articleArray = [
+			<!--{articleJson}-->
+		];
+		var articleJson = articleArray.length > 0 ? articleArray[0] : {title: "", contentMD: "", id: "", img: "", link: "", createDate: "", tags: "", priority: "0.5", changefreq: "daily", category: []};
+		
 		//获取分类
 		var categoryArray = [
 			<!--{categoryJson}-->
 		];
 		var categoryJson = categoryArray.length > 0 ? categoryArray[0] : [];
+
 		
-		//获取菜单
-		var menuArray = [
-			<!--{menuJson}-->
-		];
-		var menuJson = menuArray.length > 0 ? menuArray[0] : [];
-		
-		var linkArray = [
-			<!--{linkJson}-->
-		];
-		var linkJson = linkArray.length > 0 ? linkArray[0] : [];
 		var mdEditor = editormd("content", {
-				// width  : "90%",
-				 height : 640,
+				//width  : "90%",
+				height : 640,
 				path   : "https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/",
-				appendMarkdown : "# MarkDown", 
+				appendMarkdown : articleJson.contentMD, //编辑器赋值
 				saveHTMLToTextarea : true,
 				mode : "markdown",
 				theme : "default",
@@ -796,215 +642,59 @@
 				tocm : true, 
 				codeFold : true
 			});
-		var now = new Date();
-		now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-		$('#createDate').val(now.toISOString().slice(0, 16));
-		
+		//表单赋值
+		$('#id').val(articleJson.id);
+		$('#title').val(articleJson.title);
+		$('#img').val(articleJson.img);
+		$('#link').val(articleJson.link);
+		$('#createDate').val(articleJson.createDate.replace(" ","T"));
+		$('#tags').val(articleJson.tags);
+		$('#priority').val( (articleJson.priority=== undefined ? "0.5":articleJson.priority) );
+		$('#changefreq').selectpicker('val', (articleJson.changefreq === undefined ? "daily":articleJson.changefreq));
+	
 		$('#WidgetCategory').val(JSON.stringify(categoryJson));
-		$('#WidgetMenu').val(JSON.stringify(menuJson));
-		$('#WidgetLink').val(JSON.stringify(linkJson));
 		var category = $('#category');
 		category.empty();
 		for (var i = 0; i < categoryJson.length; i++) {
 			category.append('<option id="' + categoryJson[i] + '" value="' + categoryJson[i] + '">' + categoryJson[i] + '</option>');
 		}
 		category.selectpicker('refresh');
-		$("#loadmore").click();//初始加载一页
-		
-		// 修复 Editor.md 在隐藏 Tab 下渲染可能导致空白的问题
-		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			if (e.target.hash === '#new' && typeof mdEditor !== 'undefined') {
-				mdEditor.resize();
-			}
-		});
+		category.selectpicker('val',articleJson.category);
 	});
-    //加载文章列表	
-    $("#loadmore").click(function(){
-        var page=$("#page").val();
-        $.ajax({
-            url:"/admin/getList/" + page + "/",
-            type:'GET',
-            dataType:"json",
-            //data:{"page":page,"typeid":typeid},
-            success:function(data){
-    
-                    tableContent="";
-                    $.each(data,function(i){
-                        var Info = data[i];
-                        var num = i+1;
-                        tableContent += '<tr><td>'+Info.id+'</td><td><a href="/admin/edit/'+Info.id+'/">'+Info.title+'</a></td><td>'+Info.createDate.replace("T","")+'</td></tr>';
-     
-                    })
-                    $("#articleList").append(tableContent);
-                    $("#page").val(++page);
-      
-            }
-        });
-    })
-    function saveAddNew(){
-        if(
-            $('#title').val() == "" || $('#title').val() == null
-            || $('#link').val() == "" || $('#link').val() == null
-            || $('#createDate').val() == "" || $('#createDate').val() == null
-            || $('#category').val() == "" || $('#category').val() == null
-        
-        ){
-           alert("信息不全");
-           return;
-            
-        }
-        var postURL = "/admin/saveEdit/";
-        if ($('#id').val() == "" || $('#id').val() == null)
-            postURL=  "/admin/saveAddNew/";
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: postURL ,//url
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify($("#addNewForm").serializeArray()), 
-            success: function (result) {
-                if ("id" in result){
-                    $('#id').val(result.id);
-					$('#labelNew').text("编辑:"+result.id);
-                    alert(result.msg);
-                }
-                else 
-                {
-					alert("失败");
-				}
-            }
-        });
-    }
-    //保存设置
-    function saveConfig(){
-        if(!isJSON($('#WidgetCategory').val()))
-        {
-            alert("分类格式错误"); 
-            return false;
-        }
-        if(!isJSON($('#WidgetMenu').val()))
-        {
-            alert("菜单格式错误"); 
-            return false;
-        }
+    //保存按钮(编辑)
+    function saveEdit(){
         $.ajax({
             type: "POST",
             dataType: "json",
 			contentType: "application/json; charset=utf-8",
-            url: "/admin/saveConfig/" ,//url
-			data: JSON.stringify($("#configForm").serializeArray()), 
+            url: "/admin/saveEdit/" ,//url
+            data: JSON.stringify($("#editForm").serializeArray()), 
             success: function (result) {
                 alert(result.msg);
-                // 动态更新新建界面中的分类下拉菜单，使用户无需手动刷新页面即可使用新分类
-                try {
-                    var newCategoryJson = JSON.parse($('#WidgetCategory').val());
-                    if (Array.isArray(newCategoryJson)) {
-                        var category = $('#category');
-                        category.empty();
-                        for (var i = 0; i < newCategoryJson.length; i++) {
-                            category.append('<option id="' + newCategoryJson[i] + '" value="' + newCategoryJson[i] + '">' + newCategoryJson[i] + '</option>');
-                        }
-                        category.selectpicker('refresh');
-                    }
-                } catch (e) {
-                    console.error("动态刷新新建界面分类下拉框失败:", e);
-                }
             }
         });
     }
-    //导入json
-    function importBlog(){
-        var importVal = $('#importJson').val();
-        if(!isJSON(importVal))
-        {
-            alert("导入格式错误"); 
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-			contentType: "application/json; charset=utf-8",
-            url: "/admin/import/" ,//url
-			data: JSON.stringify($("#importForm").serializeArray()), 
-            success: function (result) {
-                alert(result.msg);
-                if (result.rst) {
-                    // 导入成功，动态更新设置界面的输入框和新建界面的分类下拉菜单
-                    try {
-                        var importedData = JSON.parse(importVal);
-                        
-                        // 1. 更新 WidgetCategory 输入框并同步刷新新建界面的分类下拉菜单
-                        var categoryVal = importedData["SYSTEM_VALUE_WidgetCategory"];
-                        if (categoryVal) {
-                            var categoryJson = typeof categoryVal === 'string' ? JSON.parse(categoryVal) : categoryVal;
-                            if (Array.isArray(categoryJson)) {
-                                $('#WidgetCategory').val(JSON.stringify(categoryJson));
-                                var category = $('#category');
-                                category.empty();
-                                for (var i = 0; i < categoryJson.length; i++) {
-                                    category.append('<option id="' + categoryJson[i] + '" value="' + categoryJson[i] + '">' + categoryJson[i] + '</option>');
-                                }
-                                category.selectpicker('refresh');
-                            }
-                        }
-                        
-                        // 2. 更新 WidgetMenu 输入框
-                        var menuVal = importedData["SYSTEM_VALUE_WidgetMenu"];
-                        if (menuVal) {
-                            var menuJson = typeof menuVal === 'string' ? JSON.parse(menuVal) : menuVal;
-                            $('#WidgetMenu').val(JSON.stringify(menuJson));
-                        }
-                        
-                        // 3. 更新 WidgetLink 输入框
-                        var linkVal = importedData["SYSTEM_VALUE_WidgetLink"];
-                        if (linkVal) {
-                            var linkJson = typeof linkVal === 'string' ? JSON.parse(linkVal) : linkVal;
-                            $('#WidgetLink').val(JSON.stringify(linkJson));
-                        }
-                    } catch (e) {
-                        console.error("导入成功后动态刷新页面内容失败:", e);
-                    }
-                }
-            }
-        });
-    }
-    //发布
-    function publish(){
-        if (confirm("确定吗?发布将清理所有静态缓存,重新生成")==false){ 
+    //删除
+    function deleteArticle(){
+        if (confirm("确定删除吗?删除后重新发布才能生效")==false){ 
             return false; 
           }
         $.ajax({
             type: "POST",
             dataType: "json",
 			contentType: "application/json; charset=utf-8",
-            url: "/admin/publish/" ,//url
+            url: "/admin/delete/"+$('#id').val() ,//url
+            data: [{"id":$('#id').val()}],
             success: function (result) {
                 alert(result.msg);
             }
         });
     }
-    function isJSON(str) {
-        if (typeof str == 'string') {
-            try {
-                var obj=JSON.parse(str);
-                if(typeof obj == 'object' && obj ){
-                    return true;
-                }else{
-                    return false;
-                }
-    
-            } catch(e) {
-               // console.log('error：'+str+'!!!'+e);
-                return false;
-            }
-        }
-        return false;
-    }
 
     // 果冻跳动与简介弹窗逻辑
     $(function() {
         // 果冻跳动动画的事件委托
-        $(document).on('click', '.nav-tabs > li:first-child > a, .btn, .about-avatar', function() {
+        $(document).on('click', '.nav-tabs > li > a, .btn, .about-avatar', function() {
             var $target = $(this);
             $target.removeClass('jelly-active');
             void this.offsetWidth; // 触发重绘
@@ -1015,34 +705,9 @@
             }, 600);
         });
 
-        // 个人简介弹窗事件
-        $('#aboutNavLink').on('click', function(e) {
-            e.preventDefault();
-            $('#aboutModal').addClass('active');
-        });
-
-        $('#aboutCloseBtn').on('click', function() {
-            $('#aboutModal').removeClass('active');
-        });
-
-        $('#aboutModal').on('click', function(e) {
-            if (e.target === this) {
-                $(this).removeClass('active');
-            }
-        });
     });
 </script>
- 
-    <!-- 个人简介弹窗 -->
-    <div id="aboutModal" class="about-modal">
-        <div class="about-card">
-            <div class="about-close-btn" id="aboutCloseBtn">&times;</div>
-            <div class="about-avatar" id="aboutAvatar">F</div>
-            <h2>Fallenleaf</h2>
-            <div class="title">Web Developer & Architect</div>
-            <p>你好，我是 Fallenleaf！一名热爱技术、追求极致体验的开发者。专注于构建高性能、高颜值的前端应用与现代化的系统架构。在这里，我会分享关于人工智能、边缘计算以及下一代硬件架构的研究与思考。感谢你的光临！</p>
-        </div>
-    </div>
+  
 
 </body>
 

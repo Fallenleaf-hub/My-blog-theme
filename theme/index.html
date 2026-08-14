@@ -3,141 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>话题探讨 | Advanced Agentic Style</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>{{ &title }}</title>
+    <meta name="description" content="{{ &OPT.siteDescription }}" />
+    <meta name="keywords" content="{{ &OPT.keyWords }}" />
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <!-- 公共样式 (主题变量/背景/导航/About弹窗等), 页面字体使用系统字体栈兜底 -->
+    <link rel="stylesheet" href="/assets/common.css">
     <style>
-        /* CSS 变量与主题定义 */
-        :root {
-            --bg-color: #f5f7fa;
-            --surface-color: #ffffff;
-            --text-primary: #1d1d1f;
-            --text-secondary: #6e6e73;
-            --accent-1: #1a73e8; /* Google Blue (light mode optimized) */
-            --accent-2: #d93025; /* Google Red (light mode optimized) */
-            --accent-3: #f9ab00; /* Google Yellow */
-            --accent-4: #188038; /* Google Green */
-            --border-color: rgba(0, 0, 0, 0.08);
-            --card-bg: rgba(255, 255, 255, 0.45);
-            --card-hover-bg: rgba(255, 255, 255, 0.75);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* 环境光晕背景 (Ambient Glowing Background) */
-        .ambient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: var(--bg-color);
-        }
-
-        .glow-sphere {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.35;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-
-        .glow-1 {
-            width: 600px;
-            height: 600px;
-            background: rgba(66, 133, 244, 0.15); /* 蓝色光晕 */
-            top: -200px;
-            left: -100px;
-        }
-
-        .glow-2 {
-            width: 500px;
-            height: 500px;
-            background: rgba(15, 157, 88, 0.12); /* 绿色光晕 */
-            bottom: -150px;
-            right: -100px;
-            animation-delay: -5s;
-        }
-
-        .glow-3 {
-            width: 450px;
-            height: 450px;
-            background: rgba(219, 68, 55, 0.08); /* 红色光晕 */
-            top: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 60px) scale(1.1); }
-        }
-
-        /* 布局容器 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* 顶部导航 */
-        header {
-            padding: 2.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeDown 0.8s ease forwards;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .logo-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
-            border-radius: 6px;
-            transition: transform 0.1s ease;
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-left: 2.5rem;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover, nav a.active {
-            color: var(--text-primary);
-        }
+        /* 页面特有样式 (公共样式见 /assets/common.css) */
 
         /* Hero 主视觉区域 */
         .hero {
@@ -290,141 +163,6 @@
             transform: translateX(6px);
         }
 
-        /* Jelly 果冻跳动动画 */
-        @keyframes jelly {
-            0% { transform: scale(1, 1); }
-            30% { transform: scale(1.25, 0.75); }
-            40% { transform: scale(0.75, 1.25); }
-            50% { transform: scale(1.15, 0.85); }
-            65% { transform: scale(0.95, 1.05); }
-            75% { transform: scale(1.05, 0.95); }
-            100% { transform: scale(1, 1); }
-        }
-
-        .jelly-active {
-            animation: jelly 0.6s ease-in-out !important;
-        }
-
-        /* 个人简介弹窗假面 (About Modal Overlay) */
-        .about-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .about-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .about-card {
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-            padding: 3.5rem 2.5rem;
-            width: 90%;
-            max-width: 440px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-
-        .about-modal.active .about-card {
-            transform: scale(1) translateY(0);
-        }
-
-        .about-avatar {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: white;
-            box-shadow: 0 10px 20px rgba(26, 115, 232, 0.15);
-            user-select: none;
-            transition: transform 0.1s ease;
-        }
-
-        .about-card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-
-        .about-card .title {
-            color: var(--accent-1);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .about-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .about-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .about-close-btn:hover {
-            background: rgba(0, 0, 0, 0.08);
-            color: var(--text-primary);
-        }
-
-        /* 动画定义 */
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .animate-in {
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
@@ -433,7 +171,6 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             .hero { padding: 5rem 0 3rem; }
-            nav { display: none; }
         }
 
         /* Topics View Styling */
@@ -496,26 +233,6 @@
             -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
             border: 1px solid var(--border-color);
-        }
-        .tag-pill {
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 100px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: all 0.2s ease;
-        }
-        .tag-pill:hover {
-            background: rgba(0, 0, 0, 0.06);
-            color: var(--text-primary);
-        }
-        .tag-pill.active {
-            background: var(--accent-1);
-            border-color: var(--accent-1);
-            color: #ffffff;
         }
         .filtered-header {
             font-size: 1.5rem;
@@ -625,42 +342,6 @@
         .timeline-item:hover .timeline-item-arrow {
             transform: translateX(4px);
             color: var(--accent-1);
-        }
-
-        /* 新增：About 弹窗联系方式样式 */
-        .about-contact {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 20px;
-            color: var(--text-secondary) !important;
-            text-decoration: none !important;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .contact-item:hover {
-            background: var(--accent-1);
-            color: white !important;
-            border-color: var(--accent-1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
-        }
-
-        .contact-icon {
-            width: 16px;
-            height: 16px;
         }
     </style>
 </head>
@@ -802,61 +483,11 @@
         </div>
     </div>
 
-    <!-- 交互动画脚本 -->
+    <!-- 公共脚本 (Toast/邮箱复制/Jelly动画/About弹窗/粒子特效) -->
+    <script src="/assets/common.js"></script>
+
+    <!-- 页面交互脚本 -->
     <script>
-        function copyEmail(e, email) {
-            e.preventDefault();
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(email).then(function() {
-                    showToast('邮箱已复制');
-                });
-            } else {
-                var textArea = document.createElement("textarea");
-                textArea.value = email;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                textArea.remove();
-                showToast('邮箱已复制');
-            }
-        }
-
-        function showToast(message) {
-            var toast = document.createElement('div');
-            toast.textContent = message;
-            toast.style.position = 'fixed';
-            toast.style.top = '20px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.background = 'rgba(255, 255, 255, 0.2)';
-            toast.style.backdropFilter = 'blur(10px)';
-            toast.style.webkitBackdropFilter = 'blur(10px)';
-            toast.style.border = '1px solid rgba(255, 255, 255, 0.3)';
-            toast.style.color = 'var(--text-primary)';
-            toast.style.padding = '10px 24px';
-            toast.style.borderRadius = '30px';
-            toast.style.zIndex = '99999';
-            toast.style.fontSize = '14px';
-            toast.style.fontWeight = '500';
-            toast.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
-            toast.style.opacity = '0';
-            toast.style.transition = 'opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            document.body.appendChild(toast);
-            
-            setTimeout(function() {
-                toast.style.opacity = '1';
-                toast.style.top = '40px';
-            }, 10);
-            
-            setTimeout(function() {
-                toast.style.opacity = '0';
-                toast.style.top = '20px';
-                setTimeout(function() {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 2000);
-        }
-
         // 接收后台注入的全站文章简易索引
         const rawArticles = '{{{allArticlesJson}}}';
         window.blogAllArticles = [];
@@ -866,18 +497,6 @@
             }
         } catch (e) {
             console.error("解析全站文章 JSON 失败:", e);
-        }
-
-        // 本地离线或初始测试数据兜底 (WOW体验)
-        if (!window.blogAllArticles || window.blogAllArticles.length === 0) {
-            window.blogAllArticles = [
-                { id: "000001", title: "探索边缘计算中的小语言模型 application", createDate: "2026-05-18", url: "#", category: ["边缘计算", "人工智能"], tags: ["LLM", "IoT", "推理加速"] },
-                { id: "000002", title: "下一代光电计算芯片架构解析与思考", createDate: "2026-05-12", url: "#", category: ["硬件架构"], tags: ["芯片", "光电计算"] },
-                { id: "000003", title: "使用 Cloudflare Workers 部署低延迟全球博客系统", createDate: "2026-04-25", url: "#", category: ["Web开发"], tags: ["Cloudflare", "Serverless"] },
-                { id: "000004", title: "面向智能物联网的自适应模型剪枝算法", createDate: "2026-04-01", url: "#", category: ["边缘计算", "人工智能"], tags: ["模型压缩", "神经网络"] },
-                { id: "000005", title: "硅光子技术在大模型集群互联中的工程实践", createDate: "2026-03-15", url: "#", category: ["硬件架构"], tags: ["光通信", "计算集群"] },
-                { id: "000006", title: "深入分析大语言模型的流水线并行优化策略", createDate: "2026-02-28", url: "#", category: ["人工智能"], tags: ["分布式训练", "AI工程化"] }
-            ];
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -900,45 +519,7 @@
                 observer.observe(card);
             });
 
-            // 果冻跳动动画的事件委托
-            document.addEventListener('click', (e) => {
-                const target = e.target.closest('.logo-icon, .card-icon, .about-avatar, .category-btn, .tag-pill');
-                if (target) {
-                    target.classList.remove('jelly-active');
-                    void target.offsetWidth; // 触发重绘
-                    target.classList.add('jelly-active');
-                    
-                    setTimeout(() => {
-                        target.classList.remove('jelly-active');
-                    }, 600);
-                }
-            });
-
-            // 个人简介弹窗逻辑
-            const aboutNavLink = document.getElementById('aboutNavLink');
-            const aboutModal = document.getElementById('aboutModal');
-            const aboutCloseBtn = document.getElementById('aboutCloseBtn');
-
-            if (aboutNavLink && aboutModal) {
-                aboutNavLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    aboutModal.classList.add('active');
-                });
-            }
-
-            if (aboutCloseBtn && aboutModal) {
-                aboutCloseBtn.addEventListener('click', () => {
-                    aboutModal.classList.remove('active');
-                });
-            }
-
-            if (aboutModal) {
-                aboutModal.addEventListener('click', (e) => {
-                    if (e.target === aboutModal) {
-                        aboutModal.classList.remove('active');
-                    }
-                });
-            }
+            // Jelly 果冻动画与 About 弹窗逻辑已提取至 /assets/common.js
 
             // ==================== 客户端 Hash 路由管理 ====================
             const homeHero = document.getElementById('home-hero');
@@ -1228,166 +809,6 @@
         });
     </script>
 
-    <!-- 粒子跟随鼠标特效 -->
-    <script>
-        (function() {
-            const canvas = document.createElement('canvas');
-            canvas.id = 'mouse-particle-canvas';
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.width = '100vw';
-            canvas.style.height = '100vh';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '9999';
-            document.body.appendChild(canvas);
-
-            const ctx = canvas.getContext('2d');
-            let width = canvas.width = window.innerWidth;
-            let height = canvas.height = window.innerHeight;
-
-            const particles = [];
-            const colors = [
-                'rgba(66, 133, 244, 0.45)',  // Google Blue (柔和半透)
-                'rgba(219, 68, 55, 0.45)',  // Google Red
-                'rgba(244, 180, 0, 0.45)',  // Google Yellow
-                'rgba(15, 157, 88, 0.45)'   // Google Green
-            ];
-
-            const mouse = { x: -1000, y: -1000, active: false };
-            const lastMouse = { x: null, y: null };
-
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
-
-            // 线性插值生成粒子，使快速移动时粒子流连贯无断裂
-            function createInterpolatedParticles(x1, y1, x2, y2) {
-                const dx = x2 - x1;
-                const dy = y2 - y1;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // 仅当发生有效位移时生成，每7像素插值一个，上限15个，保证极简柔顺
-                const steps = Math.min(15, Math.floor(distance / 7)); 
-                
-                for (let i = 0; i <= steps; i++) {
-                    const t = steps === 0 ? 1 : i / steps;
-                    const px = x1 + dx * t;
-                    const py = y1 + dy * t;
-                    particles.push(new Particle(px, py));
-                }
-            }
-
-            window.addEventListener('mousemove', (e) => {
-                const currentX = e.clientX;
-                const currentY = e.clientY;
-                mouse.x = currentX;
-                mouse.y = currentY;
-                mouse.active = true;
-
-                if (lastMouse.x !== null && lastMouse.y !== null) {
-                    // 只在发生移动时插值生成粒子
-                    createInterpolatedParticles(lastMouse.x, lastMouse.y, currentX, currentY);
-                } else {
-                    particles.push(new Particle(currentX, currentY));
-                }
-
-                lastMouse.x = currentX;
-                lastMouse.y = currentY;
-            });
-
-            window.addEventListener('mouseleave', () => {
-                mouse.active = false;
-                lastMouse.x = null;
-                lastMouse.y = null;
-            });
-
-            class Particle {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                    const angle = Math.random() * Math.PI * 2;
-                    // 降低粒子喷射速度，使运动看起来更加平稳温柔（流沙质感）
-                    const speed = Math.random() * 0.7 + 0.15;
-                    this.vx = Math.cos(angle) * speed;
-                    this.vy = Math.sin(angle) * speed;
-                    
-                    // 空气阻力系数与微小重力（更徐缓的向上漂浮感）
-                    this.friction = 0.95 + Math.random() * 0.02;
-                    this.gravity = -0.005 - Math.random() * 0.005;
-                    
-                    // 粒子大小更加微细，增强精致感
-                    this.size = Math.random() * 2.5 + 1.2;
-                    this.color = colors[Math.floor(Math.random() * colors.length)];
-                    this.alpha = 0.5 + Math.random() * 0.3; // 降低初始透明度，视觉上更轻透
-                    
-                    // 降低消亡速率，使粒子消失的过程更加丝滑徐缓
-                    this.decay = Math.random() * 0.008 + 0.006;
-                }
-
-                update() {
-                    // 当鼠标在附近时，粒子会受到指向鼠标中心的超柔和引力
-                    if (mouse.active) {
-                        const dx = mouse.x - this.x;
-                        const dy = mouse.y - this.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < 160 && distance > 5) {
-                            // 极轻引力，使粒子以舒缓弧线绕着鼠标旋转包围，不再发生剧烈撞击
-                            const force = (160 - distance) / 160 * 0.04;
-                            this.vx += (dx / distance) * force;
-                            this.vy += (dy / distance) * force;
-                        }
-                    }
-
-                    // 物理状态更新
-                    this.vx *= this.friction;
-                    this.vy *= this.friction;
-                    this.x += this.vx;
-                    this.y += this.vy + this.gravity;
-                    this.alpha -= this.decay;
-                }
-
-                draw() {
-                    if (this.alpha <= 0) return;
-                    
-                    // 粒子面积随着生命周期同步收缩
-                    const currentSize = Math.max(0.1, this.size * this.alpha);
-                    
-                    ctx.save();
-                    ctx.globalAlpha = this.alpha;
-                    
-                    // 统一使用带有平滑羽化效果的径向渐变圆形，消除十字星的多余棱角，实现极度柔顺
-                    ctx.beginPath();
-                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize);
-                    gradient.addColorStop(0, this.color);
-                    gradient.addColorStop(1, 'transparent');
-                    ctx.fillStyle = gradient;
-                    ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    ctx.restore();
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const p = particles[i];
-                    p.update();
-                    if (p.alpha <= 0) {
-                        particles.splice(i, 1);
-                    } else {
-                        p.draw();
-                    }
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-    </script>
+    <!-- 粒子跟随鼠标特效已提取至 /assets/common.js (页面隐藏时暂停, 触屏/减少动效时禁用) -->
 </body>
 </html>

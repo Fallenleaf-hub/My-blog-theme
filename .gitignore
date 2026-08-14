@@ -1,0 +1,5 @@
+# Wrangler 本地开发状态 (本地 KV/缓存模拟数据)
+.wrangler/
+
+# 依赖目录
+node_modules/
