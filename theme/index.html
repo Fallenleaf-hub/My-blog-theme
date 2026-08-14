@@ -711,6 +711,11 @@
                 'archive': [document.getElementById('archiveNavLink'), document.getElementById('mobileArchiveNavLink')]
             };
 
+            // Topics 过滤状态: 必须在下文 switchView() 首次执行前初始化,
+            // 否则直接刷新访问 #topics 时 renderTopicsData() 会因暂时性死区(TDZ)报 ReferenceError 导致内容为空
+            let selectedCategory = null;
+            let selectedTag = null;
+
             function switchView() {
                 const hash = window.location.hash.substring(1) || 'home';
                 
@@ -763,9 +768,6 @@
             }
 
             // ==================== Topics (专栏话题) 渲染与过滤 ====================
-            let selectedCategory = null;
-            let selectedTag = null;
-
             function renderTopicsData() {
                 const articles = window.blogAllArticles || [];
                 const categoryCloud = document.getElementById('category-cloud');
