@@ -1,7 +1,8 @@
 /* ============================================================
  * LeafBlog 公共样式 (index.html 与 article.html 共享)
  * 包含: 主题变量 / 基础样式 / 环境光晕背景 / 头部导航 /
- *       Jelly 动画 / About 弹窗 / 联系方式 / 标签药丸
+ *       移动端汉堡菜单与抽屉 / Jelly 动画 / About 弹窗 / 
+ *       联系方式 / 标签药丸 / 移动端悬浮目录(TOC) / 响应式优化
  * ============================================================ */
 
 /* CSS 变量与主题定义 */
@@ -17,12 +18,14 @@
     --border-color: rgba(0, 0, 0, 0.08);
     --card-bg: rgba(255, 255, 255, 0.45);
     --card-hover-bg: rgba(255, 255, 255, 0.75);
+    --drawer-bg: rgba(255, 255, 255, 0.88);
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* 系统字体栈兜底, 不再阻塞加载 Google Fonts */
@@ -46,6 +49,7 @@ body {
     z-index: -1;
     overflow: hidden;
     background: var(--bg-color);
+    pointer-events: none;
 }
 
 .glow-sphere {
@@ -93,6 +97,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
 }
 
 /* 顶部导航 */
@@ -102,6 +108,8 @@ header {
     justify-content: space-between;
     align-items: center;
     animation: fadeDown 0.8s ease forwards;
+    position: relative;
+    z-index: 100;
 }
 
 .logo {
@@ -115,6 +123,11 @@ header {
     user-select: none;
     text-decoration: none;
     color: var(--text-primary);
+    transition: opacity 0.2s ease;
+}
+
+.logo:active {
+    opacity: 0.8;
 }
 
 .logo-icon {
@@ -125,17 +138,166 @@ header {
     transition: transform 0.1s ease;
 }
 
-nav a {
+/* 桌面端导航 */
+.desktop-nav {
+    display: flex;
+    align-items: center;
+}
+
+.desktop-nav a {
     color: var(--text-secondary);
     text-decoration: none;
     margin-left: 2.5rem;
     font-weight: 500;
     font-size: 0.95rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: relative;
 }
 
-nav a:hover, nav a.active {
+.desktop-nav a:hover, .desktop-nav a.active {
     color: var(--text-primary);
+}
+
+.desktop-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-1);
+    border-radius: 2px;
+}
+
+/* 移动端汉堡菜单按钮 (Hamburger Menu Button) */
+.menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-toggle:hover {
+    background: var(--card-hover-bg);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.menu-toggle:active {
+    transform: scale(0.95);
+}
+
+.menu-toggle-bar {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+}
+
+/* 汉堡菜单激活状态 (Morph to X) */
+.menu-toggle.is-active .menu-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.is-active .menu-toggle-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.menu-toggle.is-active .menu-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* 移动端全屏/半屏抽屉导航 (Mobile Nav Drawer) */
+.mobile-nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.mobile-nav-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    max-width: 80vw;
+    height: 100vh;
+    background: var(--drawer-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
+    z-index: 999;
+    padding: 6rem 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-drawer.is-open {
+    transform: translateX(0);
+}
+
+.mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    border-radius: 14px;
+    background: transparent;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.mobile-nav-item:hover, .mobile-nav-item:active {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.mobile-nav-item.active {
+    background: var(--surface-color);
+    color: var(--accent-1);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.1);
+}
+
+.mobile-nav-item .mobile-nav-icon {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+    opacity: 0.8;
 }
 
 /* Jelly 果冻跳动动画 */
@@ -160,16 +322,17 @@ nav a:hover, nav a.active {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1100;
     opacity: 0;
     pointer-events: none;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 1rem;
 }
 
 .about-modal.active {
@@ -178,19 +341,29 @@ nav a:hover, nav a.active {
 }
 
 .about-card {
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 28px;
     padding: 3.5rem 2.5rem;
-    width: 90%;
+    width: 100%;
     max-width: 440px;
+    max-height: 88vh;
+    overflow-y: auto;
     text-align: center;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     transform: scale(0.9) translateY(20px);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+}
+
+.about-card::-webkit-scrollbar {
+    width: 4px;
+}
+.about-card::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+    border-radius: 4px;
 }
 
 .about-modal.active .about-card {
@@ -209,7 +382,7 @@ nav a:hover, nav a.active {
     font-size: 2.2rem;
     font-weight: 700;
     color: white;
-    box-shadow: 0 10px 20px rgba(26, 115, 232, 0.15);
+    box-shadow: 0 10px 20px rgba(26, 115, 232, 0.18);
     user-select: none;
     transition: transform 0.1s ease;
 }
@@ -240,26 +413,26 @@ nav a:hover, nav a.active {
 
 .about-close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: var(--text-secondary);
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     line-height: 1;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     user-select: none;
 }
 
-.about-close-btn:hover {
-    background: rgba(0, 0, 0, 0.08);
+.about-close-btn:hover, .about-close-btn:active {
+    background: rgba(0, 0, 0, 0.09);
     color: var(--text-primary);
 }
 
@@ -267,15 +440,16 @@ nav a:hover, nav a.active {
 .about-contact {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .contact-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 1.1rem;
     background: rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 20px;
@@ -286,7 +460,7 @@ nav a:hover, nav a.active {
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-item:hover {
+.contact-item:hover, .contact-item:active {
     background: var(--accent-1);
     color: white !important;
     border-color: var(--accent-1);
@@ -312,6 +486,7 @@ nav a:hover, nav a.active {
     color: var(--text-secondary);
     text-decoration: none;
     transition: all 0.2s ease;
+    user-select: none;
 }
 
 .tag-pill:hover {
@@ -320,14 +495,172 @@ nav a:hover, nav a.active {
     transform: translateY(-2px);
 }
 
+.tag-pill:active {
+    transform: scale(0.96);
+}
+
 .tag-pill.active {
     background: var(--accent-1);
     border-color: var(--accent-1);
     color: #ffffff;
 }
 
+/* ==================== 移动端悬浮目录组件 (Mobile Floating TOC) ==================== */
+.mobile-toc-fab {
+    display: none;
+    position: fixed;
+    right: 1.5rem;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    align-items: center;
+    justify-content: center;
+    z-index: 990;
+    cursor: pointer;
+    color: var(--accent-1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-toc-fab:hover {
+    transform: scale(1.05);
+}
+
+.mobile-toc-fab:active {
+    transform: scale(0.92);
+}
+
+.mobile-toc-fab svg {
+    width: 22px;
+    height: 22px;
+}
+
+.mobile-toc-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 995;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.mobile-toc-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-toc-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--drawer-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+    z-index: 996;
+    padding: 1.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-toc-drawer.is-open {
+    transform: translateY(0);
+}
+
+.mobile-toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+.mobile-toc-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mobile-toc-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.04);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+.mobile-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.mobile-toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.mobile-toc-list a {
+    display: block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.mobile-toc-list a:hover, .mobile-toc-list a.active {
+    color: var(--accent-1);
+    background: rgba(26, 115, 232, 0.06);
+    border-left-color: var(--accent-1);
+}
+
+.mobile-toc-list .toc-H2 { padding-left: 0.75rem; }
+.mobile-toc-list .toc-H3 { padding-left: 1.5rem; font-size: 0.9rem; }
+.mobile-toc-list .toc-H4 { padding-left: 2.25rem; font-size: 0.85rem; }
+
+/* 表格移动端自适应平滑滚动外层容器 */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+}
+
 /* 动画定义 */
 @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -336,7 +669,65 @@ nav a:hover, nav a.active {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 响应式调整 */
+/* ==================== 响应式断点控制 ==================== */
+@media (max-width: 1024px) {
+    .mobile-toc-fab {
+        display: flex;
+    }
+}
+
 @media (max-width: 768px) {
-    nav { display: none; }
+    .desktop-nav {
+        display: none;
+    }
+    .menu-toggle {
+        display: flex;
+    }
+    header {
+        padding: 1.5rem 0;
+    }
+    .container {
+        padding: 0 1.25rem;
+        padding-left: max(1.25rem, env(safe-area-inset-left));
+        padding-right: max(1.25rem, env(safe-area-inset-right));
+    }
+    .about-card {
+        padding: 2.5rem 1.5rem;
+        border-radius: 20px;
+    }
+    .glow-1 {
+        width: 350px;
+        height: 350px;
+        filter: blur(80px);
+    }
+    .glow-2 {
+        width: 300px;
+        height: 300px;
+        filter: blur(80px);
+    }
+    .glow-3 {
+        width: 250px;
+        height: 250px;
+        filter: blur(80px);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+    .about-card h2 {
+        font-size: 1.5rem;
+    }
+    .about-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+    }
+    .contact-item {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.8rem;
+    }
 }

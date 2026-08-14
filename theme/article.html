@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <link rel="icon" type="image/png" href="/assets/Logo.png" />
     <title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
     <meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}" />
@@ -28,6 +28,7 @@
         @media (max-width: 1024px) {
             .layout-wrapper {
                 grid-template-columns: 1fr;
+                gap: 0;
             }
         }
 
@@ -35,7 +36,7 @@
             min-width: 0;
         }
 
-        /* 侧边栏目录 (TOC) */
+        /* 侧边栏目录 (TOC) - 桌面端 */
         .toc-sidebar {
             position: sticky;
             top: 2rem;
@@ -130,18 +131,19 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 4rem 3rem;
+            padding: 3.5rem 3rem;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
             margin-bottom: 2.5rem;
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            word-break: break-word;
         }
 
         .article-header {
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 2rem;
+            padding-bottom: 1.75rem;
         }
 
         .article-meta {
@@ -159,12 +161,13 @@
         }
 
         .article-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.6rem, 5vw, 2.5rem);
             font-weight: 700;
             line-height: 1.25;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1px;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.5px;
             color: var(--text-primary);
+            word-break: break-word;
         }
 
         .article-categories {
@@ -192,7 +195,7 @@
 
         /* 文章内容排版 */
         .article-content {
-            font-size: 1.05rem;
+            font-size: clamp(0.98rem, 2.5vw, 1.05rem);
             color: var(--text-primary);
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -208,22 +211,27 @@
             color: var(--text-primary);
             margin: 2.5rem 0 1.2rem;
             letter-spacing: -0.5px;
+            line-height: 1.35;
         }
 
         .article-content h2 {
-            font-size: 1.6rem;
+            font-size: clamp(1.35rem, 4.5vw, 1.6rem);
             border-left: 4px solid var(--accent-1);
             padding-left: 0.75rem;
         }
 
         .article-content h3 {
-            font-size: 1.35rem;
+            font-size: clamp(1.15rem, 3.8vw, 1.35rem);
+        }
+
+        .article-content h4 {
+            font-size: clamp(1.05rem, 3.2vw, 1.15rem);
         }
 
         .article-content blockquote {
             background: rgba(0, 0, 0, 0.02);
             border-left: 4px solid var(--accent-1);
-            padding: 1.2rem 1.8rem;
+            padding: 1.2rem 1.5rem;
             margin: 2rem 0;
             border-radius: 0 16px 16px 0;
             color: var(--text-secondary);
@@ -235,7 +243,7 @@
         }
 
         .article-content ul, .article-content ol {
-            margin: 1.5rem 0 1.5rem 1.8rem;
+            margin: 1.5rem 0 1.5rem 1.6rem;
         }
 
         .article-content li {
@@ -260,6 +268,8 @@
             margin: 2rem 0;
             border: 1px solid rgba(255, 255, 255, 0.05);
             font-size: 0.9rem;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
         }
 
         .article-content code {
@@ -273,18 +283,20 @@
             padding: 0.2rem 0.4rem;
             border-radius: 6px;
             font-size: 0.9em;
+            word-break: break-word;
         }
 
         .article-content table {
             width: 100%;
             border-collapse: collapse;
-            margin: 2rem 0;
+            margin: 1rem 0;
         }
 
         .article-content th, .article-content td {
             border: 1px solid var(--border-color);
             padding: 0.75rem 1rem;
             text-align: left;
+            font-size: 0.92rem;
         }
 
         .article-content th {
@@ -309,35 +321,32 @@
             text-transform: uppercase;
             font-weight: 600;
             padding: 4px 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.75);
             position: absolute;
             top: 8px;
             right: 8px;
             border-radius: 6px;
             transition: all 0.2s ease;
+            user-select: none;
         }
 
-        .copy-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+        .copy-button:hover, .copy-button:active {
+            background-color: rgba(255, 255, 255, 0.25);
             color: #ffffff;
-        }
-
-        pre {
-            position: relative;
         }
 
         /* 文章尾部标签 */
         .article-footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
+            margin-top: 3.5rem;
+            padding-top: 1.75rem;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .article-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.6rem;
         }
 
         /* 上一篇下一篇导航 */
@@ -345,18 +354,18 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .nav-card {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 1.5rem 2rem;
-            border-radius: 20px;
+            padding: 1.25rem 1.75rem;
+            border-radius: 18px;
             text-decoration: none;
             color: var(--text-primary);
             backdrop-filter: blur(20px);
@@ -372,6 +381,10 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
         }
 
+        .nav-card:active {
+            transform: scale(0.98);
+        }
+
         .nav-label {
             font-size: 0.8rem;
             font-weight: 600;
@@ -382,7 +395,7 @@
 
         .nav-title {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -399,30 +412,24 @@
             align-items: flex-end;
         }
 
-        @media (max-width: 600px) {
-            .article-nav {
-                grid-template-columns: 1fr;
-            }
-        }
-
         /* 评论区美化 */
         .comments-section {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 3rem;
+            padding: 2.5rem;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            margin-bottom: 5rem;
+            margin-bottom: 4rem;
             animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* 底部版权 */
         .site-footer {
             text-align: center;
-            padding: 3rem 0;
+            padding: 2.5rem 0;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
 
@@ -441,6 +448,52 @@
             align-items: center;
             font-size: 0.9rem;
             color: var(--text-secondary);
+        }
+
+        /* 移动端细化响应式适配 */
+        @media (max-width: 768px) {
+            .article-card {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+                margin-bottom: 2rem;
+            }
+            .article-nav {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .nav-next {
+                text-align: left;
+            }
+            .nav-next .nav-card {
+                align-items: flex-start;
+            }
+            .comments-section {
+                padding: 1.75rem 1.25rem;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .article-card {
+                padding: 1.5rem 1.15rem;
+                border-radius: 16px;
+            }
+            .article-content pre {
+                padding: 1rem;
+                border-radius: 10px;
+                font-size: 0.85rem;
+            }
+            .article-content blockquote {
+                padding: 0.9rem 1.1rem;
+                margin: 1.5rem 0;
+            }
+            .article-content ul, .article-content ol {
+                margin-left: 1.25rem;
+            }
+            .comments-section {
+                padding: 1.25rem 1rem;
+                border-radius: 16px;
+            }
         }
     </style>
     {{ &OPT.codeBeforHead }}
@@ -461,16 +514,44 @@
                 <div class="logo-icon"></div>
                 Fallenleaf
             </a>
-            <nav id="topNav">
+            <!-- 桌面端导航 -->
+            <nav class="desktop-nav" id="topNav">
                 <a href="/#home" id="homeNavLink">Home</a>
                 <a href="/#topics" id="topicsNavLink">Topics</a>
                 <a href="/#archive" id="archiveNavLink">Archive</a>
                 <a href="#" id="aboutNavLink">About</a>
             </nav>
+            <!-- 移动端汉堡菜单按钮 -->
+            <button class="menu-toggle" id="menuToggleBtn" aria-label="切换菜单" type="button">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
         </header>
 
+        <!-- 移动端导航遮罩与抽屉 -->
+        <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+        <div class="mobile-nav-drawer" id="mobileNavDrawer">
+            <a href="/#home" class="mobile-nav-item">
+                <span class="mobile-nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="/#topics" class="mobile-nav-item">
+                <span class="mobile-nav-icon">💡</span>
+                <span>Topics</span>
+            </a>
+            <a href="/#archive" class="mobile-nav-item">
+                <span class="mobile-nav-icon">📅</span>
+                <span>Archive</span>
+            </a>
+            <a href="#" class="mobile-nav-item" id="mobileAboutNavLink">
+                <span class="mobile-nav-icon">👤</span>
+                <span>About</span>
+            </a>
+        </div>
+
         <div class="layout-wrapper">
-            <!-- 左侧边栏目录 -->
+            <!-- 左侧边栏目录 (桌面端) -->
             <aside class="toc-sidebar">
                 <div class="toc-container" id="tocContainer">
                     <div class="toc-title">目录</div>
@@ -552,6 +633,30 @@
         </footer>
     </div>
 
+    <!-- 移动端悬浮目录按钮与底部抽屉 -->
+    <button class="mobile-toc-fab" id="mobileTocFab" aria-label="查看文章目录" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+    </button>
+    <div class="mobile-toc-backdrop" id="mobileTocBackdrop"></div>
+    <div class="mobile-toc-drawer" id="mobileTocDrawer">
+        <div class="mobile-toc-header">
+            <div class="mobile-toc-title">
+                <span>文章目录</span>
+            </div>
+            <button class="mobile-toc-close-btn" id="mobileTocCloseBtn" aria-label="关闭目录">&times;</button>
+        </div>
+        <ul class="mobile-toc-list" id="mobileTocList">
+            <!-- JS 动态注入 -->
+        </ul>
+    </div>
+
     <!-- 关于弹窗 -->
     <div id="aboutModal" class="about-modal">
         <div class="about-card">
@@ -583,19 +688,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-bright.min.css">
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-    <!-- 公共脚本 (Toast/邮箱复制/Jelly动画/About弹窗/粒子特效) -->
+    <!-- 公共脚本 (Toast/邮箱复制/Jelly动画/About弹窗/抽屉与目录/粒子特效) -->
     <script src="/assets/common.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 代码高亮 (defer 脚本在 DOMContentLoaded 前执行完毕)
+            // 代码高亮
             try {
                 if (window.hljs) hljs.highlightAll();
             } catch(e) {
                 console.error("Highlight.js 初始化失败:", e);
             }
 
-            // 代码块复制按钮 (CSS .copy-button 已定义)
+            // 代码块复制按钮
             document.querySelectorAll('.article-content pre').forEach(pre => {
                 const btn = document.createElement('button');
                 btn.className = 'copy-button';
@@ -630,65 +735,100 @@
         });
     </script>
 
-    <!-- 粒子跟随鼠标特效已提取至 /assets/common.js (页面隐藏时暂停, 触屏/减少动效时禁用) -->
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const articleContent = document.querySelector('.article-content');
             const tocContent = document.getElementById('tocContent');
-            if (!articleContent || !tocContent) return;
+            const mobileTocList = document.getElementById('mobileTocList');
+            const mobileTocFab = document.getElementById('mobileTocFab');
+            
+            if (!articleContent) return;
 
             const headings = articleContent.querySelectorAll('h2, h3, h4');
             if (headings.length === 0) {
-                document.querySelector('.toc-sidebar').style.display = 'none';
-                document.querySelector('.layout-wrapper').style.gridTemplateColumns = '1fr';
-                document.querySelector('.container').style.maxWidth = '900px';
+                const tocSidebar = document.querySelector('.toc-sidebar');
+                if (tocSidebar) tocSidebar.style.display = 'none';
+                const layoutWrapper = document.querySelector('.layout-wrapper');
+                if (layoutWrapper) layoutWrapper.style.gridTemplateColumns = '1fr';
+                const container = document.querySelector('.container');
+                if (container) container.style.maxWidth = '900px';
+                if (mobileTocFab) mobileTocFab.style.display = 'none';
                 return;
             }
 
             const tocLinks = [];
+            const mobileTocLinks = [];
+
             headings.forEach((heading, index) => {
-                // Ensure heading has an ID
                 if (!heading.id) {
                     heading.id = 'heading-' + index;
                 }
 
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = '#' + heading.id;
-                a.textContent = heading.textContent;
-                a.className = 'toc-' + heading.tagName;
-                li.appendChild(a);
-                tocContent.appendChild(li);
-                tocLinks.push(a);
+                // 桌面侧边栏项
+                if (tocContent) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#' + heading.id;
+                    a.textContent = heading.textContent;
+                    a.className = 'toc-' + heading.tagName;
+                    li.appendChild(a);
+                    tocContent.appendChild(li);
+                    tocLinks.push(a);
 
-                // Smooth scroll click handler
-                a.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: heading.offsetTop - 40,
-                        behavior: 'smooth'
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: heading.offsetTop - 40,
+                            behavior: 'smooth'
+                        });
+                        history.pushState(null, null, '#' + heading.id);
                     });
-                    // Update URL hash without jumping
-                    history.pushState(null, null, '#' + heading.id);
-                });
+                }
+
+                // 移动端抽屉项
+                if (mobileTocList) {
+                    const mLi = document.createElement('li');
+                    const mA = document.createElement('a');
+                    mA.href = '#' + heading.id;
+                    mA.textContent = heading.textContent;
+                    mA.className = 'toc-' + heading.tagName;
+                    mLi.appendChild(mA);
+                    mobileTocList.appendChild(mLi);
+                    mobileTocLinks.push(mA);
+
+                    mA.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (typeof closeMobileToc === 'function') {
+                            closeMobileToc();
+                        }
+                        window.scrollTo({
+                            top: heading.offsetTop - 30,
+                            behavior: 'smooth'
+                        });
+                        history.pushState(null, null, '#' + heading.id);
+                    });
+                }
             });
 
-            // ScrollSpy functionality
+            // ScrollSpy 滚动监听与高亮
             function onScroll() {
                 let current = '';
                 const scrollPos = window.scrollY || document.documentElement.scrollTop;
 
-                // Find the current heading
                 headings.forEach(heading => {
-                    // 60px is a rough offset for the sticky header / visual buffer
-                    if (heading.offsetTop - 60 <= scrollPos) {
+                    if (heading.offsetTop - 70 <= scrollPos) {
                         current = heading.id;
                     }
                 });
 
-                // Update active class
                 tocLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+
+                mobileTocLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href') === '#' + current) {
                         link.classList.add('active');
@@ -697,7 +837,7 @@
             }
 
             window.addEventListener('scroll', onScroll, { passive: true });
-            onScroll(); // Trigger once on load
+            onScroll();
         });
     </script>
     {{ &OPT.codeBeforBody }}

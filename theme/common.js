@@ -1,7 +1,8 @@
 /* ============================================================
  * LeafBlog 公共脚本 (index.html 与 article.html 共享)
  * 包含: Toast 提示 / 邮箱复制 / Jelly 果冻动画 / About 弹窗 /
- *       粒子跟随鼠标特效 (页面隐藏时暂停, 触屏/减少动效时禁用)
+ *       移动端汉堡菜单与抽屉控制 / 移动端目录抽屉控制 / 
+ *       表格移动端响应式包裹 / 粒子跟随鼠标特效
  * ============================================================ */
 
 function showToast(message) {
@@ -11,10 +12,10 @@ function showToast(message) {
     toast.style.top = '20px';
     toast.style.left = '50%';
     toast.style.transform = 'translateX(-50%)';
-    toast.style.background = 'rgba(255, 255, 255, 0.2)';
+    toast.style.background = 'rgba(255, 255, 255, 0.7)';
     toast.style.backdropFilter = 'blur(10px)';
     toast.style.webkitBackdropFilter = 'blur(10px)';
-    toast.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+    toast.style.border = '1px solid rgba(255, 255, 255, 0.4)';
     toast.style.color = 'var(--text-primary)';
     toast.style.padding = '10px 24px';
     toast.style.borderRadius = '30px';
@@ -35,7 +36,7 @@ function showToast(message) {
         toast.style.opacity = '0';
         toast.style.top = '20px';
         setTimeout(function() {
-            document.body.removeChild(toast);
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
         }, 300);
     }, 2000);
 }
@@ -49,6 +50,8 @@ function copyEmail(e, email) {
     } else {
         var textArea = document.createElement("textarea");
         textArea.value = email;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand("copy");
@@ -57,10 +60,56 @@ function copyEmail(e, email) {
     }
 }
 
+// 全局移动端导航与目录控制函数
+function openMobileNav() {
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+    const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+    if (menuToggleBtn) menuToggleBtn.classList.add('is-active');
+    if (mobileNavDrawer) mobileNavDrawer.classList.add('is-open');
+    if (mobileNavBackdrop) mobileNavBackdrop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileNav() {
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+    const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+    if (menuToggleBtn) menuToggleBtn.classList.remove('is-active');
+    if (mobileNavDrawer) mobileNavDrawer.classList.remove('is-open');
+    if (mobileNavBackdrop) mobileNavBackdrop.classList.remove('is-open');
+    document.body.style.overflow = '';
+}
+
+function toggleMobileNav() {
+    const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+    if (mobileNavDrawer && mobileNavDrawer.classList.contains('is-open')) {
+        closeMobileNav();
+    } else {
+        openMobileNav();
+    }
+}
+
+function openMobileToc() {
+    const mobileTocDrawer = document.getElementById('mobileTocDrawer');
+    const mobileTocBackdrop = document.getElementById('mobileTocBackdrop');
+    if (mobileTocDrawer) mobileTocDrawer.classList.add('is-open');
+    if (mobileTocBackdrop) mobileTocBackdrop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileToc() {
+    const mobileTocDrawer = document.getElementById('mobileTocDrawer');
+    const mobileTocBackdrop = document.getElementById('mobileTocBackdrop');
+    if (mobileTocDrawer) mobileTocDrawer.classList.remove('is-open');
+    if (mobileTocBackdrop) mobileTocBackdrop.classList.remove('is-open');
+    document.body.style.overflow = '';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    // 果冻跳动动画的事件委托 (合并两页选择器)
+    // 1. 果冻跳动动画的事件委托
     document.addEventListener('click', (e) => {
-        const target = e.target.closest('.logo-icon, .card-icon, .about-avatar, .category-btn, .tag-pill, .category-tag, .nav-card');
+        const target = e.target.closest('.logo-icon, .card-icon, .about-avatar, .category-btn, .tag-pill, .category-tag, .nav-card, .mobile-toc-fab');
         if (target) {
             target.classList.remove('jelly-active');
             void target.offsetWidth; // 触发重绘
@@ -72,17 +121,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 个人简介弹窗逻辑
-    const aboutNavLink = document.getElementById('aboutNavLink');
+    // 2. 个人简介弹窗逻辑
+    const aboutNavLinks = document.querySelectorAll('#aboutNavLink, #mobileAboutNavLink');
     const aboutModal = document.getElementById('aboutModal');
     const aboutCloseBtn = document.getElementById('aboutCloseBtn');
 
-    if (aboutNavLink && aboutModal) {
-        aboutNavLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            aboutModal.classList.add('active');
-        });
-    }
+    aboutNavLinks.forEach(link => {
+        if (link && aboutModal) {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                aboutModal.classList.add('active');
+                closeMobileNav();
+            });
+        }
+    });
 
     if (aboutCloseBtn && aboutModal) {
         aboutCloseBtn.addEventListener('click', () => {
@@ -97,11 +149,71 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // 3. 移动端汉堡菜单控制
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', toggleMobileNav);
+    }
+    if (mobileNavBackdrop) {
+        mobileNavBackdrop.addEventListener('click', closeMobileNav);
+    }
+
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            closeMobileNav();
+        });
+    });
+
+    // 4. 移动端悬浮文章目录控制
+    const mobileTocFab = document.getElementById('mobileTocFab');
+    const mobileTocBackdrop = document.getElementById('mobileTocBackdrop');
+    const mobileTocCloseBtn = document.getElementById('mobileTocCloseBtn');
+
+    if (mobileTocFab) {
+        mobileTocFab.addEventListener('click', openMobileToc);
+    }
+    if (mobileTocCloseBtn) {
+        mobileTocCloseBtn.addEventListener('click', closeMobileToc);
+    }
+    if (mobileTocBackdrop) {
+        mobileTocBackdrop.addEventListener('click', closeMobileToc);
+    }
+
+    // 事件委托：点击移动端目录中任意链接时立即关闭抽屉
+    document.addEventListener('click', (e) => {
+        const tocItemLink = e.target.closest('.mobile-toc-list a');
+        if (tocItemLink) {
+            closeMobileToc();
+        }
+    });
+
+    // 监听 ESC 键关闭所有弹窗与抽屉
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeMobileNav();
+            closeMobileToc();
+            if (aboutModal) aboutModal.classList.remove('active');
+        }
+    });
+
+    // 5. 自动为文章页表格添加移动端自适应滚动外层包裹
+    const articleTables = document.querySelectorAll('.article-content table');
+    articleTables.forEach(table => {
+        if (!table.parentElement.classList.contains('table-responsive')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
 });
 
 /* ==================== 粒子跟随鼠标特效 ==================== */
 (function() {
-    // 触屏设备或用户偏好减少动效时直接禁用, 节省性能
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isTouch = window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches;
     if (reducedMotion || isTouch) return;
@@ -123,16 +235,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const particles = [];
     const colors = [
-        'rgba(66, 133, 244, 0.45)',  // Google Blue (柔和半透)
-        'rgba(219, 68, 55, 0.45)',  // Google Red
-        'rgba(244, 180, 0, 0.45)',  // Google Yellow
-        'rgba(15, 157, 88, 0.45)'   // Google Green
+        'rgba(66, 133, 244, 0.45)',
+        'rgba(219, 68, 55, 0.45)',
+        'rgba(244, 180, 0, 0.45)',
+        'rgba(15, 157, 88, 0.45)'
     ];
 
     const mouse = { x: -1000, y: -1000, active: false };
     const lastMouse = { x: null, y: null };
-
-    // 动画帧控制: 页面隐藏时暂停 requestAnimationFrame
     let rafId = null;
 
     window.addEventListener('resize', () => {
@@ -140,13 +250,10 @@ document.addEventListener("DOMContentLoaded", function () {
         height = canvas.height = window.innerHeight;
     });
 
-    // 线性插值生成粒子，使快速移动时粒子流连贯无断裂
     function createInterpolatedParticles(x1, y1, x2, y2) {
         const dx = x2 - x1;
         const dy = y2 - y1;
         const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // 仅当发生有效位移时生成，每7像素插值一个，上限15个，保证极简柔顺
         const steps = Math.min(15, Math.floor(distance / 7));
 
         for (let i = 0; i <= steps; i++) {
@@ -165,7 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
         mouse.active = true;
 
         if (lastMouse.x !== null && lastMouse.y !== null) {
-            // 只在发生移动时插值生成粒子
             createInterpolatedParticles(lastMouse.x, lastMouse.y, currentX, currentY);
         } else {
             particles.push(new Particle(currentX, currentY));
@@ -186,39 +292,29 @@ document.addEventListener("DOMContentLoaded", function () {
             this.x = x;
             this.y = y;
             const angle = Math.random() * Math.PI * 2;
-            // 降低粒子喷射速度，使运动看起来更加平稳温柔（流沙质感）
             const speed = Math.random() * 0.7 + 0.15;
             this.vx = Math.cos(angle) * speed;
             this.vy = Math.sin(angle) * speed;
-
-            // 空气阻力系数与微小重力（更徐缓的向上漂浮感）
             this.friction = 0.95 + Math.random() * 0.02;
             this.gravity = -0.005 - Math.random() * 0.005;
-
-            // 粒子大小更加微细，增强精致感
             this.size = Math.random() * 2.5 + 1.2;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.alpha = 0.5 + Math.random() * 0.3; // 降低初始透明度，视觉上更轻透
-
-            // 降低消亡速率，使粒子消失的过程更加丝滑徐缓
+            this.alpha = 0.5 + Math.random() * 0.3;
             this.decay = Math.random() * 0.008 + 0.006;
         }
 
         update() {
-            // 当鼠标在附近时，粒子会受到指向鼠标中心的超柔和引力
             if (mouse.active) {
                 const dx = mouse.x - this.x;
                 const dy = mouse.y - this.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 160 && distance > 5) {
-                    // 极轻引力，使粒子以舒缓弧线绕着鼠标旋转包围，不再发生剧烈撞击
                     const force = (160 - distance) / 160 * 0.04;
                     this.vx += (dx / distance) * force;
                     this.vy += (dy / distance) * force;
                 }
             }
 
-            // 物理状态更新
             this.vx *= this.friction;
             this.vy *= this.friction;
             this.x += this.vx;
@@ -228,14 +324,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         draw() {
             if (this.alpha <= 0) return;
-
-            // 粒子面积随着生命周期同步收缩
             const currentSize = Math.max(0.1, this.size * this.alpha);
-
             ctx.save();
             ctx.globalAlpha = this.alpha;
-
-            // 统一使用带有平滑羽化效果的径向渐变圆形，消除十字星的多余棱角，实现极度柔顺
             ctx.beginPath();
             const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize);
             gradient.addColorStop(0, this.color);
@@ -243,7 +334,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ctx.fillStyle = gradient;
             ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2);
             ctx.fill();
-
             ctx.restore();
         }
     }
@@ -275,7 +365,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 页面切换至后台时暂停动画, 回到前台时恢复
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             stopAnimation();

@@ -119,8 +119,12 @@
 			border-bottom: none !important;
 			display: flex !important;
 			align-items: center;
-			gap: 1.5rem;
+			gap: 1rem;
 			width: 100%;
+			overflow-x: auto;
+			white-space: nowrap;
+			-webkit-overflow-scrolling: touch;
+			padding-bottom: 5px;
 		}
 
 		.nav-tabs > li {
@@ -487,6 +491,14 @@
 			.form-grid-layout {
 				grid-template-columns: 1fr;
 				gap: 1.25rem;
+			}
+			#myTabContent .container {
+				padding: 1.5rem 1.25rem !important;
+				border-radius: 16px;
+			}
+			.form-actions-row {
+				flex-wrap: wrap;
+				gap: 0.75rem;
 			}
 		}
 
