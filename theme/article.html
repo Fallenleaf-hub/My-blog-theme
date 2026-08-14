@@ -11,45 +11,59 @@
     <link rel="stylesheet" href="/assets/common.css">
     
     <style>
-        /* 页面特有样式 (公共样式见 /assets/common.css) */
+        /* 页面特有与 Safari WebKit 深度兼容排版样式 */
 
-        /* 文章页正文行高略大, 提升可读性 */
+        /* 文章页正文行高提升可读性 */
         body {
             line-height: 1.8;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .layout-wrapper {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 280px minmax(0, 1fr);
             gap: 2.5rem;
             align-items: start;
+            box-sizing: border-box;
         }
 
         @media (max-width: 1024px) {
             .layout-wrapper {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 0;
             }
         }
 
         .layout-wrapper > main {
+            width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
-        /* 侧边栏目录 (TOC) - 桌面端 */
+        /* 侧边栏目录 (TOC) - 桌面端 (WebKit 粘性定位兼容) */
         .toc-sidebar {
+            position: -webkit-sticky;
             position: sticky;
             top: 2rem;
             max-height: calc(100vh - 4rem);
+            max-height: calc(100dvh - 4rem);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 2rem;
-            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-sizing: border-box;
         }
 
         .toc-sidebar::-webkit-scrollbar {
@@ -69,6 +83,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-shrink: 0;
         }
         
         .toc-title::before {
@@ -78,6 +93,7 @@
             height: 16px;
             background: var(--accent-1);
             border-radius: 2px;
+            flex-shrink: 0;
         }
 
         .toc-content {
@@ -101,6 +117,8 @@
             border-left: 2px solid transparent;
             padding-left: 1rem;
             margin-left: -1rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .toc-content a:hover {
@@ -122,28 +140,38 @@
 
         @media (max-width: 1024px) {
             .toc-sidebar {
-                display: none;
+                display: none !important;
             }
         }
 
         /* 文章主体毛玻璃卡片 */
         .article-card {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 3.5rem 3rem;
-            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
             margin-bottom: 2.5rem;
+            -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            overflow-wrap: break-word;
             word-break: break-word;
+            box-sizing: border-box;
         }
 
         .article-header {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             margin-bottom: 2.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             padding-bottom: 1.75rem;
+            box-sizing: border-box;
         }
 
         .article-meta {
@@ -158,6 +186,7 @@
 
         .meta-separator {
             opacity: 0.5;
+            flex-shrink: 0;
         }
 
         .article-title {
@@ -167,6 +196,7 @@
             margin-bottom: 1.25rem;
             letter-spacing: -0.5px;
             color: var(--text-primary);
+            overflow-wrap: break-word;
             word-break: break-word;
         }
 
@@ -186,6 +216,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .category-tag:hover {
@@ -193,17 +224,22 @@
             color: #ffffff;
         }
 
-        /* 文章内容排版 */
+        /* 文章内容排版与防溢出 */
         .article-content {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             font-size: clamp(0.98rem, 2.5vw, 1.05rem);
             color: var(--text-primary);
-            word-wrap: break-word;
             overflow-wrap: break-word;
             word-break: break-word;
+            box-sizing: border-box;
         }
 
         .article-content p {
             margin-bottom: 1.6rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .article-content h2, .article-content h3, .article-content h4 {
@@ -212,6 +248,8 @@
             margin: 2.5rem 0 1.2rem;
             letter-spacing: -0.5px;
             line-height: 1.35;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .article-content h2 {
@@ -236,6 +274,7 @@
             border-radius: 0 16px 16px 0;
             color: var(--text-secondary);
             font-style: italic;
+            box-sizing: border-box;
         }
 
         .article-content blockquote p {
@@ -244,10 +283,13 @@
 
         .article-content ul, .article-content ol {
             margin: 1.5rem 0 1.5rem 1.6rem;
+            box-sizing: border-box;
         }
 
         .article-content li {
             margin-bottom: 0.5rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .article-content img {
@@ -260,6 +302,9 @@
         }
 
         .article-content pre {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             background: #1d1d1f !important;
             color: #f5f7fa;
             border-radius: 14px;
@@ -276,6 +321,12 @@
             font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
         }
 
+        .article-content pre code {
+            white-space: pre;
+            word-break: normal;
+            overflow-wrap: normal;
+        }
+
         /* 行内代码 */
         .article-content :not(pre) > code {
             background: rgba(0, 0, 0, 0.04);
@@ -283,13 +334,16 @@
             padding: 0.2rem 0.4rem;
             border-radius: 6px;
             font-size: 0.9em;
+            overflow-wrap: break-word;
             word-break: break-word;
         }
 
         .article-content table {
             width: 100%;
+            max-width: 100%;
             border-collapse: collapse;
             margin: 1rem 0;
+            box-sizing: border-box;
         }
 
         .article-content th, .article-content td {
@@ -329,6 +383,7 @@
             border-radius: 6px;
             transition: all 0.2s ease;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         .copy-button:hover, .copy-button:active {
@@ -338,9 +393,12 @@
 
         /* 文章尾部标签 */
         .article-footer {
+            width: 100%;
+            max-width: 100%;
             margin-top: 3.5rem;
             padding-top: 1.75rem;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
         }
 
         .article-tags {
@@ -351,14 +409,22 @@
 
         /* 上一篇下一篇导航 */
         .article-nav {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
             margin-bottom: 2.5rem;
+            -webkit-animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-sizing: border-box;
         }
 
         .nav-card {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
@@ -368,20 +434,23 @@
             border-radius: 18px;
             text-decoration: none;
             color: var(--text-primary);
-            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             height: 100%;
+            box-sizing: border-box;
         }
 
         .nav-card:hover {
             background: var(--card-hover-bg);
+            -webkit-transform: translateY(-4px);
             transform: translateY(-4px);
             border-color: rgba(0, 0, 0, 0.12);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
         }
 
         .nav-card:active {
+            -webkit-transform: scale(0.98);
             transform: scale(0.98);
         }
 
@@ -402,6 +471,8 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .nav-next {
@@ -414,23 +485,30 @@
 
         /* 评论区美化 */
         .comments-section {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 2.5rem;
-            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             margin-bottom: 4rem;
+            -webkit-animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-sizing: border-box;
         }
 
         /* 底部版权 */
         .site-footer {
+            width: 100%;
             text-align: center;
             padding: 2.5rem 0;
             color: var(--text-secondary);
             font-size: 0.85rem;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
         }
 
         .site-footer a {
@@ -749,7 +827,7 @@
                 const tocSidebar = document.querySelector('.toc-sidebar');
                 if (tocSidebar) tocSidebar.style.display = 'none';
                 const layoutWrapper = document.querySelector('.layout-wrapper');
-                if (layoutWrapper) layoutWrapper.style.gridTemplateColumns = '1fr';
+                if (layoutWrapper) layoutWrapper.style.gridTemplateColumns = 'minmax(0, 1fr)';
                 const container = document.querySelector('.container');
                 if (container) container.style.maxWidth = '900px';
                 if (mobileTocFab) mobileTocFab.style.display = 'none';
