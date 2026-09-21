@@ -45,7 +45,7 @@
             min-width: 0;
         }
 
-        /* 侧边栏目录 (TOC) - 桌面端 (WebKit 粘性定位兼容) */
+        /* 侧边栏目录 (TOC) - 桌面端 (Liquid Glass 粘性定位) */
         .toc-sidebar {
             position: -webkit-sticky;
             position: sticky;
@@ -55,22 +55,34 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 2rem;
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--liquid-border);
+            border-radius: 26px;
+            padding: 2.2rem;
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            box-shadow: var(--liquid-shadow);
             -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             box-sizing: border-box;
+            position: relative;
+        }
+
+        .toc-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+            border-radius: 26px 26px 0 0;
         }
 
         .toc-sidebar::-webkit-scrollbar {
             width: 4px;
         }
         .toc-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.12);
             border-radius: 4px;
         }
 
@@ -111,26 +123,28 @@
         .toc-content a {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: block;
-            padding: 0.25rem 0;
+            padding: 0.35rem 0;
             border-left: 2px solid transparent;
             padding-left: 1rem;
             margin-left: -1rem;
             overflow-wrap: break-word;
             word-break: break-word;
+            border-radius: 0 10px 10px 0;
         }
 
         .toc-content a:hover {
             color: var(--accent-1);
+            background: rgba(26, 115, 232, 0.05);
         }
 
         .toc-content a.active {
             color: var(--accent-1);
             font-weight: 600;
             border-left-color: var(--accent-1);
-            background: rgba(26, 115, 232, 0.05);
-            border-radius: 0 8px 8px 0;
+            background: linear-gradient(90deg, rgba(26, 115, 232, 0.1) 0%, rgba(26, 115, 232, 0.02) 100%);
+            box-shadow: inset 1px 0 0 0 var(--accent-1);
         }
         
         /* 根据不同的 heading 级别增加缩进 */
@@ -144,24 +158,37 @@
             }
         }
 
-        /* 文章主体毛玻璃卡片 */
+        /* 文章主体液态玻璃卡片 (Liquid Glass Article Card) */
         .article-card {
             width: 100%;
             max-width: 100%;
             min-width: 0;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
+            border: 1px solid var(--liquid-border);
+            border-radius: 28px;
             padding: 3.5rem 3rem;
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            box-shadow: var(--liquid-shadow);
             margin-bottom: 2.5rem;
             -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             overflow-wrap: break-word;
             word-break: break-word;
             box-sizing: border-box;
+            position: relative;
+        }
+
+        /* 文章卡片顶部微弧光泽 */
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+            border-radius: 28px 28px 0 0;
         }
 
         .article-header {
@@ -267,13 +294,19 @@
         }
 
         .article-content blockquote {
-            background: rgba(0, 0, 0, 0.02);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.42) 100%);
             border-left: 4px solid var(--accent-1);
-            padding: 1.2rem 1.5rem;
+            border-top: 1px solid var(--liquid-border);
+            border-right: 1px solid var(--liquid-border);
+            border-bottom: 1px solid var(--liquid-border);
+            padding: 1.25rem 1.6rem;
             margin: 2rem 0;
-            border-radius: 0 16px 16px 0;
+            border-radius: 0 20px 20px 0;
             color: var(--text-secondary);
             font-style: italic;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
             box-sizing: border-box;
         }
 
@@ -295,8 +328,8 @@
         .article-content img {
             max-width: 100%;
             height: auto;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06), 0 0 0 1px var(--liquid-border);
             margin: 2rem auto;
             display: block;
         }
@@ -305,16 +338,19 @@
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
-            background: #1d1d1f !important;
+            background: rgba(24, 25, 28, 0.94) !important;
             color: #f5f7fa;
-            border-radius: 14px;
-            padding: 1.25rem 1.5rem;
+            border-radius: 18px;
+            padding: 1.35rem 1.6rem;
             overflow-x: auto;
             margin: 2rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             font-size: 0.9rem;
             position: relative;
             -webkit-overflow-scrolling: touch;
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
         }
 
         .article-content code {
@@ -327,12 +363,14 @@
             overflow-wrap: normal;
         }
 
-        /* 行内代码 */
+        /* 行内代码 (Liquid Bubble Style) */
         .article-content :not(pre) > code {
-            background: rgba(0, 0, 0, 0.04);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 100%);
             color: var(--accent-2);
-            padding: 0.2rem 0.4rem;
-            border-radius: 6px;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02), inset 0 1px 1px #ffffff;
             font-size: 0.9em;
             overflow-wrap: break-word;
             word-break: break-word;
@@ -341,21 +379,40 @@
         .article-content table {
             width: 100%;
             max-width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--liquid-border);
+            box-shadow: var(--liquid-shadow);
             box-sizing: border-box;
         }
 
         .article-content th, .article-content td {
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-right: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 0.85rem 1.1rem;
             text-align: left;
             font-size: 0.92rem;
         }
 
+        .article-content th:last-child, .article-content td:last-child {
+            border-right: none;
+        }
+
         .article-content th {
-            background: rgba(0, 0, 0, 0.02);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
             font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .article-content td {
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .article-content tr:last-child td {
+            border-bottom: none;
         }
 
         /* 代码块复制按钮 */
@@ -375,20 +432,22 @@
             text-transform: uppercase;
             font-weight: 600;
             padding: 4px 8px;
-            background-color: rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.75);
+            background-color: rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.85);
             position: absolute;
             top: 8px;
             right: 8px;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.2s ease;
             user-select: none;
             -webkit-user-select: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .copy-button:hover, .copy-button:active {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.28);
             color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* 文章尾部标签 */
@@ -407,7 +466,7 @@
             gap: 0.6rem;
         }
 
-        /* 上一篇下一篇导航 */
+        /* 上一篇下一篇导航 (Liquid Glass Nav Cards) */
         .article-nav {
             width: 100%;
             max-width: 100%;
@@ -429,24 +488,26 @@
             flex-direction: column;
             gap: 0.4rem;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 1.25rem 1.75rem;
-            border-radius: 18px;
+            border: 1px solid var(--liquid-border);
+            padding: 1.35rem 1.75rem;
+            border-radius: 20px;
             text-decoration: none;
             color: var(--text-primary);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+            box-shadow: var(--liquid-shadow);
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             height: 100%;
             box-sizing: border-box;
+            position: relative;
         }
 
         .nav-card:hover {
             background: var(--card-hover-bg);
             -webkit-transform: translateY(-4px);
             transform: translateY(-4px);
-            border-color: rgba(0, 0, 0, 0.12);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--liquid-hover-shadow);
         }
 
         .nav-card:active {

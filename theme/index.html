@@ -26,16 +26,28 @@
         }
 
         .badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1.2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.5) 100%);
+            border: 1px solid var(--liquid-border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(18px);
             border-radius: 100px;
             font-size: 0.85rem;
             font-weight: 500;
             margin-bottom: 1.75rem;
             color: var(--text-secondary);
             letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .badge:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06), inset 0 1px 2px #ffffff;
+            color: var(--text-primary);
+            -webkit-transform: translateY(-1px);
+            transform: translateY(-1px);
         }
 
         .hero h1 {
@@ -94,14 +106,14 @@
             box-sizing: border-box;
         }
 
-        /* 卡片设计 (Glassmorphism + 悬浮特效) */
+        /* 卡片设计 (Liquid Glassmorphism + 悬浮流动高光) */
         .card {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border: 1px solid var(--liquid-border);
+            border-radius: 24px;
             padding: 2.25rem 1.75rem;
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             position: relative;
@@ -111,32 +123,57 @@
             opacity: 0;
             -webkit-transform: translateY(20px);
             transform: translateY(20px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            box-shadow: var(--liquid-shadow);
             width: 100%;
             max-width: 100%;
             min-width: 0;
             box-sizing: border-box;
         }
 
-        /* 卡片顶部高光线条 */
+        /* 卡片顶部液态折射高光线条与微光反射 */
         .card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 100%);
+            opacity: 0.75;
+            transition: all 0.4s ease;
+        }
+
+        /* 悬停时的液态折射光斑流转 (Liquid Sheen) */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 65%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.8);
         }
 
         .card:hover {
             -webkit-transform: translateY(-6px);
             transform: translateY(-6px);
             background: var(--card-hover-bg);
-            border-color: rgba(0, 0, 0, 0.12);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--liquid-hover-shadow);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .card:active {
@@ -144,23 +181,24 @@
             transform: scale(0.98);
         }
 
-        .card:hover::before {
-            opacity: 1;
-        }
-
         .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: rgba(0, 0, 0, 0.02);
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.4) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.25rem;
             font-size: 1.4rem;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: transform 0.1s ease;
+            border: 1px solid var(--liquid-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             flex-shrink: 0;
+        }
+        .card:hover .card-icon {
+            -webkit-transform: scale(1.08);
+            transform: scale(1.08);
         }
 
         .card h3 {
@@ -240,14 +278,14 @@
         }
         .category-btn {
             background: var(--card-bg);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            border: 1px solid var(--liquid-border);
+            border-radius: 20px;
             padding: 1.25rem 1.5rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--liquid-shadow);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -264,16 +302,17 @@
             background: var(--card-hover-bg);
             -webkit-transform: translateY(-4px);
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--liquid-hover-shadow);
         }
         .category-btn:active {
             -webkit-transform: scale(0.97);
             transform: scale(0.97);
         }
         .category-btn.active {
-            background: var(--surface-color);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.78) 100%);
             border-color: var(--accent-1);
-            box-shadow: 0 8px 30px rgba(26, 115, 232, 0.12);
+            box-shadow: 0 10px 30px rgba(26, 115, 232, 0.16), inset 0 0 0 1px var(--accent-1), inset 0 1px 2px #ffffff;
         }
         .category-btn h3 {
             font-size: 1.15rem;
@@ -289,13 +328,14 @@
         .tag-cloud-pills {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.6rem;
-            padding: 1.25rem;
-            background: rgba(255, 255, 255, 0.55);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            border-radius: 18px;
-            border: 1px solid var(--border-color);
+            gap: 0.65rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            border-radius: 22px;
+            border: 1px solid var(--liquid-border);
+            box-shadow: var(--liquid-shadow);
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
@@ -392,15 +432,15 @@
             display: flex;
             align-items: center;
             background: var(--card-bg);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            padding: 0.9rem 1.25rem;
-            border-radius: 12px;
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            border: 1px solid var(--liquid-border);
+            padding: 1rem 1.35rem;
+            border-radius: 16px;
             text-decoration: none;
             color: var(--text-primary);
-            transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--liquid-shadow);
             width: 100%;
             max-width: 100%;
             min-width: 0;
@@ -410,7 +450,8 @@
             background: var(--card-hover-bg);
             -webkit-transform: translateX(6px);
             transform: translateX(6px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--liquid-hover-shadow);
         }
         .timeline-item:active {
             -webkit-transform: scale(0.98);
