@@ -34,13 +34,15 @@
   - **移动端全域适配**：消除移动设备顶部与底部的白色断层边栏，实现全景流光背景通栏铺满；解决细分小点偏右与表格挤压问题，阅读重心稳固舒适；优化移动端首次进入时的目录交互。
 - 🖼️ **开箱即用的内容生态与 2026 前沿文库**：
   - 内置规范化的 **[BLOG-WRITING-GUIDE.md](blog-content/BLOG-WRITING-GUIDE.md) (v2.1 规范)**，确立「网络查阅优先（Search First）」与「AI 生成严谨参考（Grounded Generation Only）」双铁律。
-  - 附带 4 篇开箱即用的高水准科技前沿博文（涵盖 2026 苹果秋季发布会 iPhone 18 系列、DeepSeek Harness 开源框架、Google Gemini 3.7 Flash 与 3.8 Flash / 4 Pro 整合），每篇均配备符合 16:9 标准比例的高清纯净无字封面。
+  - 附带 5 篇开箱即用的高水准科技前沿博文（涵盖 2026 年 9 月最新全球 AI 大模型全景横评 Claude Fable 5.1 / GPT-6 Astra / DeepSeek-V4.1-Flash、苹果秋季发布会 iPhone 18 系列、DeepSeek Harness、Google Gemini 3.7 / 3.8 Flash 等），每篇均配备符合 16:9 标准比例的高清纯净无字封面。
+- 🤖 **原生 GitOps 自动化发文流水线**：
+  - 编写并提交 Markdown 到 `blog-content/<slug>/` 后直接 `git push`，GitHub Actions 自动解析元数据、补全 16:9 封面路径、比对 Slug 原地更新/新建，并自动刷新全球 CDN 缓存，告别手动进后台。
 - 📝 **全功能 Markdown 编辑套件**：后台深度集成 `Editor.md` 渲染套件，支持实时分屏预览、代码高亮折叠、Emoji、数学公式（TeX）、表格与特色图片快速插入。
 - ⚙️ **丰富的内容元数据控制**：文章支持配置特色大图、自定义永久短链接（Slug）、自定义分类（支持多选）、标签列表、生成权重及搜索引擎更新频率调整。
 - 📂 **自动化全站备份与灾备恢复**：
   - **一键导出**：将全站文章数据与核心 KV 配置打包为单个标准的 JSON 文件下载到本地。
   - **一键导入**：直接将备份 JSON 数据导入，在数秒内快速恢复全站数据与设置。
-- 🚀 **GitHub Actions 自动化 CI/CD**：提交代码或配置即可通过 Actions 自动完成依赖检查、版本打标与 Worker 部署。
+- 🚀 **GitHub Actions 自动化 CI/CD**：提交代码或配置即可通过 Actions 自动完成依赖检查、版本打标、Worker 部署与文章增量同步。
 - 🔍 **极致 SEO 优化**：
   - 自动生成符合标准的规范 `/sitemap.xml` 站点地图。
   - 支持后台动态设定每篇博文的 `changefreq` 和 `priority` 权重。
@@ -53,7 +55,9 @@
 ```text
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # GitHub Actions 自动化部署工作流 (已锁定 Wrangler 稳定版)
+│       └── deploy.yml          # GitHub Actions 自动化部署与发文流水线 (锁定 Wrangler 稳定版)
+├── scripts/
+│   └── sync-posts.mjs          # GitOps 自动化文章同步脚本 (解析 Markdown/元数据、增量同步与清缓存)
 ├── theme/                      # 主题模板目录 (通过 Workers Assets 自托管)
 │   ├── admin/
 │   │   ├── index.html          # 后台管理主页面 (文章列表、新建、设置、发布)
@@ -63,8 +67,11 @@
 │   ├── common.css              # 全站公共样式 (Liquid Glass 变量、光晕背景、TOC 悬浮层等)
 │   ├── common.js               # 全站公共脚本 (粒子背景、折叠目录逻辑、Jelly 动效、弹窗)
 │   └── Logo.png                # 博客 Logo (站点 favicon)
-├── blog-content/               # 博客内容创作与规范管理目录 (每篇独立文件夹，不参与打包)
-│   ├── BLOG-WRITING-GUIDE.md   # 博客写作与封面规范指南 (v2.1 铁律版，规范封面与排版)
+├── blog-content/               # 博客内容创作与规范管理目录 (每篇独立文件夹，不参与 Worker 打包)
+│   ├── BLOG-WRITING-GUIDE.md   # 博客写作与封面规范指南 (v2.1 铁律版，规范封面、真实数据与 GitOps)
+│   ├── global-ai-models-landscape-2026/ # 2026 年 9 月全球主流 AI 大模型全景横评 (Fable 5.1 / Astra / V4.1)
+│   │   ├── article.md          # 规范 Markdown 文章正文 (含 2026 最新一手 Benchmark 对比表)
+│   │   └── cover.png           # 16:9 纯净液态玻璃天体透镜封面
 │   ├── apple-fall-event-summary/       # 2026 苹果秋季发布会全景复盘 (iPhone 18 系列)
 │   │   ├── article.md          # 规范 Markdown 文章正文 (顶部附带发布信息)
 │   │   └── cover.png           # 16:9 苹果官方纯净折射流光封面
@@ -77,8 +84,9 @@
 │   └── gemini-3-8-flash-gemini-4-pro/  # Gemini 3.8 Flash 与 4 Pro 爆料整合
 │       ├── article.md
 │       └── cover.png           # 16:9 双子星共振能量场封面
-├── worker.js                   # Cloudflare Workers 核心服务端脚本 (处理路由、渲染与缓存)
+├── worker.js                   # Cloudflare Workers 核心服务端脚本 (处理路由、SSR 渲染与缓存)
 ├── wrangler.toml               # Cloudflare Wrangler 配置文件 (声明 Assets 与 KV 绑定)
+├── package.json                # 项目依赖管理与脚本入口 (npm run sync)
 ├── Logo.png                    # 博客仓库展示 Logo
 ├── cover.png                   # 仓库展示封面
 ├── blog_feature_cover.png      # 仓库特色封面图
