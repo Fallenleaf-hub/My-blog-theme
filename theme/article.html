@@ -21,22 +21,12 @@
             overflow-x: hidden;
         }
 
+        /* 页面布局 - 单栏居中宽屏排版，取消桌面端常驻目录，专注沉浸式阅读 */
         .layout-wrapper {
             width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            display: grid;
-            grid-template-columns: 280px minmax(0, 1fr);
-            gap: 2.5rem;
-            align-items: start;
+            max-width: 880px;
+            margin: 0 auto;
             box-sizing: border-box;
-        }
-
-        @media (max-width: 1024px) {
-            .layout-wrapper {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 0;
-            }
         }
 
         .layout-wrapper > main {
@@ -45,64 +35,132 @@
             min-width: 0;
         }
 
-        /* 侧边栏目录 (TOC) - 桌面端 (Liquid Glass 粘性定位) */
-        .toc-sidebar {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 2rem;
-            max-height: calc(100vh - 4rem);
-            max-height: calc(100dvh - 4rem);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+        /* ==================== 悬浮液态玻璃圆形目录控制台 (Floating Liquid TOC) ==================== */
+        .floating-toc-wrapper {
+            position: fixed;
+            right: 2.5rem;
+            top: 100px;
+            z-index: 990;
+        }
+
+        /* 三个小横条圆形水滴按钮 */
+        .toc-circle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: var(--card-bg);
             border: 1px solid var(--liquid-border);
-            border-radius: 26px;
-            padding: 2.2rem;
+            box-shadow: var(--liquid-shadow);
             -webkit-backdrop-filter: var(--liquid-filter);
             backdrop-filter: var(--liquid-filter);
-            box-shadow: var(--liquid-shadow);
-            -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            outline: none;
         }
 
-        .toc-sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+        .toc-circle-btn:hover {
+            -webkit-transform: scale(1.08);
+            transform: scale(1.08);
+            background: var(--card-hover-bg);
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: var(--liquid-hover-shadow);
+        }
+
+        .toc-circle-btn:active {
+            -webkit-transform: scale(0.95);
+            transform: scale(0.95);
+        }
+
+        /* 三个小横条 (Menu / TOC lines) */
+        .toc-bar {
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
-            border-radius: 26px 26px 0 0;
+            background-color: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.25s ease;
+        }
+        .toc-bar:nth-child(1) { width: 20px; }
+        .toc-bar:nth-child(2) { width: 14px; }
+        .toc-bar:nth-child(3) { width: 18px; }
+
+        .floating-toc-wrapper:hover .toc-bar:nth-child(2),
+        .floating-toc-wrapper.is-open .toc-bar:nth-child(2) {
+            width: 20px;
+            background-color: var(--accent-1);
         }
 
-        .toc-sidebar::-webkit-scrollbar {
+        /* 下拉目录面板 (Liquid Glass Dropdown) */
+        .toc-dropdown-panel {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 300px;
+            max-height: 65vh;
+            max-height: 65dvh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.62) 100%);
+            border: 1px solid var(--liquid-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 25px 65px -15px rgba(0, 0, 0, 0.15), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.9), 
+                        inset 0 2px 3px #ffffff;
+            -webkit-backdrop-filter: var(--liquid-filter);
+            backdrop-filter: var(--liquid-filter);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            -webkit-transform: translateY(-8px) scale(0.95);
+            transform: translateY(-8px) scale(0.95);
+            transform-origin: top right;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        /* 鼠标悬停 (Hover) 或激活 (is-open) 时向下拉出目录 */
+        .floating-toc-wrapper:hover .toc-dropdown-panel,
+        .floating-toc-wrapper.is-open .toc-dropdown-panel {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            -webkit-transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1);
+        }
+
+        .toc-dropdown-panel::-webkit-scrollbar {
             width: 4px;
         }
-        .toc-sidebar::-webkit-scrollbar-thumb {
+        .toc-dropdown-panel::-webkit-scrollbar-thumb {
             background: rgba(0,0,0,0.12);
             border-radius: 4px;
         }
 
         .toc-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             flex-shrink: 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .toc-title::before {
             content: '';
             display: block;
             width: 4px;
-            height: 16px;
+            height: 14px;
             background: var(--accent-1);
             border-radius: 2px;
             flex-shrink: 0;
@@ -112,11 +170,11 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
 
         .toc-content li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.65rem;
             line-height: 1.4;
         }
 
@@ -125,36 +183,40 @@
             text-decoration: none;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: block;
-            padding: 0.35rem 0;
+            padding: 0.35rem 0.6rem;
             border-left: 2px solid transparent;
-            padding-left: 1rem;
-            margin-left: -1rem;
             overflow-wrap: break-word;
             word-break: break-word;
-            border-radius: 0 10px 10px 0;
+            border-radius: 8px;
         }
 
         .toc-content a:hover {
             color: var(--accent-1);
-            background: rgba(26, 115, 232, 0.05);
+            background: rgba(26, 115, 232, 0.06);
+            border-left-color: var(--accent-1);
         }
 
         .toc-content a.active {
             color: var(--accent-1);
             font-weight: 600;
             border-left-color: var(--accent-1);
-            background: linear-gradient(90deg, rgba(26, 115, 232, 0.1) 0%, rgba(26, 115, 232, 0.02) 100%);
-            box-shadow: inset 1px 0 0 0 var(--accent-1);
+            background: linear-gradient(90deg, rgba(26, 115, 232, 0.12) 0%, rgba(26, 115, 232, 0.02) 100%);
         }
-        
-        /* 根据不同的 heading 级别增加缩进 */
-        .toc-content .toc-H2 { padding-left: 1rem; margin-left: -1rem; }
-        .toc-content .toc-H3 { padding-left: 2rem; margin-left: -2rem; font-size: 0.9rem; }
-        .toc-content .toc-H4 { padding-left: 3rem; margin-left: -3rem; font-size: 0.85rem; }
+
+        .toc-content .toc-H2 { padding-left: 0.5rem; }
+        .toc-content .toc-H3 { padding-left: 1.25rem; font-size: 0.88rem; }
+        .toc-content .toc-H4 { padding-left: 2rem; font-size: 0.82rem; }
 
         @media (max-width: 1024px) {
-            .toc-sidebar {
-                display: none !important;
+            .floating-toc-wrapper {
+                right: 1.5rem;
+                top: 90px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-toc-wrapper {
+                display: none; /* 移动端使用专用的悬浮球与底部抽屉 */
             }
         }
 
@@ -179,15 +241,15 @@
             position: relative;
         }
 
-        /* 文章卡片顶部微弧光泽 */
+        /* 文章卡片顶部微弧光泽 (Rim Specular Reflection) */
         .article-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+            height: 2.5px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255,255,255,0) 100%);
             border-radius: 28px 28px 0 0;
         }
 
@@ -644,6 +706,7 @@
         <div class="glow-sphere glow-1"></div>
         <div class="glow-sphere glow-2"></div>
         <div class="glow-sphere glow-3"></div>
+        <div class="glow-sphere glow-4"></div>
     </div>
 
     <div class="container">
@@ -689,18 +752,23 @@
             </a>
         </div>
 
-        <div class="layout-wrapper">
-            <!-- 左侧边栏目录 (桌面端) -->
-            <aside class="toc-sidebar">
-                <div class="toc-container" id="tocContainer">
-                    <div class="toc-title">目录</div>
-                    <ul class="toc-content" id="tocContent">
-                        <!-- JS 动态生成目录项 -->
-                    </ul>
-                </div>
-            </aside>
+        <!-- 悬浮液态玻璃目录控制台 (三个小横条圆形水滴按钮 + Hover 下拉面板) -->
+        <div class="floating-toc-wrapper" id="floatingTocWrapper">
+            <button class="toc-circle-btn" id="tocCircleBtn" aria-label="文章目录" type="button" title="文章目录">
+                <span class="toc-bar"></span>
+                <span class="toc-bar"></span>
+                <span class="toc-bar"></span>
+            </button>
+            <div class="toc-dropdown-panel" id="tocDropdownPanel">
+                <div class="toc-title">文章目录</div>
+                <ul class="toc-content" id="tocContent">
+                    <!-- JS 动态生成目录项 -->
+                </ul>
+            </div>
+        </div>
 
-            <!-- 文章详情内容 -->
+        <div class="layout-wrapper">
+            <!-- 文章详情内容 (单栏宽屏沉浸式排版) -->
             <main>
             <article class="article-card">
                 <header class="article-header">
@@ -880,19 +948,29 @@
             const tocContent = document.getElementById('tocContent');
             const mobileTocList = document.getElementById('mobileTocList');
             const mobileTocFab = document.getElementById('mobileTocFab');
+            const floatingTocWrapper = document.getElementById('floatingTocWrapper');
+            const tocCircleBtn = document.getElementById('tocCircleBtn');
             
             if (!articleContent) return;
 
             const headings = articleContent.querySelectorAll('h2, h3, h4');
             if (headings.length === 0) {
-                const tocSidebar = document.querySelector('.toc-sidebar');
-                if (tocSidebar) tocSidebar.style.display = 'none';
-                const layoutWrapper = document.querySelector('.layout-wrapper');
-                if (layoutWrapper) layoutWrapper.style.gridTemplateColumns = 'minmax(0, 1fr)';
-                const container = document.querySelector('.container');
-                if (container) container.style.maxWidth = '900px';
+                if (floatingTocWrapper) floatingTocWrapper.style.display = 'none';
                 if (mobileTocFab) mobileTocFab.style.display = 'none';
                 return;
+            }
+
+            // 支持圆形按钮点击锁定/展开
+            if (tocCircleBtn && floatingTocWrapper) {
+                tocCircleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    floatingTocWrapper.classList.toggle('is-open');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!floatingTocWrapper.contains(e.target)) {
+                        floatingTocWrapper.classList.remove('is-open');
+                    }
+                });
             }
 
             const tocLinks = [];
@@ -903,7 +981,7 @@
                     heading.id = 'heading-' + index;
                 }
 
-                // 桌面侧边栏项
+                // 悬浮下拉目录项
                 if (tocContent) {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
@@ -916,8 +994,9 @@
 
                     a.addEventListener('click', function(e) {
                         e.preventDefault();
+                        if (floatingTocWrapper) floatingTocWrapper.classList.remove('is-open');
                         window.scrollTo({
-                            top: heading.offsetTop - 40,
+                            top: heading.offsetTop - 50,
                             behavior: 'smooth'
                         });
                         history.pushState(null, null, '#' + heading.id);

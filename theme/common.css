@@ -15,25 +15,25 @@
     --accent-2: #d93025; /* Google Red */
     --accent-3: #f9ab00; /* Google Yellow */
     --accent-4: #188038; /* Google Green */
-    --border-color: rgba(255, 255, 255, 0.65);
+    --border-color: rgba(255, 255, 255, 0.85);
     
-    /* 液态玻璃核心材质与折射图层 */
-    --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.46) 50%, rgba(255, 255, 255, 0.62) 100%);
-    --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.66) 100%);
-    --drawer-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.84) 100%);
+    /* 液态玻璃核心材质与折射图层 - 提高透光度以让底层极光充分穿透 */
+    --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0.48) 100%);
+    --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%);
+    --drawer-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.82) 100%);
     
-    /* 液态边缘、高光折射与多层复合内阴影 */
-    --liquid-border: rgba(255, 255, 255, 0.75);
-    --liquid-border-outer: rgba(0, 0, 0, 0.05);
-    --liquid-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.05), 
+    /* 强化液态微光学折射边框与内嵌高光 (Rim Light & Bevel Effect) */
+    --liquid-border: rgba(255, 255, 255, 0.88);
+    --liquid-border-outer: rgba(0, 0, 0, 0.04);
+    --liquid-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.08), 
                      0 0 0 1px var(--liquid-border) inset, 
-                     0 1.5px 2px 0 rgba(255, 255, 255, 0.95) inset, 
-                     0 -1.5px 2px 0 rgba(0, 0, 0, 0.03) inset;
-    --liquid-hover-shadow: 0 22px 50px -10px rgba(0, 0, 0, 0.08), 
-                           0 0 0 1px rgba(255, 255, 255, 0.95) inset, 
-                           0 2px 4px 0 #ffffff inset, 
-                           0 -1.5px 2px 0 rgba(0, 0, 0, 0.04) inset;
-    --liquid-filter: blur(28px) saturate(190%) contrast(102%);
+                     0 2px 3px 0 rgba(255, 255, 255, 1) inset, 
+                     0 -1.5px 2px 0 rgba(0, 0, 0, 0.04) inset;
+    --liquid-hover-shadow: 0 26px 60px -10px rgba(0, 0, 0, 0.12), 
+                           0 0 0 1px rgba(255, 255, 255, 1) inset, 
+                           0 2.5px 5px 0 #ffffff inset, 
+                           0 -2px 3px 0 rgba(0, 0, 0, 0.05) inset;
+    --liquid-filter: blur(24px) saturate(210%) contrast(104%);
 }
 
 *, *::before, *::after {
@@ -49,6 +49,8 @@ html {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* 稳定垂直滚动条轨道，彻底杜绝多页面/多视图切换时的水平晃动 */
+    scrollbar-gutter: stable;
 }
 
 /* 系统字体栈兜底, 不再阻塞加载 Google Fonts */
@@ -65,7 +67,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 环境光晕背景 (Ambient Glowing Background) */
+/* 环境光晕背景 (Ambient Glowing Background) - 增强流体极光通透色彩 */
 .ambient-bg {
     position: fixed;
     top: 0;
@@ -86,39 +88,54 @@ body {
 .glow-sphere {
     position: absolute;
     border-radius: 50%;
-    -webkit-filter: blur(95px);
-    filter: blur(95px);
-    opacity: 0.45;
-    -webkit-animation: float 22s infinite ease-in-out alternate;
-    animation: float 22s infinite ease-in-out alternate;
+    -webkit-filter: blur(85px);
+    filter: blur(85px);
+    opacity: 0.72;
+    -webkit-animation: float 20s infinite ease-in-out alternate;
+    animation: float 20s infinite ease-in-out alternate;
     will-change: transform;
 }
 
 .glow-1 {
-    width: 580px;
-    height: 580px;
-    background: radial-gradient(circle, rgba(66, 133, 244, 0.22) 0%, rgba(66, 133, 244, 0.04) 65%, transparent 80%); /* 水润蔚蓝光晕 */
-    top: -160px;
+    width: 680px;
+    height: 680px;
+    background: radial-gradient(circle, rgba(26, 115, 232, 0.42) 0%, rgba(66, 133, 244, 0.16) 50%, transparent 75%); /* 蔚蓝深邃极光 */
+    top: -180px;
     left: -120px;
 }
 
 .glow-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(24, 128, 56, 0.16) 0%, rgba(24, 128, 56, 0.03) 65%, transparent 80%); /* 碧玉翠绿光晕 */
-    bottom: -100px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 196, 140, 0.35) 0%, rgba(24, 128, 56, 0.12) 50%, transparent 75%); /* 薄荷翡翠流光 */
+    bottom: -120px;
     right: -100px;
-    animation-delay: -6s;
+    animation-delay: -5s;
 }
 
 .glow-3 {
-    width: 460px;
-    height: 460px;
-    background: radial-gradient(circle, rgba(161, 66, 244, 0.15) 0%, rgba(219, 68, 55, 0.09) 45%, transparent 75%); /* 虹彩微光 */
+    width: 560px;
+    height: 560px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(236, 72, 153, 0.18) 45%, transparent 75%); /* 紫罗兰霓彩 */
     top: 28%;
     left: 48%;
     transform: translateX(-50%);
-    animation-delay: -11s;
+    animation-delay: -10s;
+}
+
+.glow-4 {
+    position: absolute;
+    border-radius: 50%;
+    -webkit-filter: blur(90px);
+    filter: blur(90px);
+    opacity: 0.65;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, rgba(249, 115, 22, 0.12) 50%, transparent 75%); /* 晨曦金橙辉光 */
+    top: 65%;
+    left: 10%;
+    animation: float 25s infinite ease-in-out alternate-reverse;
+    animation-delay: -7s;
 }
 
 @-webkit-keyframes float {
@@ -139,6 +156,7 @@ body {
     padding: 0 2rem;
     padding-left: max(2rem, env(safe-area-inset-left));
     padding-right: max(2rem, env(safe-area-inset-right));
+    min-height: 85vh; /* 确保最小视口高度，杜绝视图切换高度塌陷 */
 }
 
 /* 顶部导航 */
@@ -182,36 +200,45 @@ header {
     transition: transform 0.1s ease;
 }
 
-/* 桌面端导航 */
+/* 桌面端导航 (Liquid Capsule Pill Navigation) */
 .desktop-nav {
     display: flex;
     align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--liquid-border);
+    padding: 0.35rem 0.6rem;
+    border-radius: 100px;
+    box-shadow: var(--liquid-shadow);
+    -webkit-backdrop-filter: var(--liquid-filter);
+    backdrop-filter: var(--liquid-filter);
+    transition: all 0.3s ease;
 }
 
 .desktop-nav a {
     color: var(--text-secondary);
     text-decoration: none;
-    margin-left: 2.5rem;
+    margin: 0 0.25rem;
+    padding: 0.45rem 1.15rem;
     font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.3s ease, transform 0.2s ease;
+    font-size: 0.92rem;
+    border-radius: 100px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
 }
 
-.desktop-nav a:hover, .desktop-nav a.active {
+.desktop-nav a:hover {
     color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.55);
 }
 
-.desktop-nav a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent-1);
-    border-radius: 2px;
+.desktop-nav a.active {
+    color: var(--accent-1);
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05), inset 0 1px 1px #ffffff;
+    font-weight: 600;
 }
 
 /* 移动端汉堡菜单按钮 (Liquid Glass Hamburger) */

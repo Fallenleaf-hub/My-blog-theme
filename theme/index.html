@@ -138,31 +138,31 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 100%);
-            opacity: 0.75;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+            opacity: 0.85;
             transition: all 0.4s ease;
         }
 
-        /* 悬停时的液态折射光斑流转 (Liquid Sheen) */
+        /* 悬停时的液态折射光斑流转 (Liquid Sheen) - 显著明亮通透 */
         .card::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 65%);
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0) 65%);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(0.8);
+            transform: scale(0.75);
         }
 
         .card:hover {
             -webkit-transform: translateY(-6px);
             transform: translateY(-6px);
             background: var(--card-hover-bg);
-            border-color: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 255, 255, 1);
             box-shadow: var(--liquid-hover-shadow);
         }
 
@@ -251,11 +251,32 @@
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* 视图容器基准高度与平滑渐入动画 - 根绝高度塌缩与跳动 */
+        .topics-section, .dynamic-view-section {
+            min-height: 70vh;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .view-enter {
+            -webkit-animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @-webkit-keyframes viewFadeIn {
+            from { opacity: 0; -webkit-transform: translateY(12px); }
+            to { opacity: 1; -webkit-transform: translateY(0); }
+        }
+
+        @keyframes viewFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Topics View Styling */
         #topics-view {
             padding: 2rem 0 8rem;
-            -webkit-animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
@@ -545,6 +566,7 @@
         <div class="glow-sphere glow-1"></div>
         <div class="glow-sphere glow-2"></div>
         <div class="glow-sphere glow-3"></div>
+        <div class="glow-sphere glow-4"></div>
     </div>
 
     <div class="container">
@@ -758,8 +780,14 @@
             let selectedTag = null;
 
             function switchView() {
-                const hash = window.location.hash.substring(1) || 'home';
+                const rawHash = window.location.hash.substring(1);
+                const hash = (rawHash === 'home' || rawHash === 'topics' || rawHash === 'archive') ? rawHash : 'home';
                 
+                // 若页面不在顶部，在切换前即刻重置到顶部（instant 避免与 DOM 伸缩产生拉扯抖动）
+                if (window.scrollY > 0) {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }
+
                 // 隐藏所有动态视图
                 if (homeHero) homeHero.style.display = 'none';
                 if (homePostsView) homePostsView.style.display = 'none';
@@ -773,38 +801,86 @@
                     });
                 });
                 
-                // 根据路由展现视图并高亮导航
+                // 根据路由展现视图并高亮导航，注入平滑渐入动画
                 if (hash === 'home') {
-                    if (homeHero) homeHero.style.display = 'block';
-                    if (homePostsView) homePostsView.style.display = 'block';
+                    if (homeHero) {
+                        homeHero.style.display = 'block';
+                        homeHero.classList.remove('view-enter');
+                        void homeHero.offsetWidth; // 触发 reflow 重新激活渐入
+                        homeHero.classList.add('view-enter');
+                    }
+                    if (homePostsView) {
+                        homePostsView.style.display = 'block';
+                        homePostsView.classList.remove('view-enter');
+                        void homePostsView.offsetWidth;
+                        homePostsView.classList.add('view-enter');
+                    }
                     if (navLinks.home) navLinks.home.forEach(l => l && l.classList.add('active'));
                 } else if (hash === 'topics') {
                     if (topicsView) {
                         topicsView.style.display = 'block';
+                        topicsView.classList.remove('view-enter');
+                        void topicsView.offsetWidth;
+                        topicsView.classList.add('view-enter');
                         renderTopicsData();
                     }
                     if (navLinks.topics) navLinks.topics.forEach(l => l && l.classList.add('active'));
                 } else if (hash === 'archive') {
                     if (archiveView) {
                         archiveView.style.display = 'block';
+                        archiveView.classList.remove('view-enter');
+                        void archiveView.offsetWidth;
+                        archiveView.classList.add('view-enter');
                         renderArchiveData();
                     }
                     if (navLinks.archive) navLinks.archive.forEach(l => l && l.classList.add('active'));
                 }
-                
-                // 每次切换时滚动回顶部
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
+            // 监听 hash 改变（如浏览器前进后退）
             window.addEventListener('hashchange', switchView);
+
+            // 拦截路由导航链接的点击，阻止浏览器默认的锚点跳跃（彻底解决画面乱跳）
+            const routeKeys = ['home', 'topics', 'archive'];
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                const target = link.getAttribute('href').replace(/^#/, '');
+                if (routeKeys.includes(target)) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (window.location.hash !== '#' + target) {
+                            if (window.scrollY > 0) {
+                                window.scrollTo({ top: 0, behavior: 'instant' });
+                            }
+                            window.location.hash = '#' + target;
+                        }
+                        // 若处于移动端抽屉打开状态，平滑关闭抽屉
+                        const mobileBackdrop = document.getElementById('mobileNavBackdrop');
+                        const mobileDrawer = document.getElementById('mobileNavDrawer');
+                        const menuBtn = document.getElementById('menuToggleBtn');
+                        if (mobileDrawer && mobileDrawer.classList.contains('is-open')) {
+                            mobileDrawer.classList.remove('is-open');
+                            if (mobileBackdrop) mobileBackdrop.classList.remove('is-open');
+                            if (menuBtn) menuBtn.classList.remove('is-active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            });
+
             // 首次载入执行路由判断
             switchView();
 
-            // 如果点击 logo 也切回 home 视图并清空 hash
+            // 如果点击 logo 也切回 home 视图并平稳阻止跳动
             const logoBtn = document.getElementById('logoBtn');
             if (logoBtn) {
-                logoBtn.addEventListener('click', () => {
-                    window.location.hash = '#home';
+                logoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.location.hash !== '#home') {
+                        if (window.scrollY > 0) {
+                            window.scrollTo({ top: 0, behavior: 'instant' });
+                        }
+                        window.location.hash = '#home';
+                    }
                 });
             }
 
