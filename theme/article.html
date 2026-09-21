@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f6f8fb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" href="/assets/Logo.png" />
     <title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
     <meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}" />
@@ -12,6 +15,10 @@
     
     <style>
         /* 页面特有与 Safari WebKit 深度兼容排版样式 */
+        html {
+            background-color: var(--bg-color);
+            scrollbar-gutter: stable;
+        }
 
         /* 文章页正文行高提升可读性 */
         body {
@@ -660,48 +667,195 @@
             color: var(--text-secondary);
         }
 
-        /* 移动端细化响应式适配 */
+        /* ==================== 移动端沉浸式阅读与自适应排版优化 ==================== */
         @media (max-width: 768px) {
-            .article-card {
-                padding: 2rem 1.5rem;
-                border-radius: 20px;
-                margin-bottom: 2rem;
+            header {
+                padding: 1.1rem 0 !important;
             }
+
+            .layout-wrapper {
+                width: 100% !important;
+            }
+
+            /* 移动端沉浸式文章卡片 - 消除双层外边距挤压，充分拓宽可视阅读面 */
+            .article-card {
+                padding: 1.6rem 1.15rem !important;
+                border-radius: 20px !important;
+                margin-bottom: 1.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.75) !important;
+                box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            .article-title {
+                font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+                line-height: 1.35 !important;
+                margin-bottom: 1rem !important;
+                letter-spacing: -0.3px !important;
+            }
+
+            .article-meta-bar {
+                margin-top: 0.85rem !important;
+                gap: 0.75rem !important;
+            }
+
+            .article-meta {
+                font-size: 0.82rem !important;
+                gap: 0.5rem !important;
+            }
+
+            .category-tag {
+                font-size: 0.75rem !important;
+                padding: 0.2rem 0.6rem !important;
+            }
+
+            /* 正文排版与呼吸感优化 */
+            .article-content {
+                font-size: 1.02rem !important;
+                line-height: 1.78 !important;
+                letter-spacing: 0.01em !important;
+            }
+
+            .article-content p {
+                margin-bottom: 1.35rem !important;
+            }
+
+            .article-content h2 {
+                font-size: 1.3rem !important;
+                margin: 2rem 0 1rem !important;
+                border-left: 3.5px solid var(--accent-1) !important;
+                padding-left: 0.6rem !important;
+            }
+
+            .article-content h3 {
+                font-size: 1.15rem !important;
+                margin: 1.6rem 0 0.8rem !important;
+            }
+
+            .article-content h4 {
+                font-size: 1.05rem !important;
+                margin: 1.3rem 0 0.6rem !important;
+            }
+
+            /* 表格移动端原生级横向滚动保护 - 告别文字单字折行与挤压变形 */
+            .table-responsive {
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                display: block !important;
+                margin: 1.5rem 0 !important;
+                border-radius: 14px !important;
+                border: 1px solid var(--liquid-border) !important;
+                background: rgba(255, 255, 255, 0.5) !important;
+                -webkit-backdrop-filter: blur(16px) !important;
+                backdrop-filter: blur(16px) !important;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02) !important;
+            }
+
+            .article-content table {
+                width: max-content !important;
+                min-width: 100% !important;
+                margin: 0 !important;
+                border: none !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .article-content th {
+                white-space: nowrap !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 0.85rem !important;
+                background: rgba(255, 255, 255, 0.8) !important;
+                font-weight: 600 !important;
+            }
+
+            .article-content td {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.85rem !important;
+                min-width: 120px !important;
+                white-space: normal !important;
+                line-height: 1.55 !important;
+                background: rgba(255, 255, 255, 0.35) !important;
+            }
+
+            /* 图片自适应圆角与阴影 */
+            .article-content img {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                border-radius: 14px !important;
+                display: block !important;
+                margin: 1.35rem auto !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+            }
+
+            /* 引用块美化 */
+            .article-content blockquote {
+                padding: 0.9rem 1.1rem !important;
+                margin: 1.4rem 0 !important;
+                border-left: 3.5px solid var(--accent-1) !important;
+                background: rgba(26, 115, 232, 0.05) !important;
+                border-radius: 0 12px 12px 0 !important;
+                font-size: 0.95rem !important;
+            }
+
+            /* 代码块移动端横向滑动 */
+            .article-content pre {
+                padding: 1.15rem 1rem !important;
+                border-radius: 12px !important;
+                font-size: 0.82rem !important;
+                margin: 1.35rem 0 !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            .article-content ul, .article-content ol {
+                padding-left: 1.35rem !important;
+                margin-bottom: 1.35rem !important;
+            }
+
+            .article-content li {
+                margin-bottom: 0.45rem !important;
+            }
+
             .article-nav {
                 grid-template-columns: 1fr;
                 gap: 1rem;
+                margin-bottom: 2rem;
             }
+
             .nav-next {
                 text-align: left;
             }
+
             .nav-next .nav-card {
                 align-items: flex-start;
             }
+
             .comments-section {
-                padding: 1.75rem 1.25rem;
+                padding: 1.6rem 1.15rem;
                 border-radius: 20px;
+            }
+
+            .site-footer {
+                padding: 1.75rem 0 calc(2rem + env(safe-area-inset-bottom)) !important;
+                border-top: 1px solid rgba(0, 0, 0, 0.04) !important;
+                font-size: 0.8rem !important;
             }
         }
 
         @media (max-width: 480px) {
             .article-card {
-                padding: 1.5rem 1.15rem;
-                border-radius: 16px;
+                padding: 1.35rem 0.95rem !important;
+                border-radius: 16px !important;
             }
-            .article-content pre {
-                padding: 1rem;
-                border-radius: 10px;
-                font-size: 0.85rem;
-            }
-            .article-content blockquote {
-                padding: 0.9rem 1.1rem;
-                margin: 1.5rem 0;
-            }
-            .article-content ul, .article-content ol {
-                margin-left: 1.25rem;
+            .article-content {
+                font-size: 1rem !important;
+                line-height: 1.75 !important;
             }
             .comments-section {
-                padding: 1.25rem 1rem;
+                padding: 1.25rem 0.95rem;
                 border-radius: 16px;
             }
         }

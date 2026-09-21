@@ -6,6 +6,9 @@
     <title>{{ &title }}</title>
     <meta name="description" content="{{ &OPT.siteDescription }}" />
     <meta name="keywords" content="{{ &OPT.keyWords }}" />
+    <meta name="theme-color" content="#f6f8fb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" href="/assets/Logo.png" />
     <!-- 公共样式 (主题变量/背景/导航/About弹窗等), 页面字体使用系统字体栈兜底 -->
     <!-- 注意: 修改 common.css / common.js 后必须同步递增下方 THEME_ASSET_VERSION 版本号, 否则 Safari 等浏览器会继续使用旧缓存导致样式错乱 -->
@@ -13,6 +16,7 @@
     <style>
         /* 页面特有与 Safari WebKit 兼容排版样式 */
         html {
+            background-color: var(--bg-color);
             scrollbar-gutter: stable;
         }
 
@@ -393,8 +397,6 @@
         /* Archive View Styling */
         #archive-view {
             padding: 2rem 0 8rem;
-            -webkit-animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
@@ -1056,6 +1058,9 @@
 
                 if (!timeline) return;
                 if (stats) stats.textContent = `全站共发布了 ${articles.length} 篇文章`;
+
+                // 若已完成初始渲染，无需重复清空重绘 DOM，彻底杜绝重绘跳动
+                if (timeline.children.length > 0) return;
 
                 timeline.innerHTML = '';
                 if (articles.length === 0) {
