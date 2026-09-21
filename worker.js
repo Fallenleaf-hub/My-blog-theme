@@ -32,7 +32,6 @@ Disallow: /admin`//robots.txt设置
 // 主题资源版本号: 用于 /assets/common.css?v=xxx 等引用的缓存破坏 (cache-busting)。
 // 背景: Safari/iOS 会严格遵守 Cache-Control 缓存旧的 common.css, 若主题更新后不递增此版本号,
 // 会出现"新 HTML + 旧 CSS"的错乱 (如移动端汉堡菜单/抽屉样式失效)。每次修改 theme/ 下的 css/js 后递增即可。
-const THEME_ASSET_VERSION = "20260921v5";
 const THEME_ASSET_VERSION = "20260921v6";
 function injectThemeAssetVersion(t) { return "string" == typeof t ? t.replace(/THEME_ASSET_VERSION/g, THEME_ASSET_VERSION) : t }
 
