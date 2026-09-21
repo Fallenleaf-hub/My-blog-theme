@@ -200,6 +200,9 @@ blog-content/
 -->
 ```
 
+> 💡 **极速自动发布（GitOps 自动化流）**：  
+> 当你在 GitHub 仓库中配置了 `BLOG_USER` 与 `BLOG_PASSWORD` 密钥后，每次完成写作并执行 `git push` 推送到 `main` 分支，GitHub Actions 将**自动解析本文档元数据并同步发布到博客**，自动分配 ID、增量更新并刷新 CDN 缓存，无需再手动进入后台复制粘贴！
+
 ---
 
 ## 七、文章发布前自检清单（Pre-Flight Checklist）
@@ -224,4 +227,4 @@ blog-content/
 6. **[ ] 交付清单齐全**：
    - 正文已写入 `blog-content/<slug>/article.md`；
    - 封面图片已保存至 `blog-content/<slug>/cover.png`；
-   - 明确提供：文章路径、Raw 图片链接、Slug、建议标题与标签、后台发布流程。
+   - 提交后只需 `git push`，流水线将全自动完成同步与全网发布。

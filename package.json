@@ -1,0 +1,13 @@
+{
+  "name": "leafblog",
+  "version": "1.0.0",
+  "description": "LeafBlog - A Serverless Blog powered by Cloudflare Workers & KV",
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-posts.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7"
+  }
+}
+

@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy & Sync
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -22,3 +22,25 @@ jobs:
           # wrangler-action 默认捆绑旧版 wrangler(3.13.x), 不支持 assets 的 run_worker_first 配置,
           # 会导致首页/admin 等匹配静态文件的请求被直接返回模板原文而不经过 Worker 渲染, 必须显式指定新版
           wranglerVersion: "4.123.0"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Sync Blog Posts to KV
+        if: ${{ secrets.BLOG_USER != '' && secrets.BLOG_PASSWORD != '' }}
+        run: node scripts/sync-posts.mjs
+        env:
+          BLOG_URL: "https://leafblog.ccwu.cc"
+          BLOG_USER: ${{ secrets.BLOG_USER }}
+          BLOG_PASSWORD: ${{ secrets.BLOG_PASSWORD }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Notice for Unconfigured Secrets
+        if: ${{ secrets.BLOG_USER == '' || secrets.BLOG_PASSWORD == '' }}
+        run: echo "::notice title=文章自动同步未启用::若需开启 git push 自动上传发布文章，请前往 GitHub 仓库 Settings -> Secrets and variables -> Actions 添加 BLOG_USER 与 BLOG_PASSWORD 两个密钥。"

@@ -152,14 +152,21 @@ You can keep placeholders in `worker.js` and configure them in Cloudflare Dashbo
 
 ---
 
-### 3. Setup GitHub Actions (Continuous Deployment)
+### 3. Setup GitHub Actions (Continuous Deployment & Automated Publishing)
 
 1. Push or Fork this repository to your GitHub account.
 2. In your repository, go to **Settings** -> **Secrets and variables** -> **Actions**.
-3. Click **New repository secret** and add:
-   - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID.
-   - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API Token (must have Workers and KV edit permissions).
-4. Any commit pushed to `main` will automatically trigger `.github/workflows/deploy.yml` to bundle and deploy your Worker and theme assets.
+3. Click **New repository secret** and add the following keys:
+   - **Core Deployment Secrets (Required)**:
+     - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID.
+     - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API Token (must have Workers and KV edit permissions).
+   - **Automated Article Publishing Secrets (Highly Recommended for GitOps)**:
+     - `BLOG_USER`: Your admin login username (e.g. `admin`).
+     - `BLOG_PASSWORD`: Your admin login password (must match the one configured in Cloudflare).
+4. **🎉 Frictionless Authoring Workflow (GitOps)**:
+   - Once configured, whenever you write or edit posts under `blog-content/<slug>/` locally, just run `git push`.
+   - GitHub Actions will bundle your Worker, **automatically parse your Markdown frontmatter/metadata, generate 16:9 GitHub Raw cover URLs and plain-text summaries, create new posts or perform in-place incremental updates, and automatically purge Cloudflare Edge Cache worldwide**!
+   - Say goodbye to manual copy-pasting in the web admin dashboard.
 
 ---
 
@@ -169,6 +176,7 @@ Because the site leverages aggressive Edge Caching, **redeployments may take up 
 
 - **Method 1 (Recommended)**: Cloudflare Dashboard → Select Domain → **Caching → Configuration → Purge Everything**.
 - **Method 2**: If `BLOG_CACHE_ZONE_ID` and `BLOG_CACHE_TOKEN` are set, log into `/admin`, navigate to **Publish**, and click **Publish** to invoke the Purge API automatically.
+- **Method 3**: If automated article sync is enabled, the pipeline **automatically purges edge cache via API** upon sync completion without manual intervention.
 
 ---
 

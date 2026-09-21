@@ -152,14 +152,21 @@ id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 
 ---
 
-### 3. 配置 GitHub Actions (实现持续集成)
+### 3. 配置 GitHub Actions (实现持续集成与自动发文)
 
 1. 将本项目 Push 或 Fork 到你自己的 GitHub 仓库。
 2. 在该 GitHub 仓库的页面，点击顶部的 **Settings** -> **Secrets and variables** -> **Actions**。
-3. 点击 **New repository secret**，添加以下两个部署用密钥：
-   - `CLOUDFLARE_ACCOUNT_ID`：你的 Cloudflare 账户 ID。
-   - `CLOUDFLARE_API_TOKEN`：你的 Cloudflare 账户 API Token（必须具有操作 Workers 与 KV 的权限，**用于 GitHub Actions 的 Wrangler 部署**）。
-4. 本地做出任何修改提交 Push 到 `main` 分支后，GitHub Actions 工作流（`.github/workflows/deploy.yml`）将被自动触发，将最新的 Worker 代码与 `theme/` 静态资源无缝部署上线。
+3. 点击 **New repository secret**，添加以下密钥：
+   - **基础部署密钥（必选）**：
+     - `CLOUDFLARE_ACCOUNT_ID`：你的 Cloudflare 账户 ID。
+     - `CLOUDFLARE_API_TOKEN`：你的 Cloudflare 账户 API Token（必须具有操作 Workers 与 KV 的权限，**用于 Wrangler 部署**）。
+   - **文章自动发布密钥（强烈推荐开启 GitOps）**：
+     - `BLOG_USER`：你的后台管理员账号（如 `admin`）。
+     - `BLOG_PASSWORD`：你的后台管理员密码（需与 Cloudflare 环境变量/Secrets 中的一致）。
+4. **🎉 极致写作流（GitOps）**：
+   - 配置上述两项文章密钥后，只要在本地 `blog-content/<slug>/` 下新建或修改文章，执行 `git push`；
+   - GitHub Actions 就会在完成部署后**自动解析 Markdown 与元数据、自动生成 16:9 封面链接与纯文本摘要、比对 Slug 原地更新或新建发布，并自动刷新全网 Edge Cache**！
+   - 您再也无需手动打开后台一个个复制粘贴文章，直接享受极客式的无感发布体验。
 
 ---
 
@@ -169,6 +176,7 @@ id = "你的 KV 命名空间 ID" # <--- 在这里填入上面创建的 KV ID
 
 - **方式一（推荐）**：Cloudflare Dashboard → 选择域名 → **Caching（缓存）→ Configuration → Purge Everything**。
 - **方式二**：若已配置 `BLOG_CACHE_ZONE_ID` 与 `BLOG_CACHE_TOKEN`，登录后台后访问 `/admin/publish/` 点击大按钮触发 Purge API 清缓存。
+- **方式三**：若已开启 GitHub Actions 文章自动同步，流水线将在文章同步后**自动调用 API 刷新缓存**，完全无需手动操作。
 
 ---
 
