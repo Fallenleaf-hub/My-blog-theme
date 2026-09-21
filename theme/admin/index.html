@@ -34,6 +34,10 @@
 			box-sizing: border-box;
 		}
 
+		html {
+			scrollbar-gutter: stable;
+		}
+
 		body {
 			font-family: 'Inter', system-ui, -apple-system, sans-serif;
 			background-color: var(--bg-color);
@@ -42,6 +46,11 @@
 			overflow-x: hidden;
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
+		}
+
+		/* 保持 Tab 内容区最小高度，杜绝切换时高度巨变导致的视口拉扯 */
+		.tab-content > .tab-pane {
+			min-height: 75vh;
 		}
 
 		/* 环境光晕背景 */
@@ -820,6 +829,12 @@
 		category.selectpicker('refresh');
 		$("#loadmore").click();//初始加载一页
 		
+		// 显式拦截 Tab 点击，阻止原生 Hash 锚点跳转引起的页面视口弹跳
+		$('#myTab a[data-toggle="tab"]').on('click', function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+
 		// 修复 Editor.md 在隐藏 Tab 下渲染可能导致空白的问题
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 			if (e.target.hash === '#new' && typeof mdEditor !== 'undefined') {

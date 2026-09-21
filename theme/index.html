@@ -779,15 +779,10 @@
             let selectedCategory = null;
             let selectedTag = null;
 
-            function switchView() {
-                const rawHash = window.location.hash.substring(1);
+            function switchView(forcedHash) {
+                const rawHash = forcedHash || window.location.hash.substring(1);
                 const hash = (rawHash === 'home' || rawHash === 'topics' || rawHash === 'archive') ? rawHash : 'home';
                 
-                // 若页面不在顶部，在切换前即刻重置到顶部（instant 避免与 DOM 伸缩产生拉扯抖动）
-                if (window.scrollY > 0) {
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                }
-
                 // 隐藏所有动态视图
                 if (homeHero) homeHero.style.display = 'none';
                 if (homePostsView) homePostsView.style.display = 'none';
@@ -801,7 +796,7 @@
                     });
                 });
                 
-                // 根据路由展现视图并高亮导航，注入平滑渐入动画
+                // 根据路由展现视图并高亮导航，注入丝滑渐入动画
                 if (hash === 'home') {
                     if (homeHero) {
                         homeHero.style.display = 'block';
@@ -837,21 +832,23 @@
                 }
             }
 
-            // 监听 hash 改变（如浏览器前进后退）
-            window.addEventListener('hashchange', switchView);
+            // 监听前进/后退事件（利用 popstate 实现无感知丝滑后退/前进）
+            window.addEventListener('popstate', () => {
+                switchView();
+            });
 
-            // 拦截路由导航链接的点击，阻止浏览器默认的锚点跳跃（彻底解决画面乱跳）
+            // 拦截路由导航链接的点击，彻底消除底层原生锚点跳跃（绝对不直接赋值 location.hash）
             const routeKeys = ['home', 'topics', 'archive'];
             document.querySelectorAll('a[href^="#"]').forEach(link => {
                 const target = link.getAttribute('href').replace(/^#/, '');
                 if (routeKeys.includes(target)) {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        if (window.location.hash !== '#' + target) {
-                            if (window.scrollY > 0) {
-                                window.scrollTo({ top: 0, behavior: 'instant' });
-                            }
-                            window.location.hash = '#' + target;
+                        const currentHash = window.location.hash.replace(/^#/, '') || 'home';
+                        if (currentHash !== target) {
+                            // 使用 history.pushState 静默修改地址栏，绝不触发浏览器原生锚点跳跃
+                            history.pushState(null, '', '#' + target);
+                            switchView(target);
                         }
                         // 若处于移动端抽屉打开状态，平滑关闭抽屉
                         const mobileBackdrop = document.getElementById('mobileNavBackdrop');
@@ -875,11 +872,10 @@
             if (logoBtn) {
                 logoBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.location.hash !== '#home') {
-                        if (window.scrollY > 0) {
-                            window.scrollTo({ top: 0, behavior: 'instant' });
-                        }
-                        window.location.hash = '#home';
+                    const currentHash = window.location.hash.replace(/^#/, '') || 'home';
+                    if (currentHash !== 'home') {
+                        history.pushState(null, '', '#home');
+                        switchView('home');
                     }
                 });
             }

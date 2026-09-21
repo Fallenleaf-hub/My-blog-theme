@@ -21,10 +21,10 @@
             overflow-x: hidden;
         }
 
-        /* 页面布局 - 单栏居中宽屏排版，取消桌面端常驻目录，专注沉浸式阅读 */
+        /* 页面布局 - 单栏居中宽屏排版，拓宽至 1040px 黄金阅读比例 */
         .layout-wrapper {
             width: 100%;
-            max-width: 880px;
+            max-width: 1040px;
             margin: 0 auto;
             box-sizing: border-box;
         }
@@ -35,10 +35,10 @@
             min-width: 0;
         }
 
-        /* ==================== 悬浮液态玻璃圆形目录控制台 (Floating Liquid TOC) ==================== */
+        /* ==================== 悬浮液态玻璃圆形目录控制台 (左侧定位) ==================== */
         .floating-toc-wrapper {
             position: fixed;
-            right: 2.5rem;
+            left: 2.5rem;
             top: 100px;
             z-index: 990;
         }
@@ -96,11 +96,12 @@
             background-color: var(--accent-1);
         }
 
-        /* 下拉目录面板 (Liquid Glass Dropdown) */
+        /* 下拉目录面板 (向右下方展开) */
         .toc-dropdown-panel {
             position: absolute;
             top: calc(100% + 12px);
-            right: 0;
+            left: 0;
+            right: auto;
             width: 300px;
             max-height: 65vh;
             max-height: 65dvh;
@@ -119,12 +120,12 @@
             pointer-events: none;
             -webkit-transform: translateY(-8px) scale(0.95);
             transform: translateY(-8px) scale(0.95);
-            transform-origin: top right;
+            transform-origin: top left;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
 
-        /* 鼠标悬停 (Hover) 或激活 (is-open) 时向下拉出目录 */
+        /* 鼠标悬停 (Hover) 或激活 (is-open) 时向右下拉出目录 */
         .floating-toc-wrapper:hover .toc-dropdown-panel,
         .floating-toc-wrapper.is-open .toc-dropdown-panel {
             opacity: 1;
@@ -209,7 +210,7 @@
 
         @media (max-width: 1024px) {
             .floating-toc-wrapper {
-                right: 1.5rem;
+                left: 1.5rem;
                 top: 90px;
             }
         }
