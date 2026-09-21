@@ -342,14 +342,18 @@ header {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    visibility: hidden;
+    pointer-events: none;
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
-    transition: -webkit-transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: -webkit-transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
     box-sizing: border-box;
     overflow-y: auto;
 }
 
 .mobile-nav-drawer.is-open {
+    visibility: visible;
+    pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
@@ -724,15 +728,20 @@ header {
     z-index: 996;
     padding: 1.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
     max-height: 75vh;
-    display: flex;
+    display: none;
     flex-direction: column;
+    visibility: hidden;
+    pointer-events: none;
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
-    transition: -webkit-transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: -webkit-transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
     box-sizing: border-box;
 }
 
 .mobile-toc-drawer.is-open {
+    display: flex;
+    visibility: visible;
+    pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }

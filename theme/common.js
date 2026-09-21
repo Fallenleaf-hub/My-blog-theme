@@ -93,7 +93,11 @@ function toggleMobileNav() {
 function openMobileToc() {
     const mobileTocDrawer = document.getElementById('mobileTocDrawer');
     const mobileTocBackdrop = document.getElementById('mobileTocBackdrop');
-    if (mobileTocDrawer) mobileTocDrawer.classList.add('is-open');
+    if (mobileTocDrawer) {
+        mobileTocDrawer.style.display = 'flex';
+        void mobileTocDrawer.offsetWidth; // 触发 reflow 确保过渡动画正常触发
+        mobileTocDrawer.classList.add('is-open');
+    }
     if (mobileTocBackdrop) mobileTocBackdrop.classList.add('is-open');
     document.body.style.overflow = 'hidden';
 }
@@ -101,7 +105,14 @@ function openMobileToc() {
 function closeMobileToc() {
     const mobileTocDrawer = document.getElementById('mobileTocDrawer');
     const mobileTocBackdrop = document.getElementById('mobileTocBackdrop');
-    if (mobileTocDrawer) mobileTocDrawer.classList.remove('is-open');
+    if (mobileTocDrawer) {
+        mobileTocDrawer.classList.remove('is-open');
+        setTimeout(() => {
+            if (!mobileTocDrawer.classList.contains('is-open')) {
+                mobileTocDrawer.style.display = 'none';
+            }
+        }, 360);
+    }
     if (mobileTocBackdrop) mobileTocBackdrop.classList.remove('is-open');
     document.body.style.overflow = '';
 }

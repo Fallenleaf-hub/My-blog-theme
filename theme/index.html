@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="/assets/common.css?v=THEME_ASSET_VERSION">
     <style>
         /* 页面特有与 Safari WebKit 兼容排版样式 */
+        html {
+            scrollbar-gutter: stable;
+        }
 
         /* Hero 主视觉区域 */
         .hero {
@@ -20,8 +23,8 @@
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            -webkit-animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            -webkit-animation: viewFadeIn 0.5s ease-out forwards;
+            animation: viewFadeIn 0.5s ease-out forwards;
             box-sizing: border-box;
         }
 
@@ -120,9 +123,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            opacity: 0;
-            -webkit-transform: translateY(20px);
-            transform: translateY(20px);
+            opacity: 1;
+            transform: none;
             box-shadow: var(--liquid-shadow);
             width: 100%;
             max-width: 100%;
@@ -247,31 +249,41 @@
         }
 
         .animate-in {
-            -webkit-animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            -webkit-animation: cardFadeIn 0.35s ease-out forwards;
+            animation: cardFadeIn 0.35s ease-out forwards;
+        }
+
+        @-webkit-keyframes cardFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* 视图容器基准高度与平滑渐入动画 - 根绝高度塌缩与跳动 */
         .topics-section, .dynamic-view-section {
-            min-height: 70vh;
+            min-height: 80vh;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
         }
 
         .view-enter {
-            -webkit-animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            -webkit-animation: viewFadeIn 0.25s ease-out forwards;
+            animation: viewFadeIn 0.25s ease-out forwards;
         }
 
         @-webkit-keyframes viewFadeIn {
-            from { opacity: 0; -webkit-transform: translateY(12px); }
-            to { opacity: 1; -webkit-transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes viewFadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Topics View Styling */
@@ -783,12 +795,9 @@
                 const rawHash = forcedHash || window.location.hash.substring(1);
                 const hash = (rawHash === 'home' || rawHash === 'topics' || rawHash === 'archive') ? rawHash : 'home';
                 
-                // 隐藏所有动态视图
-                if (homeHero) homeHero.style.display = 'none';
-                if (homePostsView) homePostsView.style.display = 'none';
-                if (topicsView) topicsView.style.display = 'none';
-                if (archiveView) archiveView.style.display = 'none';
-                
+                // 切换前平滑重置滚动位置到顶部，防止不同视图高度差导致视口拉扯
+                window.scrollTo({ top: 0, behavior: 'instant' });
+
                 // 移除所有导航 active 状态
                 Object.values(navLinks).forEach(linkGroup => {
                     linkGroup.forEach(link => {
@@ -796,8 +805,10 @@
                     });
                 });
                 
-                // 根据路由展现视图并高亮导航，注入丝滑渐入动画
+                // 根据路由展现视图并高亮导航，注入丝滑纯透明度淡入（精准隐藏非激活视图，避免高度瞬间塌缩）
                 if (hash === 'home') {
+                    if (topicsView) topicsView.style.display = 'none';
+                    if (archiveView) archiveView.style.display = 'none';
                     if (homeHero) {
                         homeHero.style.display = 'block';
                         homeHero.classList.remove('view-enter');
@@ -812,6 +823,9 @@
                     }
                     if (navLinks.home) navLinks.home.forEach(l => l && l.classList.add('active'));
                 } else if (hash === 'topics') {
+                    if (homeHero) homeHero.style.display = 'none';
+                    if (homePostsView) homePostsView.style.display = 'none';
+                    if (archiveView) archiveView.style.display = 'none';
                     if (topicsView) {
                         topicsView.style.display = 'block';
                         topicsView.classList.remove('view-enter');
@@ -821,6 +835,9 @@
                     }
                     if (navLinks.topics) navLinks.topics.forEach(l => l && l.classList.add('active'));
                 } else if (hash === 'archive') {
+                    if (homeHero) homeHero.style.display = 'none';
+                    if (homePostsView) homePostsView.style.display = 'none';
+                    if (topicsView) topicsView.style.display = 'none';
                     if (archiveView) {
                         archiveView.style.display = 'block';
                         archiveView.classList.remove('view-enter');
