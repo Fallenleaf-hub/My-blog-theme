@@ -33,14 +33,14 @@ jobs:
         run: npm ci || npm install
 
       - name: Sync Blog Posts to KV
-        if: ${{ secrets.BLOG_USER != '' && secrets.BLOG_PASSWORD != '' }}
-        run: node scripts/sync-posts.mjs
         env:
           BLOG_URL: "https://leafblog.ccwu.cc"
           BLOG_USER: ${{ secrets.BLOG_USER }}
           BLOG_PASSWORD: ${{ secrets.BLOG_PASSWORD }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-
-      - name: Notice for Unconfigured Secrets
-        if: ${{ secrets.BLOG_USER == '' || secrets.BLOG_PASSWORD == '' }}
-        run: echo "::notice title=文章自动同步未启用::若需开启 git push 自动上传发布文章，请前往 GitHub 仓库 Settings -> Secrets and variables -> Actions 添加 BLOG_USER 与 BLOG_PASSWORD 两个密钥。"
+        run: |
+          if [ -z "$BLOG_USER" ] || [ -z "$BLOG_PASSWORD" ]; then
+            echo "::notice title=文章自动同步未启用::若需开启 git push 自动上传发布文章，请前往 GitHub 仓库 Settings -> Secrets and variables -> Actions 添加 BLOG_USER 与 BLOG_PASSWORD 两个密钥。"
+          else
+            node scripts/sync-posts.mjs
+          fi
