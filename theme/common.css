@@ -79,6 +79,7 @@ body {
     height: 100%;
     height: 100dvh;
     z-index: -1;
+    z-index: 0;
     overflow: hidden;
     background: var(--bg-color);
     pointer-events: none;
@@ -151,6 +152,8 @@ body {
 
 /* 布局容器 */
 .container {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -876,23 +879,60 @@ header {
         padding: 2.5rem 1.5rem;
         border-radius: 20px;
     }
+    /* 移动端保留并强化通透极光彩色背景，彻底解决过度模糊导致的苍白平淡 */
+    .glow-sphere {
+        opacity: 0.84;
+    }
     .glow-1 {
         width: 320px;
         height: 320px;
         -webkit-filter: blur(70px);
         filter: blur(70px);
+        width: 380px;
+        height: 380px;
+        top: -60px;
+        left: -70px;
+        -webkit-filter: blur(55px);
+        filter: blur(55px);
     }
     .glow-2 {
         width: 280px;
         height: 280px;
         -webkit-filter: blur(70px);
         filter: blur(70px);
+        width: 350px;
+        height: 350px;
+        bottom: -50px;
+        right: -60px;
+        -webkit-filter: blur(55px);
+        filter: blur(55px);
     }
     .glow-3 {
         width: 240px;
         height: 240px;
         -webkit-filter: blur(70px);
         filter: blur(70px);
+        width: 340px;
+        height: 340px;
+        top: 25%;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+        -webkit-filter: blur(50px);
+        filter: blur(50px);
+    }
+    .glow-4 {
+        width: 320px;
+        height: 320px;
+        top: 62%;
+        left: -30px;
+        -webkit-filter: blur(50px);
+        filter: blur(50px);
+        opacity: 0.76;
+    }
+    .mobile-toc-fab {
+        right: 1.15rem;
+        bottom: calc(1.5rem + env(safe-area-inset-bottom));
     }
 }
 
@@ -901,6 +941,37 @@ header {
         padding: 0 0.65rem;
         padding-left: max(0.65rem, env(safe-area-inset-left));
         padding-right: max(0.65rem, env(safe-area-inset-right));
+    }
+    .glow-1 {
+        width: 320px;
+        height: 320px;
+        top: -40px;
+        left: -50px;
+        -webkit-filter: blur(48px);
+        filter: blur(48px);
+    }
+    .glow-2 {
+        width: 300px;
+        height: 300px;
+        bottom: -30px;
+        right: -40px;
+        -webkit-filter: blur(48px);
+        filter: blur(48px);
+    }
+    .glow-3 {
+        width: 290px;
+        height: 290px;
+        top: 28%;
+        -webkit-filter: blur(45px);
+        filter: blur(45px);
+    }
+    .glow-4 {
+        width: 280px;
+        height: 280px;
+        top: 65%;
+        left: -20px;
+        -webkit-filter: blur(45px);
+        filter: blur(45px);
     }
     .about-card h2 {
         font-size: 1.5rem;

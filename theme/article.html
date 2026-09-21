@@ -394,13 +394,32 @@
 
         .article-content ul, .article-content ol {
             margin: 1.5rem 0 1.5rem 1.6rem;
+            margin: 1.25rem 0 1.25rem 0;
+            padding-left: 1.5rem;
             box-sizing: border-box;
         }
 
         .article-content li {
             margin-bottom: 0.5rem;
+            margin-bottom: 0.45rem;
+            line-height: 1.75;
             overflow-wrap: break-word;
             word-break: break-word;
+        }
+
+        /* 细分小点/嵌套列表：消除过度累加缩进与垂直断层，重心平衡 */
+        .article-content li > ul,
+        .article-content li > ol {
+            margin: 0.35rem 0 0.45rem 0 !important;
+            padding-left: 1.25rem !important;
+        }
+
+        .article-content li > p {
+            margin-bottom: 0.35rem;
+        }
+
+        .article-content li > p:last-child {
+            margin-bottom: 0;
         }
 
         .article-content img {
@@ -684,6 +703,11 @@
                 margin-bottom: 1.75rem !important;
                 border: 1px solid rgba(255, 255, 255, 0.75) !important;
                 box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.46) 50%, rgba(255, 255, 255, 0.62) 100%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.88) !important;
+                box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.95) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+                backdrop-filter: blur(20px) saturate(190%) !important;
             }
 
             .article-title {
@@ -810,13 +834,30 @@
                 -webkit-overflow-scrolling: touch !important;
             }
 
+            /* 移动端列表紧凑排版 - 彻底消除细分小点多层嵌套过度缩进导致的右倾与重心不稳 */
             .article-content ul, .article-content ol {
                 padding-left: 1.35rem !important;
                 margin-bottom: 1.35rem !important;
+                margin: 0.9rem 0 !important;
+                padding-left: 1.15rem !important;
+                margin-left: 0 !important;
+            }
+
+            .article-content li > ul,
+            .article-content li > ol {
+                margin: 0.3rem 0 0.4rem 0 !important;
+                padding-left: 1rem !important;
+                margin-left: 0 !important;
             }
 
             .article-content li {
                 margin-bottom: 0.45rem !important;
+                margin-bottom: 0.4rem !important;
+                line-height: 1.72 !important;
+            }
+
+            .article-content li > p {
+                margin-bottom: 0.25rem !important;
             }
 
             .article-nav {
@@ -840,6 +881,7 @@
 
             .site-footer {
                 padding: 1.75rem 0 calc(2rem + env(safe-area-inset-bottom)) !important;
+                padding: 2rem 0 calc(3.5rem + env(safe-area-inset-bottom)) !important;
                 border-top: 1px solid rgba(0, 0, 0, 0.04) !important;
                 font-size: 0.8rem !important;
             }
@@ -854,6 +896,29 @@
                 font-size: 1rem !important;
                 line-height: 1.75 !important;
             }
+            /* 窄屏下细分小点缩进微调，确保正文黄金阅读面拓展至 85% 以上 */
+            .article-content ul, .article-content ol {
+                margin: 0.8rem 0 !important;
+                padding-left: 1.05rem !important;
+                margin-left: 0 !important;
+            }
+
+            .article-content li > ul,
+            .article-content li > ol {
+                margin: 0.25rem 0 0.35rem 0 !important;
+                padding-left: 0.85rem !important;
+                margin-left: 0 !important;
+            }
+
+            .article-content li {
+                margin-bottom: 0.35rem !important;
+                line-height: 1.68 !important;
+            }
+
+            .article-content li > p {
+                margin-bottom: 0.2rem !important;
+            }
+
             .comments-section {
                 padding: 1.25rem 0.95rem;
                 border-radius: 16px;
